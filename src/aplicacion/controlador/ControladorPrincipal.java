@@ -1,8 +1,9 @@
 package aplicacion.controlador;
 
-import aplicacion.Instancias;
 import aplicacion.modelo.Almacen;
-import aplicacion.vista.VistaPrincipal;
+import aplicacion.modelo.estado.EstadoApplicacion;
+import aplicacion.modelo.estado.Pantalla;
+import aplicacion.vista.VistaVentanaPrincipal;
 
 /**
  *
@@ -10,21 +11,23 @@ import aplicacion.vista.VistaPrincipal;
  */
 public class ControladorPrincipal extends Controlador {
 
-    private Almacen almacen;
-    private VistaPrincipal vista;
+    private final Almacen almacen;
+    private final EstadoApplicacion estado;
+    private final VistaVentanaPrincipal vista;
 
-    @Override
-    public void inicializar(Instancias instancias) {
-        almacen = instancias.getAlmacen();
-        vista = instancias.getVistaPrincipal();
+    public ControladorPrincipal() {
+        this.almacen = new Almacen();
+        this.estado = new EstadoApplicacion();
+        this.vista = new VistaVentanaPrincipal(this, this.estado, this.almacen);
     }
 
-    public void accionUsuario(String parametro1, String parametro2){
+    public void iniciarApp() {
+        this.estado.setPantallaActual(Pantalla.LISTA_PRODUCTOS);
+        refrescar(this.vista);
+    }
 
-        // modifica el modelo
-        // ...
-
-        // refresca las vistas
+    public void verClientes(){
+        this.estado.setPantallaActual(Pantalla.LISTA_CLIENTES);
         refrescar(vista);
 
     }

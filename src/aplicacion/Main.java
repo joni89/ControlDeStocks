@@ -1,5 +1,7 @@
 package aplicacion;
 
+import aplicacion.controlador.ControladorPrincipal;
+
 /**
  *
  * @author jonatan
@@ -7,13 +9,8 @@ package aplicacion;
 public class Main {
 
     public static void main(String[] args) {
-
-        Instancias instancias = new Instancias();
-
-        // Inicializamos los componentes (vistas y controladores)
-        instancias.getControladorPrincipal().inicializar(instancias);
-        instancias.getVistaPrincipal().inicializar(instancias);
-
+        ControladorPrincipal controlador = new ControladorPrincipal();
+        controlador.iniciarApp();
     }
 
 }

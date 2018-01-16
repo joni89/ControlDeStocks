@@ -1,13 +1,12 @@
 package aplicacion.controlador;
 
-import aplicacion.Componente;
 import aplicacion.vista.Vista;
 
 /**
  *
  * @author jonatan
  */
-public abstract class Controlador implements Componente {
+public abstract class Controlador {
 
     /**
      * TODO escribir Javadoc

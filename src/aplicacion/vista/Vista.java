@@ -1,11 +1,9 @@
 package aplicacion.vista;
 
-import aplicacion.Componente;
-
 /**
  *
  * @author jonatan
  */
-public interface Vista extends Componente {
+public interface Vista {
     void refrescar();
 }
