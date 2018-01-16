@@ -9,6 +9,11 @@ import aplicacion.vista.Vista;
  */
 public abstract class Controlador implements Componente {
 
+    /**
+     * TODO escribir Javadoc
+     *
+     * @param vistas 
+     */
     protected void refrescar(Vista... vistas) {
         for(Vista vista : vistas) {
             vista.refrescar();
