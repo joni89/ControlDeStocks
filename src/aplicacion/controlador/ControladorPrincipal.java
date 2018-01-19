@@ -1,9 +1,11 @@
 package aplicacion.controlador;
 
+import javax.swing.JFrame;
+
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.estado.EstadoApplicacion;
-import aplicacion.modelo.estado.Pantalla;
-import aplicacion.vista.VistaVentanaPrincipal;
+import aplicacion.modelo.Producto;
+import aplicacion.vista.VistaListaClientesInventada;
+import aplicacion.vista.VistaListaProductos;
 
 /**
  *
@@ -11,25 +13,45 @@ import aplicacion.vista.VistaVentanaPrincipal;
  */
 public class ControladorPrincipal extends Controlador {
 
-    private final Almacen almacen;
-    private final EstadoApplicacion estado;
-    private final VistaVentanaPrincipal vista;
+	private final Almacen almacen;
+	private final VistaListaProductos vistaListaProductos;
+	private final VistaListaClientesInventada vistaListaClientes;
 
-    public ControladorPrincipal() {
-        this.almacen = new Almacen();
-        this.estado = new EstadoApplicacion();
-        this.vista = new VistaVentanaPrincipal(this, this.estado, this.almacen);
-    }
+	public ControladorPrincipal() {
+		this.almacen = new Almacen();
+		this.vistaListaProductos = new VistaListaProductos(this, this.almacen);
+		this.vistaListaClientes = new VistaListaClientesInventada(this, this.almacen);
+	}
 
-    public void iniciarApp() {
-        this.estado.setPantallaActual(Pantalla.LISTA_PRODUCTOS);
-        refrescar(this.vista);
-    }
+	public void iniciarApp() {
 
-    public void verClientes(){
-        this.estado.setPantallaActual(Pantalla.LISTA_CLIENTES);
-        refrescar(vista);
+		JFrame ventana = this.getVentana();
+		ventana.setTitle("Control de Stocks");
+		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventana.setSize(500, 400);
+		ventana.setVisible(true);
 
-    }
+		this.verProductos();
+
+	}
+
+	public void verProductos() {
+		this.setVistaActiva(this.vistaListaProductos);
+		this.refrescarVistaActiva();
+	}
+
+	public void verClientes() {
+		this.setVistaActiva(this.vistaListaClientes);
+		this.refrescarVistaActiva();
+	}
+
+	public void simularCrearProducto() {
+
+		Producto productoVacio = new Producto();
+		this.almacen.getProductos().add(productoVacio);
+
+		this.refrescarVistaActiva();
+
+	}
 
 }
