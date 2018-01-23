@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Producto;
+import aplicacion.modelo.Cliente;
+import aplicacion.modelo.Proveedor;
+import aplicacion.modelo.Envio;
 import aplicacion.vista.VistaListaClientesInventada;
 import aplicacion.vista.VistaListaProductos;
 
@@ -34,24 +37,103 @@ public class ControladorPrincipal extends Controlador {
 		this.verProductos();
 
 	}
+        
+        //Productos
+        
+        public void crearProducto() {
+                //Coger variables de los componentes swing y devolver dicho producto
+		Producto productoVacio = new Producto();
+		this.almacen.getProductos().add(productoVacio);
+
+		this.refrescarVistaActiva();
+	}
+        
+        private void añadirProductoAlmacen(Producto producto){
+            
+        }
+        
+        public void crearAñadirProducto(){
+//            Producto producto = crearProducto();
+//            añadirProductoAlmacen(producto);
+        }
+        
+        public void eliminarProducto(Producto producto){
+            //restar stock
+        }
 
 	public void verProductos() {
 		this.setVistaActiva(this.vistaListaProductos);
 		this.refrescarVistaActiva();
 	}
+        
+        //Clientes
+        
+        public void crearCliente() {
+                //Coger variables de los componentes swing y devolver dicho cliente
+		Cliente clienteVacio = new Cliente();
 
+		this.refrescarVistaActiva();
+	}
+        
+        private void añadirCliente(Cliente cliente){
+            
+        }
+        
+        public void crearAñadirCliente(){
+//            Cliente cliente = crearCliente();
+//            añadirCliente(cliente);
+        }
+        
+        public void eliminarCliente(Cliente cliente){
+            
+        }
+        
 	public void verClientes() {
 		this.setVistaActiva(this.vistaListaClientes);
 		this.refrescarVistaActiva();
 	}
 
-	public void simularCrearProducto() {
-
-		Producto productoVacio = new Producto();
-		this.almacen.getProductos().add(productoVacio);
+        //Proveedores
+        
+        public void crearProveedor() {
+                //Coger variables de los componentes swing y devolver dicho proveedor
+		Proveedor proveedorVacio = new Proveedor();
 
 		this.refrescarVistaActiva();
-
 	}
+        
+        private void añadirProveedor(Proveedor proveedor){
+            
+        }
+        
+        public void crearAñadirProveedor(){
+//            Proveedor proveedor = crearProveedor();
+//            añadirProveedor(proveedor);
+        }
+        
+        public void eliminarProveedor(Proveedor proveedor){
+            
+        }
+        
+        //Envio
+        
+        public void crearEnvio() {
+                //Coger variables de los componentes swing y devolver dicho envio
+		Envio envioVacio = new Envio();
 
+		this.refrescarVistaActiva();
+	}
+        
+        private void añadirEnvio(Envio envio){
+            
+        }
+        
+        public void crearAñadirEnvio(){
+//            Envio envio = crearEnvio();
+//            añadirEnvio(envio);
+        }
+        
+        public void eliminarEnvio(Envio envio){
+            
+        }
 }

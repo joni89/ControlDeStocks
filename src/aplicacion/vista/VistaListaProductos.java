@@ -63,7 +63,7 @@ public class VistaListaProductos implements Vista {
 	}
 
 	private void accionSimularCrearProducto() {
-		this.controlador.simularCrearProducto();
+		this.controlador.crearProducto();
 	}
 
 	@Override
