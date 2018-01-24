@@ -49,7 +49,7 @@ public class VistaListaClientesInventada implements Vista {
 	}
 
 	private void accionVolver() {
-		this.controlador.verProductos();
+		this.controlador.mostrarListaProductos();
 	}
 
 	@Override

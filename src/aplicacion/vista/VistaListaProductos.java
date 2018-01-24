@@ -20,66 +20,66 @@ import aplicacion.modelo.Producto;
  */
 public class VistaListaProductos implements Vista {
 
-	private final ControladorPrincipal controlador;
-	private final Almacen almacen;
+    private final ControladorPrincipal controlador;
+    private final Almacen almacen;
 
-	private final JPanel panel;
-	private final JLabel label;
-	private final JButton botonVerClientes;
-	private final JButton botonSimularCrearProducto;
+    private final JPanel panel;
+    private final JLabel label;
+    private final JButton botonVerClientes;
+    private final JButton botonCrearProducto;
 
-	public VistaListaProductos(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaListaProductos(ControladorPrincipal controlador, Almacen almacen) {
 
-		this.controlador = controlador;
-		this.almacen = almacen;
+        this.controlador = controlador;
+        this.almacen = almacen;
 
-		this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(3, 1));
 
-		this.label = new JLabel();
-		this.panel.add(this.label);
+        this.label = new JLabel();
+        this.panel.add(this.label);
 
-		this.botonVerClientes = new JButton("Ver clientes");
-		this.botonVerClientes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				accionVerClientes();
-			}
-		});
-		this.panel.add(this.botonVerClientes);
+        this.botonVerClientes = new JButton("Ver clientes");
+        this.botonVerClientes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                accionVerClientes();
+            }
+        });
+        this.panel.add(this.botonVerClientes);
 
-		this.botonSimularCrearProducto = new JButton("Simular creación de un producto");
-		this.botonSimularCrearProducto.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				accionSimularCrearProducto();
-			}
-		});
-		this.panel.add(this.botonSimularCrearProducto);
+        this.botonCrearProducto = new JButton("Crear producto");
+        this.botonCrearProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accionCrearProducto();
+            }
+        });
+        this.panel.add(this.botonCrearProducto);
 
-	}
+    }
 
-	private void accionVerClientes() {
-		this.controlador.verClientes();
-	}
+    private void accionVerClientes() {
+        this.controlador.verClientes();
+    }
 
-	private void accionSimularCrearProducto() {
-		this.controlador.crearProducto();
-	}
+    private void accionCrearProducto() {
+        System.out.println("aplicacion.vista.VistaListaProductos.accionCrearProducto()");
+        this.controlador.mostrarCrearProducto();
+    }
 
-	@Override
-	public void refrescar() {
+    @Override
+    public void refrescar() {
 
-		// Esta función lee el modelo y lo pinta
+        // Esta función lee el modelo y lo pinta
+        List<Producto> productos = this.almacen.getProductos();
 
-		List<Producto> productos = this.almacen.getProductos();
+        this.label.setText("Número de productos: " + productos.size());
 
-		this.label.setText("Número de productos: " + productos.size());
+    }
 
-	}
-
-	@Override
-	public JComponent getComponenteRaiz() {
-		return this.panel;
-	}
+    @Override
+    public JComponent getComponenteRaiz() {
+        return this.panel;
+    }
 
 }
