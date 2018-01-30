@@ -27,13 +27,22 @@ public class ControladorPrincipal extends Controlador {
     private String idCliente;
     private String idProveedor;
 
+    /**
+     * Constructor
+     */
     public ControladorPrincipal() {
         this.almacen = new Almacen();
         this.vistaListaProductos = new VistaListaProductos(this, this.almacen);
         this.vistaListaClientes = new VistaListaClientesInventada(this, this.almacen);
         this.vistaCrearProducto = new VistaCrearProducto(this);
+        this.idProducto = 1;
+//        this.idCliente;
+//        this.idProveedor;
     }
 
+    /**
+     * Inicia la ventana principal
+     */
     public void iniciarApp() {
         JFrame ventana = this.getVentana();
         ventana.setTitle("Control de Stocks");
@@ -64,6 +73,14 @@ public class ControladorPrincipal extends Controlador {
         return null;
     }
 
+    /**
+     *
+     * @param nombre
+     * @param fabricante
+     * @param proveedor
+     * @param precio
+     * @param unidades
+     */
     public void crearAnadirProducto(String nombre, String fabricante, Proveedor proveedor, double precio, int unidades) {
         Producto producto = crearProducto(nombre, fabricante, proveedor, precio, unidades);
         anadirProductoAlmacen(producto);
@@ -71,16 +88,33 @@ public class ControladorPrincipal extends Controlador {
         this.refrescarVistaActiva();
     }
 
+    /**
+     *
+     * @param producto
+     */
     public void eliminarProducto(Producto producto) {
         this.almacen.getProductos().remove(producto);
     }
 
+    /**
+     *
+     */
     public void mostrarListaProductos() {
         this.setVistaActiva(this.vistaListaProductos);
         this.refrescarVistaActiva();
     }
 
     //Clientes
+
+    /**
+     *
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param personaContacto
+     * @return
+     */
     public Cliente crearCliente(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente clienteVacio = new Cliente(idCliente, nombre, direccion, telefono, email, personaContacto);
 
@@ -100,6 +134,14 @@ public class ControladorPrincipal extends Controlador {
         return null;
     }
 
+    /**
+     *
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param personaContacto
+     */
     public void crearAnadirCliente(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente cliente = crearCliente(nombre, direccion, telefono, email, personaContacto);
         anadirCliente(cliente);
@@ -107,16 +149,33 @@ public class ControladorPrincipal extends Controlador {
         this.refrescarVistaActiva();
     }
 
+    /**
+     *
+     * @param cliente
+     */
     public void eliminarCliente(Cliente cliente) {
         this.almacen.getClientes().remove(cliente);
     }
 
+    /**
+     *
+     */
     public void verClientes() {
         this.setVistaActiva(this.vistaListaClientes);
         this.refrescarVistaActiva();
     }
 
     //Proveedores
+
+    /**
+     *
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param personaContacto
+     * @return
+     */
     public Proveedor crearProveedor(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedorVacio = new Proveedor(idProveedor, nombre, direccion, telefono, email, personaContacto);
         return proveedorVacio;
@@ -126,17 +185,39 @@ public class ControladorPrincipal extends Controlador {
         this.almacen.getProveedores().add(proveedor);
     }
 
+    /**
+     *
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param personaContacto
+     */
     public void crearAnadirProveedor(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedor = crearProveedor(nombre, direccion, telefono, email, personaContacto);
         anadirProveedor(proveedor);
         this.setVistaActiva(vistaListaClientes);
     }
 
+    /**
+     *
+     * @param proveedor
+     */
     public void eliminarProveedor(Proveedor proveedor) {
         this.almacen.getProveedores().remove(proveedor);
     }
 
     //Envio
+
+    /**
+     *
+     * @param productos
+     * @param fecha
+     * @param cliente
+     * @param cobrado
+     * @param costeEnvio
+     * @return
+     */
     public Envio crearEnvio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envioVacio = new Envio(productos, fecha, cliente, cobrado, costeEnvio);
         return envioVacio;
@@ -146,11 +227,24 @@ public class ControladorPrincipal extends Controlador {
         this.almacen.getEnvioRealizados().add(envio);
     }
 
+    /**
+     *
+     * @param productos
+     * @param fecha
+     * @param cliente
+     * @param cobrado
+     * @param costeEnvio
+     */
     public void crearAnadirEnvio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado, costeEnvio);
         anadirEnvio(envio);
     }
 
+    /**
+     *
+     * @param envio
+     * @return
+     */
     public Envio comprobarStock(Envio envio) {
         for (Producto stock : envio.getProductos()) {
             if (stock.getUnidades() > 0) {
@@ -160,25 +254,48 @@ public class ControladorPrincipal extends Controlador {
         return null;
     }
 
+    /**
+     *
+     * @param envio
+     */
     public void eliminarEnvio(Envio envio) {
         this.almacen.getEnvioRealizados().remove(envio);
     }
     
     //Facturas
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
     public Envio buscarEnviosFechas (Date fechaInicio, Date fechaFin){
         
         return null;
     }
     
+    /**
+     *
+     * @param envio
+     */
     public void crearFacturaEnvio(Envio envio){
         //debería devolver una factura pero no existe ninguna clase factura
     }
     
+    /**
+     *
+     * @param envio
+     */
     public void guardarFacturaArchivo(Envio envio){
         //debería recibir una factura para poder guardarla
     }
 
     //Vistas
+
+    /**
+     *
+     */
     public void mostrarCrearProducto() {
         this.setVistaActiva(vistaCrearProducto);
         this.refrescarVistaActiva();

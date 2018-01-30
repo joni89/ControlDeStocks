@@ -28,6 +28,10 @@ public class VistaCrearProducto implements Vista {
     private final JButton botonGuardar;
     private final JButton botonCancelar;
 
+    /**
+     *
+     * @param controlador
+     */
     public VistaCrearProducto(ControladorPrincipal controlador) {
 
         this.controlador = controlador;
@@ -79,11 +83,18 @@ public class VistaCrearProducto implements Vista {
         this.controlador.mostrarListaProductos();
     }
 
+    /**
+     *
+     */
     @Override
     public void refrescar() {
         System.out.println("aplicacion.vista.VistaCrearProducto.refrescar()");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public JComponent getComponenteRaiz() {
         return this.panel;

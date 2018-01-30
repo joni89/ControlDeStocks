@@ -27,7 +27,12 @@ public class VistaListaClientesInventada implements Vista {
 	private final JLabel labelTexto;
 	private JButton botonVolver;
 
-	public VistaListaClientesInventada(ControladorPrincipal controlador, Almacen almacen) {
+    /**
+     *
+     * @param controlador
+     * @param almacen
+     */
+    public VistaListaClientesInventada(ControladorPrincipal controlador, Almacen almacen) {
 
 		this.controlador = controlador;
 		this.almacen = almacen;
@@ -52,7 +57,10 @@ public class VistaListaClientesInventada implements Vista {
 		this.controlador.mostrarListaProductos();
 	}
 
-	@Override
+    /**
+     *
+     */
+    @Override
 	public void refrescar() {
 
 		// Esta función lee el modelo y lo pinta
@@ -63,7 +71,11 @@ public class VistaListaClientesInventada implements Vista {
 
 	}
 
-	@Override
+    /**
+     *
+     * @return
+     */
+    @Override
 	public JComponent getComponenteRaiz() {
 		return this.panel;
 	}

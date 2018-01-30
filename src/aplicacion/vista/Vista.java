@@ -8,8 +8,15 @@ import javax.swing.JComponent;
  */
 public interface Vista {
 
-	void refrescar();
+    /**
+     *
+     */
+    void refrescar();
 
-	JComponent getComponenteRaiz();
+    /**
+     *
+     * @return
+     */
+    JComponent getComponenteRaiz();
 
 }
