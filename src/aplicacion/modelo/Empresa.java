@@ -14,12 +14,12 @@ public class Empresa {
     private String personaContacto;
     
     /**
-     *
+     * Constructor vacío.
      */
     public Empresa(){}
     
     /**
-     *
+     * Constructor con parámetros.
      * @param id
      * @param nombre
      * @param direccion
@@ -38,14 +38,14 @@ public class Empresa {
     
     /**
      *
-     * @return
+     * @return Devuelve el ID.
      */
     public String getId() {
         return id;
     }
 
     /**
-     *
+     * Establece el ID.
      * @param id
      */
     public void setId(String id) {
@@ -54,14 +54,14 @@ public class Empresa {
 
     /**
      *
-     * @return
+     * @return Devuelve el nombre.
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     *
+     * Establece el nombre.
      * @param nombre
      */
     public void setNombre(String nombre) {
@@ -70,14 +70,14 @@ public class Empresa {
 
     /**
      *
-     * @return
+     * @return Devuelve la dirección.
      */
     public String getDireccion() {
         return direccion;
     }
 
     /**
-     *
+     * Establece la dirección.
      * @param direccion
      */
     public void setDireccion(String direccion) {
@@ -86,14 +86,14 @@ public class Empresa {
 
     /**
      *
-     * @return
+     * @return Devuelve el número de teléfono.
      */
     public String getTelefono() {
         return telefono;
     }
 
     /**
-     *
+     * Establece el número de teléfono.
      * @param telefono
      */
     public void setTelefono(String telefono) {
@@ -102,14 +102,14 @@ public class Empresa {
 
     /**
      *
-     * @return
+     * @return Devuelve el email.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     *
+     * Establece el email.
      * @param email
      */
     public void setEmail(String email) {
@@ -118,14 +118,14 @@ public class Empresa {
 
     /**
      *
-     * @return
+     * @return Devuelve la persona de contacto.
      */
     public String getPersonaContacto() {
         return personaContacto;
     }
 
     /**
-     *
+     * Establece la persona de contacto.
      * @param personaContacto
      */
     public void setPersonaContacto(String personaContacto) {

@@ -15,14 +15,14 @@ public class Almacen {
     private List <Envio> envioRealizados;
     
     /**
-     *
+     * Constructor sin parametros.
      */
     public Almacen() {
         this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     /**
-     *
+     * Constructor con parametros.
      * @param productos
      * @param clientes
      * @param proveedores
@@ -36,15 +36,15 @@ public class Almacen {
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return Devuelve la lista de productos.
      */
     public List<Producto> getProductos() {
         return productos;
     }
 
     /**
-     *
+     * Establece una lista de productos.
      * @param productos
      */
     public void setProductos(List<Producto> productos) {
@@ -53,14 +53,14 @@ public class Almacen {
 
     /**
      *
-     * @return
+     * @return Devuelve la lista de clientes.
      */
     public List<Cliente> getClientes() {
         return clientes;
     }
 
     /**
-     *
+     * Establece la lista de clientes.
      * @param clientes
      */
     public void setClientes(List<Cliente> clientes) {
@@ -69,14 +69,14 @@ public class Almacen {
 
     /**
      *
-     * @return
+     * @return Devuelve la lista de proveedores.
      */
     public List<Proveedor> getProveedores() {
         return proveedores;
     }
 
     /**
-     *
+     * Establece la lista de proveedores.
      * @param proveedores
      */
     public void setProveedores(List<Proveedor> proveedores) {
@@ -84,15 +84,15 @@ public class Almacen {
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return Devuelve la lista de envios realizados.
      */
     public List<Envio> getEnvioRealizados() {
         return envioRealizados;
     }
 
     /**
-     *
+     * Establece la lista de envios.
      * @param envioRealizados
      */
     public void setEnvioRealizados(List<Envio> envioRealizados) {

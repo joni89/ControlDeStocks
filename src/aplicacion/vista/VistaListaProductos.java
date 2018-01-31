@@ -25,7 +25,6 @@ public class VistaListaProductos implements Vista {
 
     private final JPanel panel;
     private final JLabel label;
-    private final JButton botonVerClientes;
     private final JButton botonCrearProducto;
 
     /**
@@ -43,14 +42,6 @@ public class VistaListaProductos implements Vista {
         this.label = new JLabel();
         this.panel.add(this.label);
 
-        this.botonVerClientes = new JButton("Ver clientes");
-        this.botonVerClientes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                accionVerClientes();
-            }
-        });
-        this.panel.add(this.botonVerClientes);
 
         this.botonCrearProducto = new JButton("Crear producto");
         this.botonCrearProducto.addActionListener(new ActionListener() {
@@ -63,9 +54,6 @@ public class VistaListaProductos implements Vista {
 
     }
 
-    private void accionVerClientes() {
-        this.controlador.verClientes();
-    }
 
     private void accionCrearProducto() {
         System.out.println("aplicacion.vista.VistaListaProductos.accionCrearProducto()");

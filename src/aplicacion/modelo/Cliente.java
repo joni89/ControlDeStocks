@@ -7,12 +7,12 @@ package aplicacion.modelo;
 public class Cliente extends Empresa{
 
     /**
-     *
+     * Constructor vacío.
      */
     public Cliente() {}
 
     /**
-     *
+     * Constructor con parámetros.
      * @param id
      * @param nombre
      * @param direccion

@@ -16,12 +16,12 @@ public class Envio {
     private double costeEnvio;
 
     /**
-     *
+     * Constructor vacío.
      */
     public Envio() {}
 
     /**
-     *
+     * Constructor con parámetros.
      * @param productos
      * @param fecha
      * @param cliente
@@ -38,14 +38,14 @@ public class Envio {
     
     /**
      *
-     * @return
+     * @return Devuelve la lista de productos.
      */
     public List<Producto> getProductos() {
         return productos;
     }
 
     /**
-     *
+     * Establece la lista de productos.
      * @param productos
      */
     public void setProductos(List<Producto> productos) {
@@ -54,14 +54,14 @@ public class Envio {
 
     /**
      *
-     * @return
+     * @return Devuelve la fecha.
      */
     public Date getFecha() {
         return fecha;
     }
 
     /**
-     *
+     * Establece la fecha.
      * @param fecha
      */
     public void setFecha(Date fecha) {
@@ -70,14 +70,14 @@ public class Envio {
 
     /**
      *
-     * @return
+     * @return Devuelve el cliente.
      */
     public Cliente getCliente() {
         return cliente;
     }
 
     /**
-     *
+     * Establece un cliente.
      * @param cliente
      */
     public void setCliente(Cliente cliente) {
@@ -86,14 +86,14 @@ public class Envio {
 
     /**
      *
-     * @return
+     * @return Devuelve true o false.
      */
     public boolean isCobrado() {
         return cobrado;
     }
 
     /**
-     *
+     * Establece si esta cobrado (true) o no (false).
      * @param cobrado
      */
     public void setCobrado(boolean cobrado) {
@@ -102,14 +102,14 @@ public class Envio {
 
     /**
      *
-     * @return
+     * @return Devuelve el coste del envío.
      */
     public double getCosteEnvio() {
         return costeEnvio;
     }
 
     /**
-     *
+     * Establece el coste del envío.
      * @param costeEnvio
      */
     public void setCosteEnvio(double costeEnvio) {

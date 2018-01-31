@@ -8,32 +8,29 @@ import aplicacion.modelo.Cliente;
 import aplicacion.modelo.Proveedor;
 import aplicacion.modelo.Envio;
 import aplicacion.vista.VistaCrearProducto;
-import aplicacion.vista.VistaListaClientesInventada;
 import aplicacion.vista.VistaListaProductos;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * 
  * @author jonatan
  */
 public class ControladorPrincipal extends Controlador {
 
     private final Almacen almacen;
     private final VistaListaProductos vistaListaProductos;
-    private final VistaListaClientesInventada vistaListaClientes;
     private final VistaCrearProducto vistaCrearProducto;
     private int idProducto;
     private String idCliente;
     private String idProveedor;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ControladorPrincipal() {
         this.almacen = new Almacen();
         this.vistaListaProductos = new VistaListaProductos(this, this.almacen);
-        this.vistaListaClientes = new VistaListaClientesInventada(this, this.almacen);
         this.vistaCrearProducto = new VistaCrearProducto(this);
         this.idProducto = 1;
 //        this.idCliente;
@@ -41,7 +38,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     * Inicia la ventana principal
+     * Inicia la ventana principal.
      */
     public void iniciarApp() {
         JFrame ventana = this.getVentana();
@@ -74,7 +71,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Se crea el producto, se añade al almacen y establecemos la lista activa.
      * @param nombre
      * @param fabricante
      * @param proveedor
@@ -89,7 +86,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Elimina un producto del almacen.
      * @param producto
      */
     public void eliminarProducto(Producto producto) {
@@ -97,7 +94,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Muestra la lista de productos y refresca la vista.
      */
     public void mostrarListaProductos() {
         this.setVistaActiva(this.vistaListaProductos);
@@ -105,17 +102,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Clientes
-
-    /**
-     *
-     * @param nombre
-     * @param direccion
-     * @param telefono
-     * @param email
-     * @param personaContacto
-     * @return
-     */
-    public Cliente crearCliente(String nombre, String direccion, String telefono, String email, String personaContacto) {
+    private Cliente crearCliente(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente clienteVacio = new Cliente(idCliente, nombre, direccion, telefono, email, personaContacto);
 
         return clienteVacio;
@@ -135,7 +122,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Se crea el cliente y se añade al almacén.
      * @param nombre
      * @param direccion
      * @param telefono
@@ -145,38 +132,18 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirCliente(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente cliente = crearCliente(nombre, direccion, telefono, email, personaContacto);
         anadirCliente(cliente);
-        this.setVistaActiva(vistaListaClientes);
-        this.refrescarVistaActiva();
     }
 
     /**
-     *
+     * Elimina un cliente del almacén.
      * @param cliente
      */
     public void eliminarCliente(Cliente cliente) {
         this.almacen.getClientes().remove(cliente);
     }
 
-    /**
-     *
-     */
-    public void verClientes() {
-        this.setVistaActiva(this.vistaListaClientes);
-        this.refrescarVistaActiva();
-    }
-
     //Proveedores
-
-    /**
-     *
-     * @param nombre
-     * @param direccion
-     * @param telefono
-     * @param email
-     * @param personaContacto
-     * @return
-     */
-    public Proveedor crearProveedor(String nombre, String direccion, String telefono, String email, String personaContacto) {
+    private Proveedor crearProveedor(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedorVacio = new Proveedor(idProveedor, nombre, direccion, telefono, email, personaContacto);
         return proveedorVacio;
     }
@@ -186,7 +153,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Crea un proveedor y lo añade al almacén.
      * @param nombre
      * @param direccion
      * @param telefono
@@ -196,11 +163,10 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirProveedor(String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedor = crearProveedor(nombre, direccion, telefono, email, personaContacto);
         anadirProveedor(proveedor);
-        this.setVistaActiva(vistaListaClientes);
     }
 
     /**
-     *
+     * Elimina un proveedor.
      * @param proveedor
      */
     public void eliminarProveedor(Proveedor proveedor) {
@@ -208,17 +174,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Envio
-
-    /**
-     *
-     * @param productos
-     * @param fecha
-     * @param cliente
-     * @param cobrado
-     * @param costeEnvio
-     * @return
-     */
-    public Envio crearEnvio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
+    private Envio crearEnvio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envioVacio = new Envio(productos, fecha, cliente, cobrado, costeEnvio);
         return envioVacio;
     }
@@ -228,7 +184,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Crea un envio y lo añade al almacen.
      * @param productos
      * @param fecha
      * @param cliente
@@ -237,13 +193,13 @@ public class ControladorPrincipal extends Controlador {
      */
     public void crearAnadirEnvio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado, costeEnvio);
-        anadirEnvio(envio);
+        anadirEnvio(comprobarStock(envio));
     }
 
     /**
-     *
+     * Comprueba el stock del envio.
      * @param envio
-     * @return
+     * @return Si tiene stock, devuelve el envio.
      */
     public Envio comprobarStock(Envio envio) {
         for (Producto stock : envio.getProductos()) {
@@ -255,7 +211,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *
+     * Elimina el envio.
      * @param envio
      */
     public void eliminarEnvio(Envio envio) {
@@ -265,10 +221,10 @@ public class ControladorPrincipal extends Controlador {
     //Facturas
 
     /**
-     *
+     * Busca los envios entre dos fechas.
      * @param fechaInicio
      * @param fechaFin
-     * @return
+     * @return devuelve los envio/s fruto de la busqueda.
      */
     public Envio buscarEnviosFechas (Date fechaInicio, Date fechaFin){
         
@@ -294,7 +250,7 @@ public class ControladorPrincipal extends Controlador {
     //Vistas
 
     /**
-     *
+     * Se muestra la ventana de creacción del producto.
      */
     public void mostrarCrearProducto() {
         this.setVistaActiva(vistaCrearProducto);

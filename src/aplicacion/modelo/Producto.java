@@ -14,12 +14,12 @@ public class Producto {
     private int unidades;
     
     /**
-     *
+     * Constructor vacío.
      */
     public Producto(){}
     
     /**
-     *
+     * Constructor con parámetros.
      * @param id
      * @param nombre
      * @param fabricante
@@ -38,14 +38,14 @@ public class Producto {
 
     /**
      *
-     * @return
+     * @return Devuelve el ID del producto.
      */
     public int getId() {
         return id;
     }
 
     /**
-     *
+     * Establece el ID del producto.
      * @param id
      */
     public void setId(int id) {
@@ -54,7 +54,7 @@ public class Producto {
 
     /**
      *
-     * @return
+     * @return Devuelve el nombre del producto.
      */
     public String getNombre() {
         return nombre;
