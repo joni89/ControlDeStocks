@@ -1,32 +1,32 @@
 package aplicacion.vista;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Proveedor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
  *
  * @author jonatan
  */
-public class VistaCrearProducto implements Vista {
+public class VistaCrearClienteProveedor implements Vista{
 
     private final ControladorPrincipal controlador;
 
     private final JPanel panel;
     private final JTextField txtNombre;
-    private final JTextField txtFabricante;
-    private final JTextField txtPrecio;
+    private final JTextField txtDireccion;
+    private final JTextField txtTelefono;
+    private final JTextField txtEmail;
+    private final JTextField txtPersonaContacto;
     private final JButton botonGuardar;
     private final JButton botonCancelar;
 
@@ -34,7 +34,7 @@ public class VistaCrearProducto implements Vista {
      *
      * @param controlador
      */
-    public VistaCrearProducto(ControladorPrincipal controlador) {
+    public VistaCrearClienteProveedor(ControladorPrincipal controlador) {
 
         this.controlador = controlador;
 
@@ -44,17 +44,23 @@ public class VistaCrearProducto implements Vista {
         this.txtNombre = new JTextField();
         this.panel.add(this.crearFila("Nombre", txtNombre));
         
-        this.txtFabricante = new JTextField();
-        this.panel.add(this.crearFila("Fabricante", txtFabricante));
+        this.txtDireccion = new JTextField();
+        this.panel.add(this.crearFila("Dirección", txtDireccion));
         
-        this.txtPrecio = new JTextField();
-        this.panel.add(this.crearFila("Precio", txtPrecio));
+        this.txtTelefono = new JTextField();
+        this.panel.add(this.crearFila("Teléfono", txtTelefono));
+        
+        this.txtEmail = new JTextField();
+        this.panel.add(this.crearFila("Email", txtEmail));
+        
+        this.txtPersonaContacto = new JTextField();
+        this.panel.add(this.crearFila("Persona de Contacto", txtPersonaContacto));
 
         this.botonGuardar = new JButton("Guardar");
         this.botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionCrearProducto();
+                accionCrearClienteProveedor();
             }
         });
         this.panel.add(this.botonGuardar);
@@ -78,11 +84,11 @@ public class VistaCrearProducto implements Vista {
         
         return panel;
     }
-    private void accionCrearProducto() {
+    private void accionCrearClienteProveedor() {
         String nombre = txtNombre.getText();
-        String fabricante = txtFabricante.getText();
+        String fabricante = "fabricante1";
         Proveedor proveedor = null;
-        double precio = Double.parseDouble(txtPrecio.getText());
+        double precio = 12.34;
         int unidades = 0;
         this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
     }
@@ -96,7 +102,7 @@ public class VistaCrearProducto implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaCrearProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaCrearClienteProveedor.refrescar()");
     }
 
     /**
@@ -107,5 +113,5 @@ public class VistaCrearProducto implements Vista {
     public JComponent getComponenteRaiz() {
         return this.panel;
     }
-
+    
 }

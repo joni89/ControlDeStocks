@@ -9,10 +9,10 @@ import java.util.List;
  */
 public class Almacen {
     
-    private List <Producto> productos;
+    private List <ProductoAlmacen> productos;
     private List <Cliente> clientes;
     private List <Proveedor> proveedores;
-    private List <Envio> envioRealizados;
+    private List <Envio> enviosRealizados;
     
     /**
      * Constructor sin parametros.
@@ -28,18 +28,18 @@ public class Almacen {
      * @param proveedores
      * @param envioRealizados
      */
-    public Almacen(List<Producto> productos, List<Cliente> clientes, List<Proveedor> proveedores, List<Envio> envioRealizados) {
+    public Almacen(List<ProductoAlmacen> productos, List<Cliente> clientes, List<Proveedor> proveedores, List<Envio> envioRealizados) {
         this.productos = productos;
         this.clientes = clientes;
         this.proveedores = proveedores;
-        this.envioRealizados = envioRealizados;
+        this.enviosRealizados = envioRealizados;
     }
 
     /**
      * 
      * @return Devuelve la lista de productos.
      */
-    public List<Producto> getProductos() {
+    public List<ProductoAlmacen> getProductos() {
         return productos;
     }
 
@@ -47,7 +47,7 @@ public class Almacen {
      * Establece una lista de productos.
      * @param productos
      */
-    public void setProductos(List<Producto> productos) {
+    public void setProductos(List<ProductoAlmacen> productos) {
         this.productos = productos;
     }
 
@@ -87,16 +87,16 @@ public class Almacen {
      * 
      * @return Devuelve la lista de envios realizados.
      */
-    public List<Envio> getEnvioRealizados() {
-        return envioRealizados;
+    public List<Envio> getEnviosRealizados() {
+        return enviosRealizados;
     }
 
     /**
      * Establece la lista de envios.
-     * @param envioRealizados
+     * @param enviosRealizados
      */
-    public void setEnvioRealizados(List<Envio> envioRealizados) {
-        this.envioRealizados = envioRealizados;
+    public void setEnviosRealizados(List<Envio> enviosRealizados) {
+        this.enviosRealizados = enviosRealizados;
     }
     
     

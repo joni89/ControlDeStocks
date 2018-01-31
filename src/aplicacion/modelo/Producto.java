@@ -11,7 +11,6 @@ public class Producto {
     private String fabricante;
     private Proveedor proveedor;
     private double precio;
-    private int unidades;
     
     /**
      * Constructor vacío.
@@ -25,15 +24,13 @@ public class Producto {
      * @param fabricante
      * @param proveedor
      * @param precio
-     * @param unidades
      */
-    public Producto(int id, String nombre, String fabricante, Proveedor proveedor, double precio, int unidades) {
+    public Producto(int id, String nombre, String fabricante, Proveedor proveedor, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.fabricante = fabricante;
         this.proveedor = proveedor;
         this.precio = precio;
-        this.unidades = unidades;
     }
 
     /**
@@ -116,22 +113,4 @@ public class Producto {
         this.precio = precio;
     }
 
-    /**
-     *
-     * @return
-     */
-    public int getUnidades() {
-        return unidades;
-    }
-
-    /**
-     *
-     * @param unidades
-     */
-    public void setUnidades(int unidades) {
-        this.unidades = unidades;
-    }
-
-    
-          
 }

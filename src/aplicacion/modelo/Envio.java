@@ -8,8 +8,8 @@ import java.util.List;
  * @author jonatan
  */
 public class Envio {
-    
-    private List<Producto> productos;
+    private int id;
+    private List<ProductoEnvio> productos;
     private Date fecha;
     private Cliente cliente;
     private boolean cobrado;
@@ -22,33 +22,52 @@ public class Envio {
 
     /**
      * Constructor con parámetros.
+     * @param id
      * @param productos
      * @param fecha
      * @param cliente
      * @param cobrado
      * @param costeEnvio
      */
-    public Envio(List<Producto> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
+    public Envio(int id, List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
+        this.id = id;
         this.productos = productos;
         this.fecha = fecha;
         this.cliente = cliente;
         this.cobrado = cobrado;
         this.costeEnvio = costeEnvio;
     }
-    
+
     /**
      *
-     * @return Devuelve la lista de productos.
+     * @return Devuelve el id.
      */
-    public List<Producto> getProductos() {
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Establece el id.
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    /**
+     * Devuelve las productos del envío.
+     *
+     * @return las productos del envío
+     */
+    public List<ProductoEnvio> getProductos() {
         return productos;
     }
 
     /**
-     * Establece la lista de productos.
+     * Establece las productos del envío.
      * @param productos
      */
-    public void setProductos(List<Producto> productos) {
+    public void setProductos(List<ProductoEnvio> productos) {
         this.productos = productos;
     }
 

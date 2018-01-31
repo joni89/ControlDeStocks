@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Producto;
+import aplicacion.modelo.ProductoAlmacen;
 
 /**
  *
@@ -67,7 +68,7 @@ public class VistaListaProductos implements Vista {
     public void refrescar() {
 
         // Esta función lee el modelo y lo pinta
-        List<Producto> productos = this.almacen.getProductos();
+        List<ProductoAlmacen> productos = this.almacen.getProductos();
 
         this.label.setText("Número de productos: " + productos.size());
 
