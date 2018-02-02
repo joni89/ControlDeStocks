@@ -10,9 +10,10 @@ import aplicacion.modelo.Envio;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
 import aplicacion.vista.VistaCrearClienteProveedor;
+import aplicacion.vista.VistaCrearEnvio;
 import aplicacion.vista.VistaCrearProducto;
 import aplicacion.vista.VistaFactura;
-import aplicacion.vista.VistaListaProductos;
+import aplicacion.vista.VistaPrincipal;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,8 +32,8 @@ import java.util.Objects;
 public class ControladorPrincipal extends Controlador {
 
     private final Almacen almacen;
-    private final VistaListaProductos vistaListaProductos;
     private final VistaCrearClienteProveedor vistaClienteProveedor;
+    private final VistaPrincipal vistaPrincipal;
     private int idProducto;
     private int idEnvio;
 
@@ -41,8 +42,8 @@ public class ControladorPrincipal extends Controlador {
      */
     public ControladorPrincipal() {
         this.almacen = new Almacen();
-        this.vistaListaProductos = new VistaListaProductos(this, this.almacen);
         this.vistaClienteProveedor = new VistaCrearClienteProveedor(this);
+        this.vistaPrincipal = new VistaPrincipal(this, almacen);
         this.idProducto = 1;
         this.idEnvio = 1;
     }
@@ -103,7 +104,7 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirProducto(String nombre, String fabricante, Proveedor proveedor, double precio, int stock) {
         Producto producto = crearProducto(nombre, fabricante, proveedor, precio);
         anadirProductoAlmacen(producto, stock);
-        this.setVistaActiva(vistaListaProductos);
+        this.setVistaActiva(vistaPrincipal);
         this.refrescarVistaActiva();
     }
 
@@ -130,7 +131,7 @@ public class ControladorPrincipal extends Controlador {
      * Muestra la lista de productos y refresca la vista.
      */
     public void mostrarListaProductos() {
-        this.setVistaActiva(this.vistaListaProductos);
+        this.setVistaActiva(this.vistaPrincipal);
         this.refrescarVistaActiva();
     }
 
@@ -328,6 +329,7 @@ public class ControladorPrincipal extends Controlador {
 
         sb.append(String.format("Envío #%d\n", envio.getId()));
         sb.append(String.format("Fecha: %d\n", envio.getFecha())); // TODO Falta formatear
+        sb.append(String.format("Nombre: #%s\n", envio.getCliente().getNombre()));
 
         // TODO completar este método
 
@@ -362,6 +364,51 @@ public class ControladorPrincipal extends Controlador {
         this.refrescarVistaActiva();
 
     }
+    /**
+     * Se muestra la ventana de creacción del cliente.
+     */
+    public void mostrarCrearCliente() {
+
+        VistaCrearClienteProveedor vistaCrearClienteProveedor =  new VistaCrearClienteProveedor(this);
+
+        this.setVistaActiva(vistaCrearClienteProveedor);
+        this.refrescarVistaActiva();
+
+    }
+    /**
+     * Se muestra la ventana de creacción del proveedor.
+     */
+    public void mostrarCrearProveedor() {
+
+        mostrarCrearCliente();
+
+    }
+    /**
+     * Se muestra .
+     */
+    public void mostrarCrearStock() {
+
+//        VistaCrearProducto vistaCrearProducto =  new VistaCrearProducto(this);
+//
+//        this.setVistaActiva(vistaCrearProducto);
+//        this.refrescarVistaActiva();
+
+    }
+    
+    /**
+     * Se muestra la ventana de creacción del envío.
+     */
+    public void mostrarCrearEnvio() {
+
+//        VistaCrearEnvio vistaCrearEnvio =  new VistaCrearEnvio(this);
+//
+//        this.setVistaActiva(vistaCrearEnvio);
+//        this.refrescarVistaActiva();
+
+    }
+    /**
+     * Se muestra la emisión de la factura.
+     */
 
     public void mostrarFactura(Envio envio) {
 
