@@ -5,18 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.Proveedor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import aplicacion.modelo.ProductoAlmacen;
+import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.TextArea;
-import javax.swing.BoxLayout;
-import javax.swing.JTextField;
+import java.util.Vector;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -28,7 +27,6 @@ public class VistaPrincipal implements Vista {
     private final Almacen almacen;
 
     private final JPanel panel;
-    private final TextArea cajaInfo;
     private final JButton botonNuevoProducto;
     private final JButton botonNuevoCliente;
     private final JButton botonNuevoProveedor;
@@ -37,8 +35,10 @@ public class VistaPrincipal implements Vista {
     private final JButton botonFactura;
 
     /**
-     *
-     * @param controlador
+     * Constructor
+     * 
+     * @param controlador Controlador principal
+     * @param almacen
      */
     public VistaPrincipal(ControladorPrincipal controlador, Almacen almacen) {
 
@@ -47,8 +47,8 @@ public class VistaPrincipal implements Vista {
 
         this.panel = new JPanel(new GridLayout(3, 1));
 
-        this.cajaInfo = new TextArea();
-        this.panel.add(this.cajaInfo);
+        JList<ProductoAlmacen> listaProductos = crearListaProductos();
+        panel.add(listaProductos);
 
         this.botonNuevoProducto = new JButton("Nuevo Producto");
         this.botonNuevoProducto.addActionListener(new ActionListener() {
@@ -67,7 +67,7 @@ public class VistaPrincipal implements Vista {
             }
         });
         this.panel.add(this.botonNuevoCliente);
-        
+
         this.botonNuevoProveedor = new JButton("Nuevo Proveedor");
         this.botonNuevoProveedor.addActionListener(new ActionListener() {
             @Override
@@ -76,7 +76,7 @@ public class VistaPrincipal implements Vista {
             }
         });
         this.panel.add(this.botonNuevoProveedor);
-        
+
         this.botonStock = new JButton("Añadir stock");
         this.botonStock.addActionListener(new ActionListener() {
             @Override
@@ -85,7 +85,7 @@ public class VistaPrincipal implements Vista {
             }
         });
         this.panel.add(this.botonStock);
-        
+
         this.botonEnvio = new JButton("Nuevo Envío");
         this.botonEnvio.addActionListener(new ActionListener() {
             @Override
@@ -94,7 +94,7 @@ public class VistaPrincipal implements Vista {
             }
         });
         this.panel.add(this.botonEnvio);
-        
+
         this.botonFactura = new JButton("Nueva Factura");
         this.botonFactura.addActionListener(new ActionListener() {
             @Override
@@ -103,6 +103,28 @@ public class VistaPrincipal implements Vista {
             }
         });
         this.panel.add(this.botonFactura);
+    }
+
+    private JList<ProductoAlmacen> crearListaProductos() {
+
+        JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
+
+        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Esto se hace para mostrar el nombre del producto en la lista (sino, por defecto mostraría "Producto@1234...")
+        lista.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
+                this.setText(productoAlmacen.getProducto().getNombre());
+
+                return resultado;
+            }
+        });
+
+        return lista;
     }
 
     private void accionCrearProducto() {

@@ -15,18 +15,16 @@ import aplicacion.vista.VistaCrearProducto;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * 
+ *
  * @author jonatan
  */
 public class ControladorPrincipal extends Controlador {
@@ -62,18 +60,40 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Productos
+    /**
+     * Crea el producto incrementando su id.
+     *
+     * @param nombre nombre del producto.
+     * @param fabricante nombre del fabricante.
+     * @param proveedor nombre del proveedor.
+     * @param precio valor monetario del producto.
+     * @return Devuelve un producto.
+     */
     private Producto crearProducto(String nombre, String fabricante, Proveedor proveedor, double precio) {
+        Objects.requireNonNull(nombre);
         return new Producto(idProducto++, nombre, fabricante, proveedor, precio);
     }
 
+    /**
+     * Añade productos al almacen.
+     *
+     * @param producto Producto a añadir al almacén.
+     * @param stock Cantidad de productos.
+     */
     private void anadirProductoAlmacen(Producto producto, int stock) {
-        if(obtenerProducto(producto.getId()) != null){
+        if (obtenerProducto(producto.getId()) != null) {
             throw new IllegalStateException();
         }
 
         this.almacen.getProductos().add(new ProductoAlmacen(producto, stock));
     }
 
+    /**
+     * Por un id se obtiene el productoAlmacen del almacén.
+     *
+     * @param idProducto id del producto.
+     * @return Devuelve el productoAlmacen si lo encuentra. Si no, null.
+     */
     private ProductoAlmacen obtenerProductoAlmacen(int idProducto) {
         for (ProductoAlmacen productoAlmacen : almacen.getProductos()) {
             if (productoAlmacen.getProducto().getId() == idProducto) {
@@ -83,11 +103,23 @@ public class ControladorPrincipal extends Controlador {
         return null;
     }
 
+    /**
+     * Dado un id obtengo un producto del almacén.
+     *
+     * @param id ID del producto a obtener.
+     * @return Devuelve el producto.
+     */
     private Producto obtenerProducto(int id) {
-        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(idProducto);
+        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(id);
         return productoAlmacen == null ? null : productoAlmacen.getProducto();
     }
 
+    /**
+     * Dado un id obtengo el stock del producto del almacén.
+     *
+     * @param id ID del producto a obtener.
+     * @return Devuelve el stock.
+     */
     private int obtenerStockProducto(int id) {
         ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(idProducto);
         return productoAlmacen == null ? 0 : productoAlmacen.getStock();
@@ -95,11 +127,12 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Se crea el producto, se añade al almacen y establecemos la vista activa.
-     * @param nombre nombre del producto
-     * @param fabricante
-     * @param proveedor
-     * @param precio
-     * @param stock
+     *
+     * @param nombre nombre del producto.
+     * @param fabricante nombre del fabricante.
+     * @param proveedor Proveedor del producto.
+     * @param precio Valor monetario del producto.
+     * @param stock Cantidad del producto.
      */
     public void crearAnadirProducto(String nombre, String fabricante, Proveedor proveedor, double precio, int stock) {
         Producto producto = crearProducto(nombre, fabricante, proveedor, precio);
@@ -110,23 +143,37 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Elimina un producto del almacen.
-     * @param producto
+     *
+     * @param producto Producto a eliminar.
      */
     public void eliminarProducto(Producto producto) {
         Producto productoAlmacen = obtenerProducto(producto.getId());
-        if(productoAlmacen != null){
-            this.almacen.getProductos().remove(productoAlmacen);    
+        if (productoAlmacen != null) {
+            this.almacen.getProductos().remove(productoAlmacen);
         }
     }
-    
-    private void anadirStock(Producto producto, int cantidad){
+
+    /**
+     * Añade stock a un producto.
+     *
+     * @param producto Producto a añadir stock.
+     * @param cantidad Cantidad de producto.
+     */
+    private void anadirStock(Producto producto, int cantidad) {
         ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getId());
         productoAlmacen.setStock(productoAlmacen.getStock() + cantidad);
     }
-    
-    private void restarStock(Producto producto, int cantidad){
+
+    /**
+     * Quita stock de un producto.
+     *
+     * @param producto Producto a quitar stock.
+     * @param cantidad Cantidad a quitar.
+     */
+    private void restarStock(Producto producto, int cantidad) {
         anadirStock(producto, -cantidad);
     }
+
     /**
      * Muestra la lista de productos y refresca la vista.
      */
@@ -136,19 +183,41 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Clientes
+    /**
+     * Crea un cliente.
+     *
+     * @param id CIF o NIF del cliente.
+     * @param nombre Nombre del cliente.
+     * @param direccion Dirección del cliente.
+     * @param telefono Teléfono del cliente.
+     * @param email Correo electrónico del cliente.
+     * @param personaContacto Nombre de la persona de contacto del cliente.
+     * @return Nuevo cliente.
+     */
     private Cliente crearCliente(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Objects.requireNonNull(id); //esto en todos los crear
         return new Cliente(id, nombre, direccion, telefono, email, personaContacto);
     }
 
+    /**
+     * Añadir cliente
+     *
+     * @param cliente Cliente a añadir
+     */
     private void anadirCliente(Cliente cliente) {
-        if(obtenerCliente(cliente.getId()) != null){
+        if (obtenerCliente(cliente.getId()) != null) {
             throw new IllegalStateException();
         }
-        
+
         this.almacen.getClientes().add(cliente);
     }
 
+    /**
+     * Obtención de un cliente dado su CIF o NIF.
+     *
+     * @param id CIF o NIF del cliente.
+     * @return Devuelve el cliente si lo encuentra. Si no, null.
+     */
     private Cliente obtenerCliente(String id) {
         for (Cliente cliente : almacen.getClientes()) {
             if (cliente.getId().equals(id)) {
@@ -160,12 +229,13 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Se crea el cliente y se añade al almacén.
-     * @param id
-     * @param nombre
-     * @param direccion
-     * @param telefono
-     * @param email
-     * @param personaContacto
+     *
+     * @param id CIF o NIF del cliente.
+     * @param nombre Nombre del cliente.
+     * @param direccion Dirección del cliente.
+     * @param telefono Teléfono del cliente.
+     * @param email Correo electrónico del cliente.
+     * @param personaContacto Nombre de la persona de contacto del cliente.
      */
     public void crearAnadirCliente(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente cliente = crearCliente(id, nombre, direccion, telefono, email, personaContacto);
@@ -174,30 +244,54 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Elimina un cliente del almacén.
-     * @param cliente
+     *
+     * @param cliente Cliente a eliminar.
      */
     public void eliminarCliente(Cliente cliente) {
         Cliente clienteAlmacen = obtenerCliente(cliente.getId());
-        if(clienteAlmacen != null){
+        if (clienteAlmacen != null) {
             this.almacen.getClientes().remove(clienteAlmacen);
         }
-        
+
     }
 
     //Proveedores
+    
+    /**
+     * Crea un proveedor.
+     *
+     * @param id CIF del proveedor.
+     * @param nombre Nombre del proveedor.
+     * @param direccion Dirección del proveedor.
+     * @param telefono Teléfono del proveedor.
+     * @param email Correo electrónico del proveedor.
+     * @param personaContacto Nombre de la persona de contacto del proveedor.
+     * @return Nuevo proveedor.
+     */
     private Proveedor crearProveedor(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedorVacio = new Proveedor(id, nombre, direccion, telefono, email, personaContacto);
         return proveedorVacio;
     }
 
+    /**
+     * Añadir proveedor.
+     * 
+     * @param proveedor Proveedor a añadir.
+     */
     private void anadirProveedor(Proveedor proveedor) {
-        if(obtenerProveedor(proveedor.getId()) != null){
+        if (obtenerProveedor(proveedor.getId()) != null) {
             throw new IllegalStateException();
         }
 
         this.almacen.getProveedores().add(proveedor);
     }
 
+    /**
+     * Obtención de un proveedor dado su CIF.
+     * 
+     * @param id CIF del proveedor.
+     * @return Devuelve el proveedor si lo encuentra. Si no, null.
+     */
     private Proveedor obtenerProveedor(String id) {
         for (Proveedor proveedor : almacen.getProveedores()) {
             if (proveedor.getId().equals(id)) {
@@ -206,15 +300,16 @@ public class ControladorPrincipal extends Controlador {
         }
         return null;
     }
-    
+
     /**
      * Crea un proveedor y lo añade al almacén.
-     * @param id
-     * @param nombre
-     * @param direccion
-     * @param telefono
-     * @param email
-     * @param personaContacto
+     *
+     @param id CIF del proveedor.
+     * @param nombre Nombre del proveedor.
+     * @param direccion Dirección del proveedor.
+     * @param telefono Teléfono del proveedor.
+     * @param email Correo electrónico del proveedor.
+     * @param personaContacto Nombre de la persona de contacto del proveedor.
      */
     public void crearAnadirProveedor(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedor = crearProveedor(id, nombre, direccion, telefono, email, personaContacto);
@@ -223,107 +318,153 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Elimina un proveedor.
-     * @param proveedor
+     *
+     * @param proveedor Proveedor a eliminar.
      */
     public void eliminarProveedor(Proveedor proveedor) {
         Proveedor proveedorAlmacen = obtenerProveedor(proveedor.getId());
-        if(proveedorAlmacen != null){
+        if (proveedorAlmacen != null) {
             this.almacen.getProveedores().remove(proveedorAlmacen);
         }
     }
 
     //Envio
+    
+    /**
+     * Crea un envío incrementando su id.
+     * 
+     * @param productos Lista de productos del envío.
+     * @param fecha Fecha del envío.
+     * @param cliente Cliente al que va el envío.
+     * @param cobrado Si esta o no cobrado.
+     * @param costeEnvio Valor monetario del envío.
+     * @return Devuelve el envío.
+     */
     private Envio crearEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envioVacio = new Envio(idEnvio++, productos, fecha, cliente, cobrado, costeEnvio);
         return envioVacio;
     }
 
+    /**
+     * Añade el envío.
+     * 
+     * @param envio Envío a añadir.
+     * @return Devuelve true si se realizó el envío, false si no lo hizo.
+     */
     private boolean anadirEnvio(Envio envio) {
-        if(obtenerEnvio(envio.getId()) != null){
+        if (obtenerEnvio(envio.getId()) != null) {
             throw new IllegalStateException();
         }
 
-        if(comprobarStock(envio)) {
+        if (comprobarStock(envio)) {
             this.almacen.getEnviosRealizados().add(envio);
             return true;
         }
 
         return false;
     }
-    
-    private Envio obtenerEnvio(int id){
-        for(Envio envio : almacen.getEnviosRealizados()){
-            if(envio.getId() == id){
+
+    /**
+     * Se obtiene el envío a partir de su ID
+     * 
+     * @param id ID del envío a obtener.
+     * @return Devuelve el envio si lo encuentra. Si no, null.
+     */
+    private Envio obtenerEnvio(int id) {
+        for (Envio envio : almacen.getEnviosRealizados()) {
+            if (envio.getId() == id) {
                 return envio;
             }
         }
         return null;
     }
-    
 
     /**
      * Crea un envio y lo añade al almacen.
-     * @param productos
-     * @param fecha
-     * @param cliente
-     * @param cobrado
-     * @param costeEnvio
+     *
+     * @param productos Lista de productos del envío.
+     * @param fecha Fecha del envío.
+     * @param cliente Cliente al que va el envío.
+     * @param cobrado Si esta o no cobrado.
+     * @param costeEnvio Valor monetario del envío.
      */
     public boolean crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado, costeEnvio);
         return anadirEnvio(envio);
     }
-    
+
     /**
      * Elimina el envio.
-     * @param envio
+     *
+     * @param envio Envío a eliminar.
      */
-    private void eliminarEnvio(Envio envio){
+    private void eliminarEnvio(Envio envio) {
         Envio envioAlmacen = obtenerEnvio(envio.getId());
-        if(envioAlmacen != null){
+        if (envioAlmacen != null) {
             almacen.getEnviosRealizados().remove(envioAlmacen);
         }
     }
-    
+
     /**
      * Comprueba el stock del envio.
-     * @param envio
-     * @return Si tiene stock, devuelve el envio.
+     *
+     * @param envio Envío a comprobar.
+     * @return Devuelve true si tiene stock, false si no tiene.
      */
     public boolean comprobarStock(Envio envio) {
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
             int stock = obtenerStockProducto(productoEnvio.getProducto().getId());
-            if(productoEnvio.getCantidad() > stock){
+            if (productoEnvio.getCantidad() > stock) {
                 return false;
             }
         }
         return true;
     }
-    
-    private void restarStockEnvio(Envio envio){
-        for(ProductoEnvio productoEnvio : envio.getProductos()){
+
+    /**
+     * Resta el stock del producto/s que se ha/n enviado.
+     * 
+     * @param envio Envio del que se obtiene la cantidad del producto.
+     */
+    private void restarStockEnvio(Envio envio) {
+        for (ProductoEnvio productoEnvio : envio.getProductos()) {
             restarStock(productoEnvio.getProducto(), productoEnvio.getCantidad());
         }
     }
-    
-    //Facturas
 
+    //Facturas
+    
     /**
      * Busca los envios entre dos fechas.
+     *
      * @param fechaInicio
      * @param fechaFin
      * @return devuelve los envio/s fruto de la busqueda.
      */
-    public Envio buscarEnviosFechas (Date fechaInicio, Date fechaFin){
+    public List<Envio> buscarEnviosFechas(Date fechaInicio, Date fechaFin) {
         
-        return null;
+        long fechaIn = fechaInicio.getTime();
+        long fechaEnd = fechaFin.getTime();
+        long fechaActual;
+        List <Envio> enviosEncontrados = new ArrayList<Envio>();
+        
+        
+        for(Envio envio : almacen.getEnviosRealizados()){
+            fechaActual = envio.getFecha().getTime(); 
+            if(fechaActual >= fechaIn && fechaActual <= fechaEnd){
+                enviosEncontrados.add(envio);
+            }
+        }
+
+        return enviosEncontrados;
     }
-    
+
     /**
-     *
-     * @param envio
+     *Crea una factura.
+     * 
+     * @param envio Envio para crear la factura.
      */
-    private String crearFacturaEnvio(Envio envio){
+    private String crearFacturaEnvio(Envio envio) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -332,49 +473,53 @@ public class ControladorPrincipal extends Controlador {
         sb.append(String.format("Nombre: #%s\n", envio.getCliente().getNombre()));
 
         // TODO completar este método
-
-        for(ProductoEnvio productoEnvio : envio.getProductos()) {
+        for (ProductoEnvio productoEnvio : envio.getProductos()) {
             sb.append(String.format("%s... y más cosas\n", productoEnvio.getProducto().getNombre()));
         }
 
         return sb.toString();
 
     }
-    
+
     /**
-     *
-     * @param envio
+     * Guarda la factura en un archivo.
+     * 
+     * @param factura Factura a guardar.
+     * @param archivo Archivo donde se va guardar la factura.
+     * @throws IOException si se produce un error de E/S
      */
-    public void guardarFacturaArchivo(String factura, File archivo) throws IOException{
-        try(PrintStream ps = new PrintStream(archivo, StandardCharsets.UTF_8.name())) {
+    public void guardarFacturaArchivo(String factura, File archivo) throws IOException {
+        try (PrintStream ps = new PrintStream(archivo, StandardCharsets.UTF_8.name())) {
             ps.append(factura);
         }
     }
 
     //Vistas
-
+    
     /**
      * Se muestra la ventana de creacción del producto.
      */
     public void mostrarCrearProducto() {
 
-        VistaCrearProducto vistaCrearProducto =  new VistaCrearProducto(this);
+        VistaCrearProducto vistaCrearProducto = new VistaCrearProducto(this, almacen);
 
         this.setVistaActiva(vistaCrearProducto);
         this.refrescarVistaActiva();
 
     }
+
     /**
      * Se muestra la ventana de creacción del cliente.
      */
     public void mostrarCrearCliente() {
 
-        VistaCrearClienteProveedor vistaCrearClienteProveedor =  new VistaCrearClienteProveedor(this);
+        VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this);
 
         this.setVistaActiva(vistaCrearClienteProveedor);
         this.refrescarVistaActiva();
 
     }
+
     /**
      * Se muestra la ventana de creacción del proveedor.
      */
@@ -383,6 +528,7 @@ public class ControladorPrincipal extends Controlador {
         mostrarCrearCliente();
 
     }
+
     /**
      * Se muestra .
      */
@@ -392,24 +538,22 @@ public class ControladorPrincipal extends Controlador {
 //
 //        this.setVistaActiva(vistaCrearProducto);
 //        this.refrescarVistaActiva();
-
     }
-    
+
     /**
      * Se muestra la ventana de creacción del envío.
      */
     public void mostrarCrearEnvio() {
 
-//        VistaCrearEnvio vistaCrearEnvio =  new VistaCrearEnvio(this);
-//
-//        this.setVistaActiva(vistaCrearEnvio);
-//        this.refrescarVistaActiva();
+        VistaCrearEnvio vistaCrearEnvio =  new VistaCrearEnvio(this, almacen);
 
+        this.setVistaActiva(vistaCrearEnvio);
+        this.refrescarVistaActiva();
     }
+
     /**
      * Se muestra la emisión de la factura.
      */
-
     public void mostrarFactura(Envio envio) {
 
         String factura = crearFacturaEnvio(envio);

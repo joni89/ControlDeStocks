@@ -36,8 +36,8 @@ public class Almacen {
     }
 
     /**
-     * 
-     * @return Devuelve la lista de productos.
+     * Devuelve la lista de productos.
+     * @return lista de productos.
      */
     public List<ProductoAlmacen> getProductos() {
         return productos;
@@ -52,7 +52,8 @@ public class Almacen {
     }
 
     /**
-     *
+     * Devuelve la lista de clientes.
+     * 
      * @return Devuelve la lista de clientes.
      */
     public List<Cliente> getClientes() {
