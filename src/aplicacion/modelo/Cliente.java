@@ -13,6 +13,7 @@ public class Cliente extends Empresa{
 
     /**
      * Constructor con parámetros.
+     * 
      * @param id CIF o NIF del cliente
      * @param nombre
      * @param direccion

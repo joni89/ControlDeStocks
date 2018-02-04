@@ -22,6 +22,7 @@ public class Envio {
 
     /**
      * Constructor con parámetros.
+     * 
      * @param id
      * @param productos
      * @param fecha
@@ -39,8 +40,9 @@ public class Envio {
     }
 
     /**
-     *
-     * @return Devuelve el id.
+     * Devuelve el id.
+     * 
+     * @return id.
      */
     public int getId() {
         return id;
@@ -48,7 +50,8 @@ public class Envio {
 
     /**
      * Establece el id.
-     * @param id
+     * 
+     * @param id ID.
      */
     public void setId(int id) {
         this.id = id;
@@ -65,15 +68,17 @@ public class Envio {
 
     /**
      * Establece las productos del envío.
-     * @param productos
+     * 
+     * @param productos Lista de productos.
      */
     public void setProductos(List<ProductoEnvio> productos) {
         this.productos = productos;
     }
 
     /**
-     *
-     * @return Devuelve la fecha.
+     * Devuelve la fecha.
+     * 
+     * @return fecha.
      */
     public Date getFecha() {
         return fecha;
@@ -81,15 +86,17 @@ public class Envio {
 
     /**
      * Establece la fecha.
-     * @param fecha
+     * 
+     * @param fecha Fecha.
      */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
     /**
-     *
-     * @return Devuelve el cliente.
+     * Devuelve el cliente.
+     * 
+     * @return cliente.
      */
     public Cliente getCliente() {
         return cliente;
@@ -97,15 +104,17 @@ public class Envio {
 
     /**
      * Establece un cliente.
-     * @param cliente
+     * 
+     * @param cliente cliente.
      */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
     /**
-     *
-     * @return Devuelve true o false.
+     * Devuelve true o false.
+     * 
+     * @return true o false.
      */
     public boolean isCobrado() {
         return cobrado;
@@ -113,15 +122,17 @@ public class Envio {
 
     /**
      * Establece si esta cobrado (true) o no (false).
-     * @param cobrado
+     * 
+     * @param cobrado true o false.
      */
     public void setCobrado(boolean cobrado) {
         this.cobrado = cobrado;
     }
 
     /**
-     *
-     * @return Devuelve el coste del envío.
+     * Devuelve el coste del envío.
+     * 
+     * @return coste del envío.
      */
     public double getCosteEnvio() {
         return costeEnvio;
@@ -129,11 +140,10 @@ public class Envio {
 
     /**
      * Establece el coste del envío.
-     * @param costeEnvio
+     * 
+     * @param costeEnvio Coste de envío.
      */
     public void setCosteEnvio(double costeEnvio) {
         this.costeEnvio = costeEnvio;
     }
-    
-    
 }

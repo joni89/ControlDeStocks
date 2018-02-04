@@ -7,12 +7,13 @@ package aplicacion.modelo;
 public class Proveedor extends Empresa{
 
     /**
-     *
+     * Constructor vacío.
      */
     public Proveedor() {}
 
     /**
-     *
+     * Constructor con parámetros.
+     * 
      * @param id
      * @param nombre
      * @param direccion

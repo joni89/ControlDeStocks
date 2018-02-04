@@ -23,6 +23,7 @@ public class VistaCrearClienteProveedor implements Vista{
 
     private final JPanel panel;
     private final JTextField txtNombre;
+    private final JTextField txtId;
     private final JTextField txtDireccion;
     private final JTextField txtTelefono;
     private final JTextField txtEmail;
@@ -43,6 +44,9 @@ public class VistaCrearClienteProveedor implements Vista{
 
         this.txtNombre = new JTextField();
         this.panel.add(this.crearFila("Nombre", txtNombre));
+
+        this.txtId = new JTextField();
+        this.panel.add(this.crearFila("CIF/NIF", txtId));
         
         this.txtDireccion = new JTextField();
         this.panel.add(this.crearFila("Dirección", txtDireccion));
@@ -86,15 +90,16 @@ public class VistaCrearClienteProveedor implements Vista{
     }
     private void accionCrearClienteProveedor() {
         String nombre = txtNombre.getText();
-        String fabricante = "fabricante1";
-        Proveedor proveedor = null;
-        double precio = 12.34;
-        int unidades = 0;
-        this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
+        String id = txtId.getText();
+        String direccion = txtDireccion.getText();
+        String telefono = txtTelefono.getText(); //Pensar si debería ser INT
+        String email = txtEmail.getText();
+        String personaContacto = txtPersonaContacto.getText();
+        this.controlador.crearAnadirCliente(id, nombre, direccion, telefono, email, personaContacto);
     }
 
     private void accionCancelar() {
-        this.controlador.mostrarListaProductos();
+        this.controlador.mostrarListaPrincipal();
     }
 
     /**

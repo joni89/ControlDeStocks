@@ -2,9 +2,7 @@ package aplicacion.vista;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.Cliente;
 import aplicacion.modelo.ProductoAlmacen;
-import aplicacion.modelo.Proveedor;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,8 +12,6 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,27 +23,24 @@ import javax.swing.ListSelectionModel;
  *
  * @author jonatan
  */
-public class VistaCrearEnvio implements Vista {
-
+public class VistaAnadirStock implements Vista{
+    
     private final ControladorPrincipal controlador;
     private final Almacen almacen;
 
     private final JPanel panel;
-    private final JList<ProductoAlmacen> listaProductos;
-    JComboBox<Cliente> comboClientes;
-    private final JTextField txtFecha;
-    private final JCheckBox cobrado;
-    private final JTextField txtCosteEnvio;
+    private final JTextField txtCantidad;
     private final JButton botonAnadir;
     private final JButton botonCancelar;
+    private final JList<ProductoAlmacen> listaProductos;
 
     /**
      * Constructor
-     *
+     * 
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaCrearEnvio(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaAnadirStock(ControladorPrincipal controlador, Almacen almacen) {
 
         this.controlador = controlador;
         this.almacen = almacen;
@@ -56,28 +49,19 @@ public class VistaCrearEnvio implements Vista {
 
         listaProductos = crearListaProductos();
         panel.add(listaProductos);
-
-        this.txtFecha = new JTextField();
-        this.panel.add(this.crearFila("Fecha", txtFecha));
-
-        comboClientes = crearComboClientes();
-        panel.add(comboClientes);
-
-        this.cobrado = new JCheckBox("Cobrado");
-        panel.add(cobrado);
-
-        this.txtCosteEnvio = new JTextField();
-        this.panel.add(this.crearFila("Coste de envío", txtCosteEnvio));
+        
+        this.txtCantidad = new JTextField();
+        this.panel.add(this.crearFila("Cantidad", txtCantidad));
 
         this.botonAnadir = new JButton("Añadir");
         this.botonAnadir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionAnadirEnvio();
+                accionAnadirStock();
             }
         });
         this.panel.add(this.botonAnadir);
-
+        
         this.botonCancelar = new JButton("Cancelar");
         this.botonCancelar.addActionListener(new ActionListener() {
             @Override
@@ -89,6 +73,16 @@ public class VistaCrearEnvio implements Vista {
 
     }
 
+    private JPanel crearFila(String nombreLabel, JTextField caja) {
+        caja.setPreferredSize(new Dimension(200, 20));
+        JLabel etiqueta = new JLabel(nombreLabel + ":");
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(etiqueta);
+        panel.add(caja);
+
+        return panel;
+    }
+    
     private JList<ProductoAlmacen> crearListaProductos() {
 
         JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
@@ -111,45 +105,12 @@ public class VistaCrearEnvio implements Vista {
         return lista;
     }
 
-    private JComboBox<Cliente> crearComboClientes() {
-
-        JComboBox<Cliente> combo = new JComboBox<>(new Vector<>(almacen.getClientes()));
-
-        combo.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-                Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-                Cliente cliente = (Cliente) value;
-                this.setText(cliente != null ? cliente.getNombre() : "No existen clientes");
-
-                return resultado;
-            }
-        });
-
-        return combo;
+    private void accionAnadirStock() {
+        ProductoAlmacen producto = listaProductos.getSelectedValue();
+        int cantidad = Integer.parseInt(txtCantidad.getText());
+        this.controlador.anadirStock(producto, cantidad);
     }
-
-    private JPanel crearFila(String nombreLabel, JTextField caja) {
-        caja.setPreferredSize(new Dimension(200, 20));
-        JLabel etiqueta = new JLabel(nombreLabel + ":");
-        JPanel panel = new JPanel(new FlowLayout());
-        panel.add(etiqueta);
-        panel.add(caja);
-
-        return panel;
-    }
-
-    private void accionAnadirEnvio() {
-        ProductoAlmacen productoAlmacen = listaProductos.getSelectedValue(); //tiene que ser una lista de productos
-        String fecha = txtFecha.getText();
-        Cliente cliente = (Cliente) comboClientes.getSelectedItem();
-        boolean cobrado = this.cobrado.isSelected();
-        double coste = Double.parseDouble(txtCosteEnvio.getText());
-        //this.controlador.crearAnadirEnvio(productos, fecha, cliente, cobrado, coste);
-    }
-
+    
     private void accionCancelar() {
         this.controlador.mostrarListaPrincipal();
     }

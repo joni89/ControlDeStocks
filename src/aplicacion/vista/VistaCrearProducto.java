@@ -33,7 +33,9 @@ public class VistaCrearProducto implements Vista {
     private final JPanel panel;
     private final JTextField txtNombre;
     private final JTextField txtFabricante;
+    JComboBox<Proveedor> comboProveedores;
     private final JTextField txtPrecio;
+    private final JTextField txtCantidad;
     private final JButton botonGuardar;
     private final JButton botonCancelar;
 
@@ -55,11 +57,14 @@ public class VistaCrearProducto implements Vista {
         this.txtFabricante = new JTextField();
         this.panel.add(this.crearFila("Fabricante", txtFabricante));
 
-        JComboBox<Proveedor> comboProveedores = crearComboProveedores();
+        comboProveedores = crearComboProveedores();
         panel.add(comboProveedores);
 
         this.txtPrecio = new JTextField();
         this.panel.add(this.crearFila("Precio", txtPrecio));
+
+        this.txtCantidad = new JTextField();
+        this.panel.add(this.crearFila("Cantidad", txtCantidad));
 
         this.botonGuardar = new JButton("Guardar");
         this.botonGuardar.addActionListener(new ActionListener() {
@@ -101,7 +106,7 @@ public class VistaCrearProducto implements Vista {
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 Proveedor proveedor = (Proveedor) value;
-                this.setText(proveedor.getNombre());
+                this.setText(proveedor != null ? proveedor.getNombre() : "No existen proveedores");
 
                 return resultado;
             }
@@ -113,14 +118,14 @@ public class VistaCrearProducto implements Vista {
     private void accionCrearProducto() {
         String nombre = txtNombre.getText();
         String fabricante = txtFabricante.getText();
-        Proveedor proveedor = null;
+        Proveedor proveedor = (Proveedor)comboProveedores.getSelectedItem();
         double precio = Double.parseDouble(txtPrecio.getText());
-        int unidades = 0;
+        int unidades = Integer.parseInt(txtCantidad.getText());
         this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
     }
 
     private void accionCancelar() {
-        this.controlador.mostrarListaProductos();
+        this.controlador.mostrarListaPrincipal();
     }
 
     /**

@@ -20,6 +20,7 @@ public class Empresa {
     
     /**
      * Constructor con parámetros.
+     * 
      * @param id
      * @param nombre
      * @param direccion
@@ -37,8 +38,9 @@ public class Empresa {
     }
     
     /**
-     *
-     * @return Devuelve el ID.
+     * Devuelve el ID.
+     * 
+     * @return ID.
      */
     public String getId() {
         return id;
@@ -46,15 +48,17 @@ public class Empresa {
 
     /**
      * Establece el ID.
-     * @param id
+     * 
+     * @param id ID.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     *
-     * @return Devuelve el nombre.
+     * Devuelve el nombre.
+     * 
+     * @return nombre.
      */
     public String getNombre() {
         return nombre;
@@ -62,6 +66,7 @@ public class Empresa {
 
     /**
      * Establece el nombre.
+     * 
      * @param nombre
      */
     public void setNombre(String nombre) {
@@ -69,8 +74,9 @@ public class Empresa {
     }
 
     /**
-     *
-     * @return Devuelve la dirección.
+     * Devuelve la dirección.
+     * 
+     * @return dirección.
      */
     public String getDireccion() {
         return direccion;
@@ -78,15 +84,17 @@ public class Empresa {
 
     /**
      * Establece la dirección.
-     * @param direccion
+     * 
+     * @param direccion Dirección.
      */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
     /**
-     *
-     * @return Devuelve el número de teléfono.
+     * Devuelve el número de teléfono.
+     * 
+     * @return teléfono.
      */
     public String getTelefono() {
         return telefono;
@@ -94,15 +102,17 @@ public class Empresa {
 
     /**
      * Establece el número de teléfono.
-     * @param telefono
+     * 
+     * @param telefono teléfono.
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
     /**
-     *
-     * @return Devuelve el email.
+     * Devuelve el email.
+     * 
+     * @return email. 
      */
     public String getEmail() {
         return email;
@@ -110,15 +120,17 @@ public class Empresa {
 
     /**
      * Establece el email.
-     * @param email
+     * 
+     * @param email Correo electrónico.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     *
-     * @return Devuelve la persona de contacto.
+     * Devuelve la persona de contacto.
+     * 
+     * @return persona de contacto.
      */
     public String getPersonaContacto() {
         return personaContacto;
@@ -126,7 +138,8 @@ public class Empresa {
 
     /**
      * Establece la persona de contacto.
-     * @param personaContacto
+     * 
+     * @param personaContacto Persona de contacto.
      */
     public void setPersonaContacto(String personaContacto) {
         this.personaContacto = personaContacto;

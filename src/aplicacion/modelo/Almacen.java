@@ -23,6 +23,7 @@ public class Almacen {
 
     /**
      * Constructor con parametros.
+     * 
      * @param productos
      * @param clientes
      * @param proveedores
@@ -37,6 +38,7 @@ public class Almacen {
 
     /**
      * Devuelve la lista de productos.
+     * 
      * @return lista de productos.
      */
     public List<ProductoAlmacen> getProductos() {
@@ -45,7 +47,8 @@ public class Almacen {
 
     /**
      * Establece una lista de productos.
-     * @param productos
+     * 
+     * @param productos Lista de productos
      */
     public void setProductos(List<ProductoAlmacen> productos) {
         this.productos = productos;
@@ -62,15 +65,17 @@ public class Almacen {
 
     /**
      * Establece la lista de clientes.
-     * @param clientes
+     * 
+     * @param clientes Lista de Clientes.
      */
     public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
     }
 
     /**
-     *
-     * @return Devuelve la lista de proveedores.
+     * Devuelve la lista de proveedores.
+     * 
+     * @return lista de proveedores.
      */
     public List<Proveedor> getProveedores() {
         return proveedores;
@@ -78,15 +83,17 @@ public class Almacen {
 
     /**
      * Establece la lista de proveedores.
-     * @param proveedores
+     * 
+     * @param proveedores Lista de proveedores.
      */
     public void setProveedores(List<Proveedor> proveedores) {
         this.proveedores = proveedores;
     }
 
     /**
+     * Devuelve la lista de envios realizados.
      * 
-     * @return Devuelve la lista de envios realizados.
+     * @return lista de envios realizados.
      */
     public List<Envio> getEnviosRealizados() {
         return enviosRealizados;
@@ -94,7 +101,8 @@ public class Almacen {
 
     /**
      * Establece la lista de envios.
-     * @param enviosRealizados
+     * 
+     * @param enviosRealizados lista de envios realizados.
      */
     public void setEnviosRealizados(List<Envio> enviosRealizados) {
         this.enviosRealizados = enviosRealizados;

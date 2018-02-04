@@ -9,6 +9,7 @@ import aplicacion.modelo.Proveedor;
 import aplicacion.modelo.Envio;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
+import aplicacion.vista.VistaAnadirStock;
 import aplicacion.vista.VistaCrearClienteProveedor;
 import aplicacion.vista.VistaCrearEnvio;
 import aplicacion.vista.VistaCrearProducto;
@@ -56,7 +57,7 @@ public class ControladorPrincipal extends Controlador {
         ventana.setSize(500, 400);
         ventana.setVisible(true);
 
-        this.mostrarListaProductos();
+        this.mostrarListaPrincipal();
     }
 
     //Productos
@@ -159,8 +160,8 @@ public class ControladorPrincipal extends Controlador {
      * @param producto Producto a añadir stock.
      * @param cantidad Cantidad de producto.
      */
-    private void anadirStock(Producto producto, int cantidad) {
-        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getId());
+    public void anadirStock(ProductoAlmacen producto, int cantidad) {
+        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getProducto().getId());
         productoAlmacen.setStock(productoAlmacen.getStock() + cantidad);
     }
 
@@ -170,14 +171,14 @@ public class ControladorPrincipal extends Controlador {
      * @param producto Producto a quitar stock.
      * @param cantidad Cantidad a quitar.
      */
-    private void restarStock(Producto producto, int cantidad) {
+    public void restarStock(ProductoAlmacen producto, int cantidad) {
         anadirStock(producto, -cantidad);
     }
 
     /**
      * Muestra la lista de productos y refresca la vista.
      */
-    public void mostrarListaProductos() {
+    public void mostrarListaPrincipal() {
         this.setVistaActiva(this.vistaPrincipal);
         this.refrescarVistaActiva();
     }
@@ -428,7 +429,7 @@ public class ControladorPrincipal extends Controlador {
      */
     private void restarStockEnvio(Envio envio) {
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
-            restarStock(productoEnvio.getProducto(), productoEnvio.getCantidad());
+            //restarStock(productoEnvio.getProducto(), productoEnvio.getCantidad());
         }
     }
 
@@ -445,12 +446,11 @@ public class ControladorPrincipal extends Controlador {
         
         long fechaIn = fechaInicio.getTime();
         long fechaEnd = fechaFin.getTime();
-        long fechaActual;
         List <Envio> enviosEncontrados = new ArrayList<Envio>();
         
         
         for(Envio envio : almacen.getEnviosRealizados()){
-            fechaActual = envio.getFecha().getTime(); 
+            long fechaActual = envio.getFecha().getTime(); 
             if(fechaActual >= fechaIn && fechaActual <= fechaEnd){
                 enviosEncontrados.add(envio);
             }
@@ -530,14 +530,14 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     * Se muestra .
+     * Se muestra la ventana de creación de nuevo stock.
      */
     public void mostrarCrearStock() {
 
-//        VistaCrearProducto vistaCrearProducto =  new VistaCrearProducto(this);
-//
-//        this.setVistaActiva(vistaCrearProducto);
-//        this.refrescarVistaActiva();
+        VistaAnadirStock vistaAnadirStock =  new VistaAnadirStock(this, almacen);
+
+        this.setVistaActiva(vistaAnadirStock);
+        this.refrescarVistaActiva();
     }
 
     /**
