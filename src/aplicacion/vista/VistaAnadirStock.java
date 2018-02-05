@@ -35,7 +35,7 @@ public class VistaAnadirStock implements Vista{
     private final JList<ProductoAlmacen> listaProductos;
 
     /**
-     * Constructor
+     * Constructor con parámetros.
      * 
      * @param controlador Controlador principal
      * @param almacen Almacen
@@ -73,6 +73,13 @@ public class VistaAnadirStock implements Vista{
 
     }
 
+    /**
+     * Devuelve el panel. Dado un nombre, crea una label y la añade al panel junto al JTextField.
+     * 
+     * @param nombreLabel Nombre de la etiqueta a añadir.
+     * @param caja JTextField a añadir.
+     * @return panel
+     */
     private JPanel crearFila(String nombreLabel, JTextField caja) {
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
@@ -83,13 +90,17 @@ public class VistaAnadirStock implements Vista{
         return panel;
     }
     
+    /**
+     * Devuelve una lista de productosAlmacen.
+     * 
+     * @return lista de productosAlmacen.
+     */
     private JList<ProductoAlmacen> crearListaProductos() {
 
         JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
 
         lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Esto se hace para mostrar el nombre del producto en la lista (sino, por defecto mostraría "Producto@1234...")
         lista.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -105,11 +116,15 @@ public class VistaAnadirStock implements Vista{
         return lista;
     }
 
+    /**
+     * Añade stock a un producto del almacén.
+     */
     private void accionAnadirStock() {
         ProductoAlmacen producto = listaProductos.getSelectedValue();
         int cantidad = Integer.parseInt(txtCantidad.getText());
         this.controlador.anadirStock(producto, cantidad);
     }
+    
     
     private void accionCancelar() {
         this.controlador.mostrarListaPrincipal();

@@ -61,6 +61,7 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Productos
+    
     /**
      * Crea el producto incrementando su id.
      *
@@ -563,6 +564,28 @@ public class ControladorPrincipal extends Controlador {
         this.setVistaActiva(vista);
         this.refrescarVistaActiva();
 
+    }
+    
+    //Archivos
+    
+    public void generarJsonProductos(Almacen productos){
+        
+        //java object to json
+    }
+    
+    public void generarXmlClientes(Almacen clientes){
+        
+        //java object to json
+    }
+    
+    public void generarTxtProveedores(Almacen proveedores){
+        
+        
+    }
+    
+    public void generarBinEnvios(Almacen envios){
+        
+        
     }
 
 }

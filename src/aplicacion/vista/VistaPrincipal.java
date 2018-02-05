@@ -57,7 +57,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearProducto();
             }
         });
-        this.panel.add(this.botonNuevoProducto);
+        this.panel.add(this.botonNuevoProducto, 0);
 
         this.botonNuevoCliente = new JButton("Nuevo Cliente");
         this.botonNuevoCliente.addActionListener(new ActionListener() {
