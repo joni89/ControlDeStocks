@@ -125,7 +125,7 @@ public class VistaCrearProducto implements Vista {
     }
 
     private void accionCancelar() {
-        this.controlador.mostrarListaPrincipal();
+        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

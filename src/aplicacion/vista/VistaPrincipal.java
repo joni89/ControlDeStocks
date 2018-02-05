@@ -14,7 +14,9 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -27,6 +29,7 @@ public class VistaPrincipal implements Vista {
     private final Almacen almacen;
 
     private final JPanel panel;
+    private final JList<ProductoAlmacen> listaProductos;
     private final JButton botonNuevoProducto;
     private final JButton botonNuevoCliente;
     private final JButton botonNuevoProveedor;
@@ -47,7 +50,7 @@ public class VistaPrincipal implements Vista {
 
         this.panel = new JPanel(new GridLayout(3, 1));
 
-        JList<ProductoAlmacen> listaProductos = crearListaProductos();
+        listaProductos = crearListaProductos();
         panel.add(listaProductos);
 
         this.botonNuevoProducto = new JButton("Nuevo Producto");
@@ -118,7 +121,9 @@ public class VistaPrincipal implements Vista {
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
-                this.setText(productoAlmacen.getProducto().getNombre());
+
+                String texto = String.format("%s (%d uds.)", productoAlmacen.getProducto().getNombre(), productoAlmacen.getStock());
+                this.setText(texto);
 
                 return resultado;
             }
@@ -148,7 +153,7 @@ public class VistaPrincipal implements Vista {
     }
 
     private void accionCrearFactura() {
-        this.controlador.mostrarFactura(null); //TODO no le puedo pasar null
+        this.controlador.mostrarCrearFactura();
     }
 
     /**
@@ -156,7 +161,11 @@ public class VistaPrincipal implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaCrearProducto.refrescar()");
+        DefaultListModel<ProductoAlmacen> items = new DefaultListModel<>();
+        for(ProductoAlmacen producto : almacen.getProductos()) {
+            items.addElement(producto);
+        }
+        listaProductos.setModel(items);
     }
 
     /**

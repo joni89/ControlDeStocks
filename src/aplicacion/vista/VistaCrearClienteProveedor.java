@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 public class VistaCrearClienteProveedor implements Vista{
 
     private final ControladorPrincipal controlador;
+    private final boolean proveedor;
 
     private final JPanel panel;
     private final JTextField txtNombre;
@@ -35,9 +37,10 @@ public class VistaCrearClienteProveedor implements Vista{
      *
      * @param controlador
      */
-    public VistaCrearClienteProveedor(ControladorPrincipal controlador) {
+    public VistaCrearClienteProveedor(ControladorPrincipal controlador, boolean proveedor) {
 
         this.controlador = controlador;
+        this.proveedor = proveedor;
 
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
@@ -92,14 +95,23 @@ public class VistaCrearClienteProveedor implements Vista{
         String nombre = txtNombre.getText();
         String id = txtId.getText();
         String direccion = txtDireccion.getText();
-        String telefono = txtTelefono.getText(); //Pensar si debería ser INT
+        String telefono = txtTelefono.getText();
         String email = txtEmail.getText();
         String personaContacto = txtPersonaContacto.getText();
-        this.controlador.crearAnadirCliente(id, nombre, direccion, telefono, email, personaContacto);
+
+        if(this.proveedor) {
+            this.controlador.crearAnadirProveedor(id, nombre, direccion, telefono, email, personaContacto);
+        } else {
+            this.controlador.crearAnadirCliente(id, nombre, direccion, telefono, email, personaContacto);
+        }
+
+        JOptionPane.showMessageDialog(panel, (proveedor ? "Proveedor" : "Cliente") + " creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        this.controlador.mostrarVistaPrincipal();
+
     }
 
     private void accionCancelar() {
-        this.controlador.mostrarListaPrincipal();
+        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

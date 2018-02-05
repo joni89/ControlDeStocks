@@ -1,5 +1,7 @@
 package aplicacion.modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author jonatan

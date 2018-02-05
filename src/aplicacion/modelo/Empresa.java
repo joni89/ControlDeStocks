@@ -1,10 +1,12 @@
 package aplicacion.modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author jonatan
  */
-public class Empresa {
+public class Empresa implements Serializable{
     
     private String id;
     private String nombre;

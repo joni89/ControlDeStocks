@@ -1,5 +1,6 @@
 package aplicacion.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @author jonatan
  */
-public class Envio {
+public class Envio implements Serializable{
     private int id;
     private List<ProductoEnvio> productos;
     private Date fecha;

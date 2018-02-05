@@ -4,13 +4,19 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Cliente;
 import aplicacion.modelo.ProductoAlmacen;
-import aplicacion.modelo.Proveedor;
+import aplicacion.modelo.ProductoEnvio;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -19,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -34,10 +41,9 @@ public class VistaCrearEnvio implements Vista {
 
     private final JPanel panel;
     private final JList<ProductoAlmacen> listaProductos;
-    JComboBox<Cliente> comboClientes;
+    private final JComboBox<Cliente> comboClientes;
     private final JTextField txtFecha;
     private final JCheckBox cobrado;
-    private final JTextField txtCosteEnvio;
     private final JButton botonAnadir;
     private final JButton botonCancelar;
 
@@ -52,7 +58,7 @@ public class VistaCrearEnvio implements Vista {
         this.controlador = controlador;
         this.almacen = almacen;
 
-        this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(3, 2));
 
         listaProductos = crearListaProductos();
         panel.add(listaProductos);
@@ -65,9 +71,6 @@ public class VistaCrearEnvio implements Vista {
 
         this.cobrado = new JCheckBox("Cobrado");
         panel.add(cobrado);
-
-        this.txtCosteEnvio = new JTextField();
-        this.panel.add(this.crearFila("Coste de envío", txtCosteEnvio));
 
         this.botonAnadir = new JButton("Añadir");
         this.botonAnadir.addActionListener(new ActionListener() {
@@ -93,16 +96,17 @@ public class VistaCrearEnvio implements Vista {
 
         JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
 
-        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        // Esto se hace para mostrar el nombre del producto en la lista (sino, por defecto mostraría "Producto@1234...")
         lista.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
-                this.setText(productoAlmacen.getProducto().getNombre());
+
+                String texto = String.format("%s (%d uds.)", productoAlmacen.getProducto().getNombre(), productoAlmacen.getStock());
+                this.setText(texto);
 
                 return resultado;
             }
@@ -142,16 +146,48 @@ public class VistaCrearEnvio implements Vista {
     }
 
     private void accionAnadirEnvio() {
-        ProductoAlmacen productoAlmacen = listaProductos.getSelectedValue(); //tiene que ser una lista de productos
-        String fecha = txtFecha.getText();
+        List<ProductoAlmacen> productosAlmacen = listaProductos.getSelectedValuesList(); //tiene que ser una lista de productos
+        String fechaTexto = txtFecha.getText();
         Cliente cliente = (Cliente) comboClientes.getSelectedItem();
         boolean cobrado = this.cobrado.isSelected();
-        double coste = Double.parseDouble(txtCosteEnvio.getText());
-        //this.controlador.crearAnadirEnvio(productos, fecha, cliente, cobrado, coste);
+
+        if (productosAlmacen.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún producto", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún cliente", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        List<ProductoEnvio> productosEnvio = new ArrayList<>(productosAlmacen.size());
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha;
+        try {
+            fecha = df.parse(fechaTexto);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(panel, "La fecha no tiene el formato correcto (dd/mm/aaaa)", "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        for (ProductoAlmacen productoAlmacen : productosAlmacen) {
+            ProductoEnvio productoEnvio = new ProductoEnvio(productoAlmacen.getProducto(), 1);
+            productosEnvio.add(productoEnvio);
+        }
+
+        boolean creado = this.controlador.crearAnadirEnvio(productosEnvio, fecha, cliente, cobrado);
+        if (creado) {
+            JOptionPane.showMessageDialog(panel, "Envío creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+            this.controlador.mostrarVistaPrincipal();
+        } else {
+            JOptionPane.showMessageDialog(panel, "No hay suficiente stock en el almacén", "Stock insuficiente", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void accionCancelar() {
-        this.controlador.mostrarListaPrincipal();
+        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

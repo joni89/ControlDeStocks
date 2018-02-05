@@ -12,17 +12,30 @@ import aplicacion.modelo.ProductoEnvio;
 import aplicacion.vista.VistaAnadirStock;
 import aplicacion.vista.VistaCrearClienteProveedor;
 import aplicacion.vista.VistaCrearEnvio;
+import aplicacion.vista.VistaCrearFactura;
 import aplicacion.vista.VistaCrearProducto;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +44,6 @@ import java.util.Objects;
 public class ControladorPrincipal extends Controlador {
 
     private final Almacen almacen;
-    private final VistaCrearClienteProveedor vistaClienteProveedor;
     private final VistaPrincipal vistaPrincipal;
     private int idProducto;
     private int idEnvio;
@@ -41,7 +53,6 @@ public class ControladorPrincipal extends Controlador {
      */
     public ControladorPrincipal() {
         this.almacen = new Almacen();
-        this.vistaClienteProveedor = new VistaCrearClienteProveedor(this);
         this.vistaPrincipal = new VistaPrincipal(this, almacen);
         this.idProducto = 1;
         this.idEnvio = 1;
@@ -51,17 +62,75 @@ public class ControladorPrincipal extends Controlador {
      * Inicia la ventana principal.
      */
     public void iniciarApp() {
+        cargarAlmacen();
+
         JFrame ventana = this.getVentana();
         ventana.setTitle("Control de Stocks");
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(500, 400);
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventana.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                guardarAlmacen();
+            }
+        });
+        ventana.setSize(600, 400);
         ventana.setVisible(true);
 
-        this.mostrarListaPrincipal();
+        this.mostrarVistaPrincipal();
+    }
+
+    private void cargarAlmacen() {
+        try {
+
+            List<ProductoAlmacen> productos = leerJsonProductos();
+            List<Cliente> clientes = leerXmlClientes();
+            List<Proveedor> proveedores = leerTxtProveedores();
+            List<Envio> envios = leerBinEnvios();
+
+            int maxIdProducto = 0;
+            int maxIdEnvio = 0;
+
+            for(ProductoAlmacen producto : productos) {
+                int idProducto = producto.getProducto().getId();
+                if(idProducto > maxIdProducto) {
+                    maxIdProducto = idProducto;
+                }
+            }
+
+            for(Envio envio : envios) {
+                int idEnvio = envio.getId();
+                if(idEnvio > maxIdEnvio) {
+                    maxIdEnvio = idEnvio;
+                }
+            }
+
+            this.idProducto = maxIdProducto + 1;
+            this.idEnvio = maxIdEnvio + 1;
+
+            almacen.setProductos(productos);
+            almacen.setClientes(clientes);
+            almacen.setProveedores(proveedores);
+            almacen.setEnviosRealizados(envios);
+
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void guardarAlmacen() {
+        try {
+            generarJsonProductos(almacen.getProductos());
+            generarXmlClientes(almacen.getClientes());
+            generarTxtProveedores(almacen.getProveedores());
+            generarBinEnvios(almacen.getEnviosRealizados());
+        } catch(IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No se han podido guardar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     //Productos
-    
     /**
      * Crea el producto incrementando su id.
      *
@@ -123,7 +192,7 @@ public class ControladorPrincipal extends Controlador {
      * @return Devuelve el stock.
      */
     private int obtenerStockProducto(int id) {
-        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(idProducto);
+        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(id);
         return productoAlmacen == null ? 0 : productoAlmacen.getStock();
     }
 
@@ -179,7 +248,7 @@ public class ControladorPrincipal extends Controlador {
     /**
      * Muestra la lista de productos y refresca la vista.
      */
-    public void mostrarListaPrincipal() {
+    public void mostrarVistaPrincipal() {
         this.setVistaActiva(this.vistaPrincipal);
         this.refrescarVistaActiva();
     }
@@ -258,7 +327,6 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Proveedores
-    
     /**
      * Crea un proveedor.
      *
@@ -277,7 +345,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Añadir proveedor.
-     * 
+     *
      * @param proveedor Proveedor a añadir.
      */
     private void anadirProveedor(Proveedor proveedor) {
@@ -290,7 +358,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Obtención de un proveedor dado su CIF.
-     * 
+     *
      * @param id CIF del proveedor.
      * @return Devuelve el proveedor si lo encuentra. Si no, null.
      */
@@ -306,7 +374,7 @@ public class ControladorPrincipal extends Controlador {
     /**
      * Crea un proveedor y lo añade al almacén.
      *
-     @param id CIF del proveedor.
+     * @param id CIF del proveedor.
      * @param nombre Nombre del proveedor.
      * @param direccion Dirección del proveedor.
      * @param telefono Teléfono del proveedor.
@@ -331,10 +399,9 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Envio
-    
     /**
      * Crea un envío incrementando su id.
-     * 
+     *
      * @param productos Lista de productos del envío.
      * @param fecha Fecha del envío.
      * @param cliente Cliente al que va el envío.
@@ -342,14 +409,20 @@ public class ControladorPrincipal extends Controlador {
      * @param costeEnvio Valor monetario del envío.
      * @return Devuelve el envío.
      */
-    private Envio crearEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
+    private Envio crearEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
+        double costeEnvio = 0;
+
+        for(ProductoEnvio productoEnvio : productos) {
+            costeEnvio += productoEnvio.getProducto().getPrecio() * productoEnvio.getCantidad();
+        }
+
         Envio envioVacio = new Envio(idEnvio++, productos, fecha, cliente, cobrado, costeEnvio);
         return envioVacio;
     }
 
     /**
      * Añade el envío.
-     * 
+     *
      * @param envio Envío a añadir.
      * @return Devuelve true si se realizó el envío, false si no lo hizo.
      */
@@ -368,7 +441,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Se obtiene el envío a partir de su ID
-     * 
+     *
      * @param id ID del envío a obtener.
      * @return Devuelve el envio si lo encuentra. Si no, null.
      */
@@ -390,9 +463,10 @@ public class ControladorPrincipal extends Controlador {
      * @param cobrado Si esta o no cobrado.
      * @param costeEnvio Valor monetario del envío.
      */
-    public boolean crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
-        Envio envio = crearEnvio(productos, fecha, cliente, cobrado, costeEnvio);
-        return anadirEnvio(envio);
+    public boolean crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
+        Envio envio = crearEnvio(productos, fecha, cliente, cobrado);
+        boolean creado = anadirEnvio(envio);
+        return creado;
     }
 
     /**
@@ -416,6 +490,7 @@ public class ControladorPrincipal extends Controlador {
     public boolean comprobarStock(Envio envio) {
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
             int stock = obtenerStockProducto(productoEnvio.getProducto().getId());
+
             if (productoEnvio.getCantidad() > stock) {
                 return false;
             }
@@ -425,7 +500,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Resta el stock del producto/s que se ha/n enviado.
-     * 
+     *
      * @param envio Envio del que se obtiene la cantidad del producto.
      */
     private void restarStockEnvio(Envio envio) {
@@ -435,7 +510,6 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Facturas
-    
     /**
      * Busca los envios entre dos fechas.
      *
@@ -444,15 +518,14 @@ public class ControladorPrincipal extends Controlador {
      * @return devuelve los envio/s fruto de la busqueda.
      */
     public List<Envio> buscarEnviosFechas(Date fechaInicio, Date fechaFin) {
-        
+
         long fechaIn = fechaInicio.getTime();
         long fechaEnd = fechaFin.getTime();
-        List <Envio> enviosEncontrados = new ArrayList<Envio>();
-        
-        
-        for(Envio envio : almacen.getEnviosRealizados()){
-            long fechaActual = envio.getFecha().getTime(); 
-            if(fechaActual >= fechaIn && fechaActual <= fechaEnd){
+        List<Envio> enviosEncontrados = new ArrayList<Envio>();
+
+        for (Envio envio : almacen.getEnviosRealizados()) {
+            long fechaActual = envio.getFecha().getTime();
+            if (fechaActual >= fechaIn && fechaActual <= fechaEnd) {
                 enviosEncontrados.add(envio);
             }
         }
@@ -461,22 +534,29 @@ public class ControladorPrincipal extends Controlador {
     }
 
     /**
-     *Crea una factura.
-     * 
+     * Crea una factura.
+     *
      * @param envio Envio para crear la factura.
      */
     private String crearFacturaEnvio(Envio envio) {
 
         StringBuilder sb = new StringBuilder();
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        
         sb.append(String.format("Envío #%d\n", envio.getId()));
-        sb.append(String.format("Fecha: %d\n", envio.getFecha())); // TODO Falta formatear
-        sb.append(String.format("Nombre: #%s\n", envio.getCliente().getNombre()));
+        sb.append(String.format("Fecha: %s\n", df.format(envio.getFecha())));
+        sb.append(String.format("Cliente: %s\n", envio.getCliente().getNombre()));
+        
+        sb.append(String.format("\n%-30s %16s %5s %16s\n", "Producto", "Precio Unid. (€)", "Cant.", "Precio (€)"));
 
         // TODO completar este método
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
-            sb.append(String.format("%s... y más cosas\n", productoEnvio.getProducto().getNombre()));
+            double precio = productoEnvio.getProducto().getPrecio()*productoEnvio.getCantidad();
+            sb.append(String.format("%-30s %14.2f %5d %14.2f\n", productoEnvio.getProducto().getNombre(), productoEnvio.getProducto().getPrecio(), productoEnvio.getCantidad(), precio));
         }
+
+        sb.append(String.format("\nTotal: %.2f", envio.getCosteEnvio()));
 
         return sb.toString();
 
@@ -484,7 +564,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Guarda la factura en un archivo.
-     * 
+     *
      * @param factura Factura a guardar.
      * @param archivo Archivo donde se va guardar la factura.
      * @throws IOException si se produce un error de E/S
@@ -496,7 +576,6 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Vistas
-    
     /**
      * Se muestra la ventana de creacción del producto.
      */
@@ -514,7 +593,7 @@ public class ControladorPrincipal extends Controlador {
      */
     public void mostrarCrearCliente() {
 
-        VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this);
+        VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this, false);
 
         this.setVistaActiva(vistaCrearClienteProveedor);
         this.refrescarVistaActiva();
@@ -526,7 +605,10 @@ public class ControladorPrincipal extends Controlador {
      */
     public void mostrarCrearProveedor() {
 
-        mostrarCrearCliente();
+        VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this, true);
+
+        this.setVistaActiva(vistaCrearClienteProveedor);
+        this.refrescarVistaActiva();
 
     }
 
@@ -535,7 +617,7 @@ public class ControladorPrincipal extends Controlador {
      */
     public void mostrarCrearStock() {
 
-        VistaAnadirStock vistaAnadirStock =  new VistaAnadirStock(this, almacen);
+        VistaAnadirStock vistaAnadirStock = new VistaAnadirStock(this, almacen);
 
         this.setVistaActiva(vistaAnadirStock);
         this.refrescarVistaActiva();
@@ -546,7 +628,7 @@ public class ControladorPrincipal extends Controlador {
      */
     public void mostrarCrearEnvio() {
 
-        VistaCrearEnvio vistaCrearEnvio =  new VistaCrearEnvio(this, almacen);
+        VistaCrearEnvio vistaCrearEnvio = new VistaCrearEnvio(this, almacen);
 
         this.setVistaActiva(vistaCrearEnvio);
         this.refrescarVistaActiva();
@@ -565,27 +647,142 @@ public class ControladorPrincipal extends Controlador {
         this.refrescarVistaActiva();
 
     }
-    
+
+    /**
+     * Se muestra la pantalla de creación de facturas.
+     */
+    public void mostrarCrearFactura() {
+
+        VistaCrearFactura vista = new VistaCrearFactura(this, almacen);
+
+        this.setVistaActiva(vista);
+        this.refrescarVistaActiva();
+
+    }
+
     //Archivos
-    
-    public void generarJsonProductos(Almacen productos){
-        
+    public void generarJsonProductos(List<ProductoAlmacen> productos) throws IOException {
         //java object to json
+        try (FileOutputStream fos = new FileOutputStream(crearArchivo("productos.json"));
+                ObjectOutputStream out = new ObjectOutputStream(fos)) {
+            out.writeObject(productos);
+        }
     }
-    
-    public void generarXmlClientes(Almacen clientes){
-        
+
+    public List<ProductoAlmacen> leerJsonProductos() throws IOException {
+        File archivo = crearArchivo("productos.json");
+
+        if(!archivo.exists()) {
+            return new ArrayList<>();
+        }
+
+//        Proveedor proveedor = new Proveedor("11111111A", "Felipe VI", "Zarzuela", "666000111", "proveedor@ejemplo.com", "Su amigo");
+//        return Arrays.asList(
+//                new ProductoAlmacen(new Producto(1, "Zapatillas", "Niko", proveedor, 12.5), 7),
+//                new ProductoAlmacen(new Producto(1, "Sudadera", "Adedos", proveedor, 10.5), 0),
+//                new ProductoAlmacen(new Producto(1, "Pantalones", "Paco Jeans", proveedor, 7.0), 25)
+//        );
         //java object to json
+        try (FileInputStream fis = new FileInputStream(archivo);
+                ObjectInputStream in = new ObjectInputStream(fis)) {
+            return (List<ProductoAlmacen>) in.readObject();
+        } catch(ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
-    
-    public void generarTxtProveedores(Almacen proveedores){
-        
-        
+
+    public void generarXmlClientes(List<Cliente> clientes) throws IOException {
+        //java object to xml
+        try (FileOutputStream fos = new FileOutputStream(crearArchivo("clientes.xml"));
+                ObjectOutputStream out = new ObjectOutputStream(fos)) {
+            out.writeObject(clientes);
+        }
     }
-    
-    public void generarBinEnvios(Almacen envios){
-        
-        
+
+    public List<Cliente> leerXmlClientes() throws IOException {
+        File archivo = crearArchivo("clientes.xml");
+
+        if(!archivo.exists()) {
+            return new ArrayList<>();
+        }
+
+//        return Arrays.asList(
+//                new Cliente("22222222B", "Paco Fernández", "Calle de las Mariposas", "600123456", "paco@pfernandez.com", "Su abuela")
+//        );
+        //java object to xml
+        try (FileInputStream fis = new FileInputStream(archivo);
+                ObjectInputStream in = new ObjectInputStream(fis)) {
+            return (List<Cliente>) in.readObject();
+        } catch(ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void generarTxtProveedores(List<Proveedor> proveedores) throws IOException {
+
+        try (PrintStream out = new PrintStream(crearArchivo("proveedores.txt"))) {
+
+            for (Proveedor proveedor : proveedores) {
+                out.printf("%s\t%s\t%s\t%s\t%s\t%s\n",
+                        proveedor.getId(),
+                        proveedor.getNombre(),
+                        proveedor.getDireccion(),
+                        proveedor.getTelefono(),
+                        proveedor.getEmail(),
+                        proveedor.getPersonaContacto());
+            }
+        }
+    }
+
+    public List<Proveedor> leerTxtProveedores() throws IOException {
+        File archivo = crearArchivo("proveedores.txt");
+
+        if(!archivo.exists()) {
+            return new ArrayList<>();
+        }
+
+        List<Proveedor> proveedores = new ArrayList<>();
+        try (Scanner sc = new Scanner(archivo)) {
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] trozos = line.split("\t");
+
+                Proveedor proveedor = new Proveedor(trozos[0], trozos[1], trozos[2], trozos[3], trozos[4], trozos[5]);
+                proveedores.add(proveedor);
+            }
+        }
+        return proveedores;
+    }
+
+    public void generarBinEnvios(List<Envio> envios) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(crearArchivo("envios.bin"));
+                ObjectOutputStream out = new ObjectOutputStream(fos)) {
+            out.writeObject(envios);
+        }
+    }
+
+    public List<Envio> leerBinEnvios() throws IOException, ClassNotFoundException {
+        File archivo = crearArchivo("envios.bin");
+
+        if(!archivo.exists()) {
+            return new ArrayList<>();
+        }
+
+        try (FileInputStream fis = new FileInputStream(archivo);
+                ObjectInputStream in = new ObjectInputStream(fis)) {
+            return (List<Envio>) in.readObject();
+        }
+    }
+
+    private File crearArchivo(String nombre) throws IOException {
+        String carpetaUsuario = System.getProperty("user.home");
+
+        File carpeta = new File(carpetaUsuario, ".almacen");
+
+        if (!carpeta.exists() && !carpeta.mkdir()) {
+            throw new IOException("No se pudo crear la carpeta .almacen");
+        }
+        return new File(carpeta, nombre);
     }
 
 }

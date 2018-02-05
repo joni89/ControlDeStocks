@@ -1,6 +1,8 @@
 package aplicacion.vista;
 
 import aplicacion.controlador.ControladorPrincipal;
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -25,6 +27,9 @@ public class VistaFactura implements Vista {
         this.panel = new JPanel();
 
         this.textArea = new JTextArea(factura);
+        this.textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
+        this.textArea.setEnabled(false);
+        this.textArea.setDisabledTextColor(Color.BLACK);
         this.panel.add(this.textArea);
 
     }

@@ -1,5 +1,6 @@
 package aplicacion.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @author jonatan
  */
-public class Almacen {
+public class Almacen implements Serializable {
     
     private List <ProductoAlmacen> productos;
     private List <Cliente> clientes;

@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -107,7 +108,9 @@ public class VistaAnadirStock implements Vista{
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
-                this.setText(productoAlmacen.getProducto().getNombre());
+
+                String texto = String.format("%s (%d uds.)", productoAlmacen.getProducto().getNombre(), productoAlmacen.getStock());
+                this.setText(texto);
 
                 return resultado;
             }
@@ -121,13 +124,32 @@ public class VistaAnadirStock implements Vista{
      */
     private void accionAnadirStock() {
         ProductoAlmacen producto = listaProductos.getSelectedValue();
-        int cantidad = Integer.parseInt(txtCantidad.getText());
+
+        int cantidad;
+
+        try {
+            cantidad = Integer.parseInt(txtCantidad.getText());
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(panel, "La cantidad no es válida", "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(cantidad <= 0) {
+            JOptionPane.showMessageDialog(panel, "La cantidad introducida debe ser mayor que 0", "Cantidad no permitida", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (producto == null) {
+            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún producto", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         this.controlador.anadirStock(producto, cantidad);
     }
     
     
     private void accionCancelar() {
-        this.controlador.mostrarListaPrincipal();
+        this.controlador.mostrarVistaPrincipal();
     }
 
     /**
