@@ -40,7 +40,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -704,6 +711,10 @@ public class ControladorPrincipal extends Controlador {
 
         } catch (JAXBException e) {
             e.printStackTrace();
+        } catch (PropertyException ex) {
+            Logger.getLogger(ControladorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JAXBException ex) {
+            Logger.getLogger(ControladorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
