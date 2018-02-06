@@ -16,12 +16,17 @@ import aplicacion.vista.VistaCrearFactura;
 import aplicacion.vista.VistaCrearProducto;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -90,16 +95,16 @@ public class ControladorPrincipal extends Controlador {
             int maxIdProducto = 0;
             int maxIdEnvio = 0;
 
-            for(ProductoAlmacen producto : productos) {
+            for (ProductoAlmacen producto : productos) {
                 int idProducto = producto.getProducto().getId();
-                if(idProducto > maxIdProducto) {
+                if (idProducto > maxIdProducto) {
                     maxIdProducto = idProducto;
                 }
             }
 
-            for(Envio envio : envios) {
+            for (Envio envio : envios) {
                 int idEnvio = envio.getId();
-                if(idEnvio > maxIdEnvio) {
+                if (idEnvio > maxIdEnvio) {
                     maxIdEnvio = idEnvio;
                 }
             }
@@ -112,7 +117,7 @@ public class ControladorPrincipal extends Controlador {
             almacen.setProveedores(proveedores);
             almacen.setEnviosRealizados(envios);
 
-        } catch(IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -124,7 +129,7 @@ public class ControladorPrincipal extends Controlador {
             generarXmlClientes(almacen.getClientes());
             generarTxtProveedores(almacen.getProveedores());
             generarBinEnvios(almacen.getEnviosRealizados());
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "No se han podido guardar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -412,7 +417,7 @@ public class ControladorPrincipal extends Controlador {
     private Envio crearEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
         double costeEnvio = 0;
 
-        for(ProductoEnvio productoEnvio : productos) {
+        for (ProductoEnvio productoEnvio : productos) {
             costeEnvio += productoEnvio.getProducto().getPrecio() * productoEnvio.getCantidad();
         }
 
@@ -543,16 +548,16 @@ public class ControladorPrincipal extends Controlador {
         StringBuilder sb = new StringBuilder();
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        
+
         sb.append(String.format("Envío #%d\n", envio.getId()));
         sb.append(String.format("Fecha: %s\n", df.format(envio.getFecha())));
         sb.append(String.format("Cliente: %s\n", envio.getCliente().getNombre()));
-        
+
         sb.append(String.format("\n%-30s %16s %5s %16s\n", "Producto", "Precio Unid. (€)", "Cant.", "Precio (€)"));
 
         // TODO completar este método
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
-            double precio = productoEnvio.getProducto().getPrecio()*productoEnvio.getCantidad();
+            double precio = productoEnvio.getProducto().getPrecio() * productoEnvio.getCantidad();
             sb.append(String.format("%-30s %14.2f %5d %14.2f\n", productoEnvio.getProducto().getNombre(), productoEnvio.getProducto().getPrecio(), productoEnvio.getCantidad(), precio));
         }
 
@@ -662,59 +667,63 @@ public class ControladorPrincipal extends Controlador {
 
     //Archivos
     public void generarJsonProductos(List<ProductoAlmacen> productos) throws IOException {
-        //java object to json
-        try (FileOutputStream fos = new FileOutputStream(crearArchivo("productos.json"));
-                ObjectOutputStream out = new ObjectOutputStream(fos)) {
-            out.writeObject(productos);
-        }
+        File archivo = crearArchivo("productos.json");
+
+        Gson gson = new Gson();
+
+        gson.toJson(productos, new FileWriter(archivo));
+
+        String jsonInString = gson.toJson(productos);
+
     }
 
     public List<ProductoAlmacen> leerJsonProductos() throws IOException {
         File archivo = crearArchivo("productos.json");
 
-        if(!archivo.exists()) {
+        if (!archivo.exists()) {
             return new ArrayList<>();
         }
-
-//        Proveedor proveedor = new Proveedor("11111111A", "Felipe VI", "Zarzuela", "666000111", "proveedor@ejemplo.com", "Su amigo");
-//        return Arrays.asList(
-//                new ProductoAlmacen(new Producto(1, "Zapatillas", "Niko", proveedor, 12.5), 7),
-//                new ProductoAlmacen(new Producto(1, "Sudadera", "Adedos", proveedor, 10.5), 0),
-//                new ProductoAlmacen(new Producto(1, "Pantalones", "Paco Jeans", proveedor, 7.0), 25)
-//        );
-        //java object to json
-        try (FileInputStream fis = new FileInputStream(archivo);
-                ObjectInputStream in = new ObjectInputStream(fis)) {
-            return (List<ProductoAlmacen>) in.readObject();
-        } catch(ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
+        Gson gson = new Gson();
+        JsonElement json = gson.fromJson(new FileReader(archivo), new TypeToken<List<Producto>>() {
+        });
+//        String result = gson.toJson(json);
     }
 
     public void generarXmlClientes(List<Cliente> clientes) throws IOException {
-        //java object to xml
-        try (FileOutputStream fos = new FileOutputStream(crearArchivo("clientes.xml"));
-                ObjectOutputStream out = new ObjectOutputStream(fos)) {
-            out.writeObject(clientes);
+
+        try {
+            File archivo = crearArchivo("productos.json");
+            JAXBContext jaxbContext = JAXBContext.newInstance(clientes);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(clientes, archivo);
+            jaxbMarshaller.marshal(clientes, System.out);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
     public List<Cliente> leerXmlClientes() throws IOException {
-        File archivo = crearArchivo("clientes.xml");
+        
 
-        if(!archivo.exists()) {
+        if (!archivo.exists()) {
             return new ArrayList<>();
         }
+        
+        try {
+            File archivo = crearArchivo("clientes.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance();
 
-//        return Arrays.asList(
-//                new Cliente("22222222B", "Paco Fernández", "Calle de las Mariposas", "600123456", "paco@pfernandez.com", "Su abuela")
-//        );
-        //java object to xml
-        try (FileInputStream fis = new FileInputStream(archivo);
-                ObjectInputStream in = new ObjectInputStream(fis)) {
-            return (List<Cliente>) in.readObject();
-        } catch(ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Customer customer = (Customer) jaxbUnmarshaller.unmarshal(archivo);
+            System.out.println(customer);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
@@ -737,7 +746,7 @@ public class ControladorPrincipal extends Controlador {
     public List<Proveedor> leerTxtProveedores() throws IOException {
         File archivo = crearArchivo("proveedores.txt");
 
-        if(!archivo.exists()) {
+        if (!archivo.exists()) {
             return new ArrayList<>();
         }
 
@@ -764,7 +773,7 @@ public class ControladorPrincipal extends Controlador {
     public List<Envio> leerBinEnvios() throws IOException, ClassNotFoundException {
         File archivo = crearArchivo("envios.bin");
 
-        if(!archivo.exists()) {
+        if (!archivo.exists()) {
             return new ArrayList<>();
         }
 
