@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="aplicacion.modelo">
+  <ClassDiagramComponents>
+    <Class name="Cliente" package="aplicacion.modelo" visibility="public" xPosition="10.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="id"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="direccion"/>
+          <Argument type="String" name="telefono"/>
+          <Argument type="String" name="email"/>
+          <Argument type="String" name="personaContacto"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Almacen" package="aplicacion.modelo" visibility="public" xPosition="46.0" yPosition="286.0">
+      <Fields>
+        <Field name="productos" type="List&lt;ProductoAlmacen&gt;" visibility="private"/>
+        <Field name="clientes" type="List&lt;Cliente&gt;" visibility="private"/>
+        <Field name="proveedores" type="List&lt;Proveedor&gt;" visibility="private"/>
+        <Field name="enviosRealizados" type="List&lt;Envio&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="List&lt;ProductoAlmacen&gt;" name="productos"/>
+          <Argument type="List&lt;Cliente&gt;" name="clientes"/>
+          <Argument type="List&lt;Proveedor&gt;" name="proveedores"/>
+          <Argument type="List&lt;Envio&gt;" name="envioRealizados"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getProductos" returnType="List&lt;ProductoAlmacen&gt;" visibility="public"/>
+        <Method name="setProductos" returnType="void" visibility="public">
+          <Argument type="List&lt;ProductoAlmacen&gt;" name="productos"/>
+        </Method>
+        <Method name="getClientes" returnType="List&lt;Cliente&gt;" visibility="public"/>
+        <Method name="setClientes" returnType="void" visibility="public">
+          <Argument type="List&lt;Cliente&gt;" name="clientes"/>
+        </Method>
+        <Method name="getProveedores" returnType="List&lt;Proveedor&gt;" visibility="public"/>
+        <Method name="setProveedores" returnType="void" visibility="public">
+          <Argument type="List&lt;Proveedor&gt;" name="proveedores"/>
+        </Method>
+        <Method name="getEnviosRealizados" returnType="List&lt;Envio&gt;" visibility="public"/>
+        <Method name="setEnviosRealizados" returnType="void" visibility="public">
+          <Argument type="List&lt;Envio&gt;" name="enviosRealizados"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ProductoAlmacen" package="aplicacion.modelo" visibility="public" xPosition="46.0" yPosition="680.0">
+      <Fields>
+        <Field name="producto" type="Producto" visibility="private"/>
+        <Field name="stock" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Producto" name="producto"/>
+          <Argument type="int" name="stock"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getProducto" returnType="Producto" visibility="public"/>
+        <Method name="setProducto" returnType="void" visibility="public">
+          <Argument type="Producto" name="producto"/>
+        </Method>
+        <Method name="getStock" returnType="int" visibility="public"/>
+        <Method name="setStock" returnType="void" visibility="public">
+          <Argument type="int" name="stock"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ProductoEnvio" package="aplicacion.modelo" visibility="public" xPosition="939.0" yPosition="130.0">
+      <Fields>
+        <Field name="producto" type="Producto" visibility="private"/>
+        <Field name="cantidad" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Producto" name="producto"/>
+          <Argument type="int" name="cantidad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getProducto" returnType="Producto" visibility="public"/>
+        <Method name="setProducto" returnType="void" visibility="public">
+          <Argument type="Producto" name="producto"/>
+        </Method>
+        <Method name="getCantidad" returnType="int" visibility="public"/>
+        <Method name="setCantidad" returnType="void" visibility="public">
+          <Argument type="int" name="cantidad"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Producto" package="aplicacion.modelo" visibility="public" xPosition="470.0" yPosition="963.0">
+      <Fields>
+        <Field name="id" type="int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="fabricante" type="String" visibility="private"/>
+        <Field name="proveedor" type="Proveedor" visibility="private"/>
+        <Field name="precio" type="double" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="fabricante"/>
+          <Argument type="Proveedor" name="proveedor"/>
+          <Argument type="double" name="precio"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getId" returnType="int" visibility="public"/>
+        <Method name="setId" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="setNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Method>
+        <Method name="getFabricante" returnType="String" visibility="public"/>
+        <Method name="setFabricante" returnType="void" visibility="public">
+          <Argument type="String" name="fabricante"/>
+        </Method>
+        <Method name="getProveedor" returnType="Proveedor" visibility="public"/>
+        <Method name="setProveedor" returnType="void" visibility="public">
+          <Argument type="Proveedor" name="proveedor"/>
+        </Method>
+        <Method name="getPrecio" returnType="double" visibility="public"/>
+        <Method name="setPrecio" returnType="void" visibility="public">
+          <Argument type="double" name="precio"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Empresa" package="aplicacion.modelo" visibility="public" xPosition="1204.0" yPosition="922.0">
+      <Fields>
+        <Field name="id" type="String" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="direccion" type="String" visibility="private"/>
+        <Field name="telefono" type="String" visibility="private"/>
+        <Field name="email" type="String" visibility="private"/>
+        <Field name="personaContacto" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="id"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="direccion"/>
+          <Argument type="String" name="telefono"/>
+          <Argument type="String" name="email"/>
+          <Argument type="String" name="personaContacto"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getId" returnType="String" visibility="public"/>
+        <Method name="setId" returnType="void" visibility="public">
+          <Argument type="String" name="id"/>
+        </Method>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="setNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Method>
+        <Method name="getDireccion" returnType="String" visibility="public"/>
+        <Method name="setDireccion" returnType="void" visibility="public">
+          <Argument type="String" name="direccion"/>
+        </Method>
+        <Method name="getTelefono" returnType="String" visibility="public"/>
+        <Method name="setTelefono" returnType="void" visibility="public">
+          <Argument type="String" name="telefono"/>
+        </Method>
+        <Method name="getEmail" returnType="String" visibility="public"/>
+        <Method name="setEmail" returnType="void" visibility="public">
+          <Argument type="String" name="email"/>
+        </Method>
+        <Method name="getPersonaContacto" returnType="String" visibility="public"/>
+        <Method name="setPersonaContacto" returnType="void" visibility="public">
+          <Argument type="String" name="personaContacto"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Proveedor" package="aplicacion.modelo" visibility="public" xPosition="1259.0" yPosition="526.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="id"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="direccion"/>
+          <Argument type="String" name="telefono"/>
+          <Argument type="String" name="email"/>
+          <Argument type="String" name="personaContacto"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Envio" package="aplicacion.modelo" visibility="public" xPosition="1475.0" yPosition="20.0">
+      <Fields>
+        <Field name="id" type="int" visibility="private"/>
+        <Field name="productos" type="List&lt;ProductoEnvio&gt;" visibility="private"/>
+        <Field name="fecha" type="Date" visibility="private"/>
+        <Field name="cliente" type="Cliente" visibility="private"/>
+        <Field name="cobrado" type="boolean" visibility="private"/>
+        <Field name="costeEnvio" type="double" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="List&lt;ProductoEnvio&gt;" name="productos"/>
+          <Argument type="Date" name="fecha"/>
+          <Argument type="Cliente" name="cliente"/>
+          <Argument type="boolean" name="cobrado"/>
+          <Argument type="double" name="costeEnvio"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getId" returnType="int" visibility="public"/>
+        <Method name="setId" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getProductos" returnType="List&lt;ProductoEnvio&gt;" visibility="public"/>
+        <Method name="setProductos" returnType="void" visibility="public">
+          <Argument type="List&lt;ProductoEnvio&gt;" name="productos"/>
+        </Method>
+        <Method name="getFecha" returnType="Date" visibility="public"/>
+        <Method name="setFecha" returnType="void" visibility="public">
+          <Argument type="Date" name="fecha"/>
+        </Method>
+        <Method name="getCliente" returnType="Cliente" visibility="public"/>
+        <Method name="setCliente" returnType="void" visibility="public">
+          <Argument type="Cliente" name="cliente"/>
+        </Method>
+        <Method name="isCobrado" returnType="boolean" visibility="public"/>
+        <Method name="setCobrado" returnType="void" visibility="public">
+          <Argument type="boolean" name="cobrado"/>
+        </Method>
+        <Method name="getCosteEnvio" returnType="double" visibility="public"/>
+        <Method name="setCosteEnvio" returnType="void" visibility="public">
+          <Argument type="double" name="costeEnvio"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="aplicacion.modelo.ProductoAlmacen" target="aplicacion.modelo.Producto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="aplicacion.modelo.Proveedor" target="aplicacion.modelo.Empresa"/>
+    <HasRelation name="cliente" source="aplicacion.modelo.Envio" target="aplicacion.modelo.Cliente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="aplicacion.modelo.ProductoEnvio" target="aplicacion.modelo.Producto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="aplicacion.modelo.Envio" target="aplicacion.modelo.Cliente" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="productos" source="aplicacion.modelo.Envio" target="aplicacion.modelo.ProductoEnvio" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;ProductoEnvio&gt;"/>
+    <UseRelation source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Producto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="proveedor" source="aplicacion.modelo.Producto" target="aplicacion.modelo.Proveedor" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="aplicacion.modelo.Envio" target="aplicacion.modelo.Envio" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Proveedor" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="producto" source="aplicacion.modelo.ProductoEnvio" target="aplicacion.modelo.Producto" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="producto" source="aplicacion.modelo.ProductoAlmacen" target="aplicacion.modelo.Producto" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Envio" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="aplicacion.modelo.Cliente" target="aplicacion.modelo.Empresa"/>
+    <UseRelation source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Cliente" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="clientes" source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Cliente" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Cliente&gt;"/>
+    <HasRelation name="enviosRealizados" source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Envio" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Envio&gt;"/>
+    <HasRelation name="productos" source="aplicacion.modelo.Almacen" target="aplicacion.modelo.ProductoAlmacen" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;ProductoAlmacen&gt;"/>
+    <UseRelation source="aplicacion.modelo.Producto" target="aplicacion.modelo.Proveedor" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="proveedores" source="aplicacion.modelo.Almacen" target="aplicacion.modelo.Proveedor" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Proveedor&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
