@@ -25,10 +25,10 @@ public class Almacen implements Serializable {
     /**
      * Constructor con parametros.
      * 
-     * @param productos
-     * @param clientes
-     * @param proveedores
-     * @param envioRealizados
+     * @param productos productos.
+     * @param clientes clientes.
+     * @param proveedores proveedores.
+     * @param envioRealizados envíos realizados.
      */
     public Almacen(List<ProductoAlmacen> productos, List<Cliente> clientes, List<Proveedor> proveedores, List<Envio> envioRealizados) {
         this.productos = productos;

@@ -124,7 +124,7 @@ public class ControladorPrincipal extends Controlador {
             almacen.setProveedores(proveedores);
             almacen.setEnviosRealizados(envios);
 
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | JAXBException | ClassNotFoundException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -136,7 +136,7 @@ public class ControladorPrincipal extends Controlador {
             generarXmlClientes(almacen.getClientes());
             generarTxtProveedores(almacen.getProveedores());
             generarBinEnvios(almacen.getEnviosRealizados());
-        } catch (IOException ex) {
+        } catch (IOException | JAXBException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "No se han podido guardar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -255,14 +255,6 @@ public class ControladorPrincipal extends Controlador {
      */
     public void restarStock(ProductoAlmacen producto, int cantidad) {
         anadirStock(producto, -cantidad);
-    }
-
-    /**
-     * Muestra la lista de productos y refresca la vista.
-     */
-    public void mostrarVistaPrincipal() {
-        this.setVistaActiva(this.vistaPrincipal);
-        this.refrescarVistaActiva();
     }
 
     //Clientes
@@ -473,7 +465,7 @@ public class ControladorPrincipal extends Controlador {
      * @param fecha Fecha del envío.
      * @param cliente Cliente al que va el envío.
      * @param cobrado Si esta o no cobrado.
-     * @param costeEnvio Valor monetario del envío.
+     * @return true si el envío fue creado, false si no.
      */
     public boolean crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado);
@@ -525,8 +517,8 @@ public class ControladorPrincipal extends Controlador {
     /**
      * Busca los envios entre dos fechas.
      *
-     * @param fechaInicio
-     * @param fechaFin
+     * @param fechaInicio fecha de inicio.
+     * @param fechaFin fecha de fin.
      * @return devuelve los envio/s fruto de la busqueda.
      */
     public List<Envio> buscarEnviosFechas(Date fechaInicio, Date fechaFin) {
@@ -588,6 +580,15 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Vistas
+    
+    /**
+     * Muestra la lista de productos y refresca la vista.
+     */
+    public void mostrarVistaPrincipal() {
+        this.setVistaActiva(this.vistaPrincipal);
+        this.refrescarVistaActiva();
+    }
+    
     /**
      * Se muestra la ventana de creacción del producto.
      */
@@ -648,6 +649,7 @@ public class ControladorPrincipal extends Controlador {
 
     /**
      * Se muestra la emisión de la factura.
+     * @param envio envío.
      */
     public void mostrarFactura(Envio envio) {
 
@@ -673,6 +675,12 @@ public class ControladorPrincipal extends Controlador {
     }
 
     //Archivos
+    /**
+     * Dado un objeto java se convierte a json.
+     *
+     * @param productos Lista de productos que hay en el almacén.
+     * @throws IOException IOException
+     */
     public void generarJsonProductos(List<ProductoAlmacen> productos) throws IOException {
         File archivo = crearArchivo("productos.json");
 
@@ -691,53 +699,48 @@ public class ControladorPrincipal extends Controlador {
             return new ArrayList<>();
         }
         Gson gson = new Gson();
-        JsonElement json = gson.fromJson(new FileReader(archivo), new TypeToken<List<Producto>>() {
-        });
-//        String result = gson.toJson(json);
+        List<ProductoAlmacen> listaProductosJson = gson.fromJson(new FileReader(archivo), new TypeToken<List<Producto>>() {
+        }.getType());
+
+        return listaProductosJson;
     }
 
-    public void generarXmlClientes(List<Cliente> clientes) throws IOException {
+    public void generarXmlClientes(List<Cliente> clientes) throws IOException, JAXBException {
 
-        try {
-            File archivo = crearArchivo("productos.json");
-            JAXBContext jaxbContext = JAXBContext.newInstance(clientes);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        File archivo = crearArchivo("productos.json");
+        JAXBContext jaxbContext = JAXBContext.newInstance(Cliente.class);
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        // output pretty printed
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            jaxbMarshaller.marshal(clientes, archivo);
-            jaxbMarshaller.marshal(clientes, System.out);
+        jaxbMarshaller.marshal(clientes, archivo);
 
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (PropertyException ex) {
-            Logger.getLogger(ControladorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JAXBException ex) {
-            Logger.getLogger(ControladorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
-    public List<Cliente> leerXmlClientes() throws IOException {
-        
+    public List<Cliente> leerXmlClientes() throws IOException, JAXBException {
+
+        File archivo = crearArchivo("productos.json");
 
         if (!archivo.exists()) {
             return new ArrayList<>();
         }
+
+        JAXBContext jaxbContext = JAXBContext.newInstance();
+
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        List<Cliente> listaClientes = (List<Cliente>) jaxbUnmarshaller.unmarshal(archivo);
         
-        try {
-            File archivo = crearArchivo("clientes.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance();
+        return listaClientes;
 
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Customer customer = (Customer) jaxbUnmarshaller.unmarshal(archivo);
-            System.out.println(customer);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
     }
 
+    /**
+     * Dado un objeto java se convierte a texto.
+     *
+     * @param proveedores proveedores
+     * @throws IOException IOExeption.
+     */
     public void generarTxtProveedores(List<Proveedor> proveedores) throws IOException {
 
         try (PrintStream out = new PrintStream(crearArchivo("proveedores.txt"))) {

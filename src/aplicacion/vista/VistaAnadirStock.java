@@ -147,13 +147,15 @@ public class VistaAnadirStock implements Vista{
         this.controlador.anadirStock(producto, cantidad);
     }
     
-    
+    /**
+     * Muestra la vista principal.
+     */
     private void accionCancelar() {
         this.controlador.mostrarVistaPrincipal();
     }
 
     /**
-     *
+     * Devuevle un mensaje.
      */
     @Override
     public void refrescar() {
@@ -161,8 +163,8 @@ public class VistaAnadirStock implements Vista{
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {

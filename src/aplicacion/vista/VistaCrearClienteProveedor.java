@@ -34,8 +34,10 @@ public class VistaCrearClienteProveedor implements Vista{
     private final JButton botonCancelar;
 
     /**
-     *
-     * @param controlador
+     *Crea todos los componentes de la vista.
+     * 
+     * @param controlador controlador.
+     * @param proveedor proveedor.
      */
     public VistaCrearClienteProveedor(ControladorPrincipal controlador, boolean proveedor) {
 
@@ -82,6 +84,13 @@ public class VistaCrearClienteProveedor implements Vista{
         this.panel.add(this.botonCancelar);
     }
 
+    /**
+     * Crea una etiqueta y junto con un JTextField lo añade al panel
+     * 
+     * @param nombreLabel
+     * @param caja
+     * @return panel
+     */
     private JPanel crearFila(String nombreLabel, JTextField caja){
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
@@ -91,6 +100,10 @@ public class VistaCrearClienteProveedor implements Vista{
         
         return panel;
     }
+    
+    /**
+     * Crea cliente o proveedor.
+     */
     private void accionCrearClienteProveedor() {
         String nombre = txtNombre.getText();
         String id = txtId.getText();
@@ -110,12 +123,15 @@ public class VistaCrearClienteProveedor implements Vista{
 
     }
 
+    /**
+     * Vuelve a la vista principal.
+     */
     private void accionCancelar() {
         this.controlador.mostrarVistaPrincipal();
     }
 
     /**
-     *
+     * Saca un mensaje.
      */
     @Override
     public void refrescar() {
@@ -123,8 +139,8 @@ public class VistaCrearClienteProveedor implements Vista{
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {

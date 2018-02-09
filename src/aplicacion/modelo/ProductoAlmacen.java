@@ -14,8 +14,8 @@ public class ProductoAlmacen implements Serializable {
     /**
      * Constructor con parámetros.
      * 
-     * @param producto
-     * @param stock
+     * @param producto producto.
+     * @param stock stock.
      */
     public ProductoAlmacen(Producto producto, int stock) {
         this.producto = producto;

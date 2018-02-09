@@ -15,7 +15,7 @@ public interface Vista {
 
     /**
      * 
-     * @return
+     * @return JComponent
      */
     JComponent getComponenteRaiz();
 

@@ -31,7 +31,7 @@ public abstract class Controlador {
 
     /**
      * Establece la vista activa
-     * @param vista
+     * @param vista Vista
      */
     protected void setVistaActiva(Vista vista) {
         this.ventana.setContentPane(vista.getComponenteRaiz());

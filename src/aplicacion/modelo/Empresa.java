@@ -23,12 +23,12 @@ public class Empresa implements Serializable{
     /**
      * Constructor con parámetros.
      * 
-     * @param id
-     * @param nombre
-     * @param direccion
-     * @param telefono
-     * @param email
-     * @param personaContacto
+     * @param id id.
+     * @param nombre nombre.
+     * @param direccion dirección.
+     * @param telefono télefono.
+     * @param email email.
+     * @param personaContacto persona de contacto.
      */
     public Empresa(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         this.id = id;
@@ -69,7 +69,7 @@ public class Empresa implements Serializable{
     /**
      * Establece el nombre.
      * 
-     * @param nombre
+     * @param nombre nombre.
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;

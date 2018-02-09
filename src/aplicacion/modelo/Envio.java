@@ -24,12 +24,12 @@ public class Envio implements Serializable{
     /**
      * Constructor con parámetros.
      * 
-     * @param id
-     * @param productos
-     * @param fecha
-     * @param cliente
-     * @param cobrado
-     * @param costeEnvio
+     * @param id id.
+     * @param productos productos.
+     * @param fecha fecha.
+     * @param cliente cliente.
+     * @param cobrado cobrado.
+     * @param costeEnvio coste de envío.
      */
     public Envio(int id, List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado, double costeEnvio) {
         this.id = id;

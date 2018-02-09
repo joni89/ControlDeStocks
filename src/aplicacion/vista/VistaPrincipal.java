@@ -38,10 +38,10 @@ public class VistaPrincipal implements Vista {
     private final JButton botonFactura;
 
     /**
-     * Constructor
+     * Constructor para crear los componentes de la vista.
      * 
      * @param controlador Controlador principal
-     * @param almacen
+     * @param almacen almacen.
      */
     public VistaPrincipal(ControladorPrincipal controlador, Almacen almacen) {
 
@@ -108,13 +108,17 @@ public class VistaPrincipal implements Vista {
         this.panel.add(this.botonFactura);
     }
 
+    /**
+     * Devuelve una lista de productosAlmacen.
+     * 
+     * @return lista de productosAlmacen.
+     */
     private JList<ProductoAlmacen> crearListaProductos() {
 
         JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
 
         lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Esto se hace para mostrar el nombre del producto en la lista (sino, por defecto mostraría "Producto@1234...")
         lista.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -132,32 +136,50 @@ public class VistaPrincipal implements Vista {
         return lista;
     }
 
+    /**
+     * Nos lleva a la vista que crea un producto.
+     */
     private void accionCrearProducto() {
         this.controlador.mostrarCrearProducto();
     }
 
+    /**
+     * Nos lleva a la vista que crea un cliente.
+     */
     private void accionCrearCliente() {
         this.controlador.mostrarCrearCliente();
     }
 
+    /**
+     * Nos lleva a la vista que crea un proveedor.
+     */
     private void accionCrearProveedor() {
         this.controlador.mostrarCrearProveedor();
     }
 
+    /**
+     * Nos lleva a la vista que crea el stock.
+     */
     private void accionAnadirStock() {
         this.controlador.mostrarCrearStock();
     }
 
+    /**
+     * Nos lleva a la vista que crea un envío.
+     */
     private void accionCrearEnvio() {
         this.controlador.mostrarCrearEnvio();
     }
 
+    /**
+     * Nos lleva a la vista que crea un factura.
+     */
     private void accionCrearFactura() {
         this.controlador.mostrarCrearFactura();
     }
 
     /**
-     *
+     * Refresca la vista.
      */
     @Override
     public void refrescar() {
@@ -169,8 +191,9 @@ public class VistaPrincipal implements Vista {
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * 
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {

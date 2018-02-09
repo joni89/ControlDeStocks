@@ -22,11 +22,11 @@ public class Producto implements Serializable {
     /**
      * Constructor con parámetros.
      * 
-     * @param id
-     * @param nombre
-     * @param fabricante
-     * @param proveedor
-     * @param precio
+     * @param id id.
+     * @param nombre nombre.
+     * @param fabricante fabricante.
+     * @param proveedor proveedor.
+     * @param precio precio.
      */
     public Producto(int id, String nombre, String fabricante, Proveedor proveedor, double precio) {
         this.id = id;

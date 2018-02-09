@@ -40,8 +40,10 @@ public class VistaCrearProducto implements Vista {
     private final JButton botonCancelar;
 
     /**
-     *
-     * @param controlador
+     * Se crean los componentes de la vista.
+     * 
+     * @param controlador controlador
+     * @param almacen almacen
      */
     public VistaCrearProducto(ControladorPrincipal controlador, Almacen almacen) {
 
@@ -85,6 +87,13 @@ public class VistaCrearProducto implements Vista {
         this.panel.add(this.botonCancelar);
     }
 
+    /**
+     * Crea una etiqueta y junto con un JTextField lo añade al panel
+     * 
+     * @param nombreLabel
+     * @param caja
+     * @return panel
+     */
     private JPanel crearFila(String nombreLabel, JTextField caja) {
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
@@ -95,6 +104,11 @@ public class VistaCrearProducto implements Vista {
         return panel;
     }
 
+    /**
+     * Crea un comboBox de proveedores.
+     * 
+     * @return JCombox de proveedores.
+     */
     private JComboBox<Proveedor> crearComboProveedores() {
 
         JComboBox<Proveedor> combo = new JComboBox<>(new Vector<>(almacen.getProveedores()));
@@ -115,6 +129,9 @@ public class VistaCrearProducto implements Vista {
         return combo;
     }
 
+    /**
+     * Crea un producto.
+     */
     private void accionCrearProducto() {
         String nombre = txtNombre.getText();
         String fabricante = txtFabricante.getText();
@@ -124,12 +141,15 @@ public class VistaCrearProducto implements Vista {
         this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
     }
 
+    /**
+     * Muestra la vista principal.
+     */
     private void accionCancelar() {
         this.controlador.mostrarVistaPrincipal();
     }
 
     /**
-     *
+     * Devuevle un mensaje.
      */
     @Override
     public void refrescar() {
@@ -137,8 +157,9 @@ public class VistaCrearProducto implements Vista {
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * 
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {

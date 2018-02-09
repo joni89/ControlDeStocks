@@ -14,8 +14,8 @@ public class ProductoEnvio implements Serializable {
     /**
      * Constructor con parámetros.
      * 
-     * @param producto
-     * @param cantidad
+     * @param producto producto.
+     * @param cantidad cantidad.
      */
     public ProductoEnvio(Producto producto, int cantidad) {
         this.producto = producto;

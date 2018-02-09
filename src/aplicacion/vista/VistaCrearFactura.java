@@ -2,33 +2,20 @@ package aplicacion.vista;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.Cliente;
 import aplicacion.modelo.Envio;
-import aplicacion.modelo.ProductoAlmacen;
-import aplicacion.modelo.ProductoEnvio;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -81,6 +68,11 @@ public class VistaCrearFactura implements Vista {
 
     }
 
+    /**
+     * Crea una lista de envíos y la devuelve.
+     * 
+     * @return lista de envíos.
+     */
     private JList<Envio> crearListaEnvios() {
 
         JList<Envio> lista = new JList<>(new Vector<>(almacen.getEnviosRealizados()));
@@ -106,6 +98,9 @@ public class VistaCrearFactura implements Vista {
         return lista;
     }
 
+    /**
+     * Crea una factura.
+     */
     private void accionCrearFactura() {
         Envio envio = listaEnvios.getSelectedValue();
 
@@ -117,12 +112,15 @@ public class VistaCrearFactura implements Vista {
         controlador.mostrarFactura(envio);
     }
 
+    /**
+     * Muestra la vista principal.
+     */
     private void accionCancelar() {
         this.controlador.mostrarVistaPrincipal();
     }
 
     /**
-     *
+     * Devuevle un mensaje.
      */
     @Override
     public void refrescar() {
@@ -130,8 +128,9 @@ public class VistaCrearFactura implements Vista {
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * 
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {

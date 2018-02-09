@@ -92,6 +92,11 @@ public class VistaCrearEnvio implements Vista {
 
     }
 
+    /**
+     * Crea una lista de productos y la devuelve.
+     * 
+     * @return lista de productos almacen.
+     */
     private JList<ProductoAlmacen> crearListaProductos() {
 
         JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
@@ -115,6 +120,11 @@ public class VistaCrearEnvio implements Vista {
         return lista;
     }
 
+    /**
+     * Crea un comboBox y lo devuelve.
+     * 
+     * @return JComboBox.
+     */
     private JComboBox<Cliente> crearComboClientes() {
 
         JComboBox<Cliente> combo = new JComboBox<>(new Vector<>(almacen.getClientes()));
@@ -135,6 +145,13 @@ public class VistaCrearEnvio implements Vista {
         return combo;
     }
 
+    /**
+     * Crea una etiqueta y junto con un JTextField lo añade al panel
+     * 
+     * @param nombreLabel
+     * @param caja
+     * @return panel
+     */
     private JPanel crearFila(String nombreLabel, JTextField caja) {
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
@@ -145,6 +162,9 @@ public class VistaCrearEnvio implements Vista {
         return panel;
     }
 
+    /**
+     * Crea un envío.
+     */
     private void accionAnadirEnvio() {
         List<ProductoAlmacen> productosAlmacen = listaProductos.getSelectedValuesList(); //tiene que ser una lista de productos
         String fechaTexto = txtFecha.getText();
@@ -186,12 +206,15 @@ public class VistaCrearEnvio implements Vista {
         }
     }
 
+    /**
+     * Muestra la vista principal.
+     */
     private void accionCancelar() {
         this.controlador.mostrarVistaPrincipal();
     }
 
     /**
-     *
+     * Devuevle un mensaje.
      */
     @Override
     public void refrescar() {
@@ -199,8 +222,9 @@ public class VistaCrearEnvio implements Vista {
     }
 
     /**
-     *
-     * @return
+     * Devuelve el panel.
+     * 
+     * @return el panel.
      */
     @Override
     public JComponent getComponenteRaiz() {
