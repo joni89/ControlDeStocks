@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -46,7 +47,7 @@ public class VistaCrearFactura implements Vista {
         this.panel = new JPanel(new GridLayout(3, 1));
 
         listaEnvios = crearListaEnvios();
-        panel.add(listaEnvios);
+        panel.add(new JScrollPane(listaEnvios));
 
         this.botonCrear = new JButton("Crear factura");
         this.botonCrear.addActionListener(new ActionListener() {

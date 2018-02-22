@@ -106,10 +106,26 @@ public class VistaCrearClienteProveedor implements Vista{
      */
     private void accionCrearClienteProveedor() {
         String nombre = txtNombre.getText();
+        if(nombre.isEmpty()){
+            JOptionPane.showMessageDialog(this.panel, "Introduzca nombre", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String id = txtId.getText();
+        if(!id.matches("^\\d{8}[A-Za-z]$")){
+            JOptionPane.showMessageDialog(this.panel, "CIF/NIF debe constar de 8 número y una letra.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
+        if(!telefono.matches("^(\\+\\d+ ?)?\\d+$")){
+            JOptionPane.showMessageDialog(this.panel, "Formato de teléfono no valido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String email = txtEmail.getText();
+        if(!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+            JOptionPane.showMessageDialog(this.panel, "Formato de email no valido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String personaContacto = txtPersonaContacto.getText();
 
         if(this.proveedor) {

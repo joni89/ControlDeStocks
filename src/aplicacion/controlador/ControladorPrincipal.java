@@ -7,6 +7,7 @@ import aplicacion.modelo.Producto;
 import aplicacion.modelo.Cliente;
 import aplicacion.modelo.Proveedor;
 import aplicacion.modelo.Envio;
+import aplicacion.modelo.ListaClientes;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
 import aplicacion.vista.VistaAnadirStock;
@@ -17,11 +18,11 @@ import aplicacion.vista.VistaCrearProducto;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,18 +36,17 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
 /**
@@ -79,6 +79,7 @@ public class ControladorPrincipal extends Controlador {
         JFrame ventana = this.getVentana();
         ventana.setTitle("Control de Stocks");
         ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventana.setJMenuBar(this.crearMenus());
         ventana.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -91,16 +92,51 @@ public class ControladorPrincipal extends Controlador {
         this.mostrarVistaPrincipal();
     }
 
+    private JMenuBar crearMenus() {
+
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menuAcciones = new JMenu("Acciones");
+        menuBar.add(menuAcciones);
+
+        JMenuItem accionBuscar = new JMenuItem("Buscar");
+        accionBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Se pulsó BUSCAR");
+            }
+        });
+        menuAcciones.add(accionBuscar);
+
+        JMenuItem accionEliminar = new JMenuItem("Eliminar");
+        accionEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Se pulsó ELIMINAR");
+            }
+        });
+        menuAcciones.add(accionEliminar);
+
+        // BÓRRAME
+        JMenuItem accionCrearCliente = new JMenuItem("Crear cliente");
+        accionCrearCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarCrearCliente();
+            }
+        });
+        menuAcciones.add(accionCrearCliente);
+
+        return menuBar;
+
+    }
+
     private void cargarAlmacen() {
         try {
 
             List<ProductoAlmacen> productos = leerJsonProductos();
-            List<Cliente> clientes = leerXmlClientes();
-            List<Proveedor> proveedores = leerTxtProveedores();
-            List<Envio> envios = leerBinEnvios();
 
             int maxIdProducto = 0;
-            int maxIdEnvio = 0;
 
             for (ProductoAlmacen producto : productos) {
                 int idProducto = producto.getProducto().getId();
@@ -109,6 +145,41 @@ public class ControladorPrincipal extends Controlador {
                 }
             }
 
+            this.idProducto = maxIdProducto + 1;
+
+            almacen.setProductos(productos);
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los productos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+
+            List<Cliente> clientes = leerXmlClientes();
+
+            almacen.setClientes(clientes);
+
+        } catch (IOException | JAXBException ex) {
+            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los clientes del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+
+            List<Proveedor> proveedores = leerTxtProveedores();
+
+            almacen.setProveedores(proveedores);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los proveedores del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+
+            List<Envio> envios = leerBinEnvios();
+
+            int maxIdEnvio = 0;
+
             for (Envio envio : envios) {
                 int idEnvio = envio.getId();
                 if (idEnvio > maxIdEnvio) {
@@ -116,29 +187,38 @@ public class ControladorPrincipal extends Controlador {
                 }
             }
 
-            this.idProducto = maxIdProducto + 1;
             this.idEnvio = maxIdEnvio + 1;
 
-            almacen.setProductos(productos);
-            almacen.setClientes(clientes);
-            almacen.setProveedores(proveedores);
             almacen.setEnviosRealizados(envios);
 
-        } catch (IOException | JAXBException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this.getVentana(), "No se han podido cargar los envíos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void guardarAlmacen() {
         try {
             generarJsonProductos(almacen.getProductos());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "No se han podido guardar los productos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
             generarXmlClientes(almacen.getClientes());
-            generarTxtProveedores(almacen.getProveedores());
-            generarBinEnvios(almacen.getEnviosRealizados());
         } catch (IOException | JAXBException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "No se han podido guardar los datos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se han podido guardar los clientes del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            generarTxtProveedores(almacen.getProveedores());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "No se han podido guardar los proveedores del almacén", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            generarBinEnvios(almacen.getEnviosRealizados());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "No se han podido guardar los envíos del almacén", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -245,6 +325,18 @@ public class ControladorPrincipal extends Controlador {
     public void anadirStock(ProductoAlmacen producto, int cantidad) {
         ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getProducto().getId());
         productoAlmacen.setStock(productoAlmacen.getStock() + cantidad);
+        this.refrescarVistaActiva();
+    }
+
+    /**
+     * Quita stock de un producto.
+     *
+     * @param producto Producto a quitar stock.
+     * @param cantidad Cantidad a quitar.
+     */
+    public void restarStock(Producto producto, int cantidad) {
+        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getId());
+        restarStock(productoAlmacen, cantidad);
     }
 
     /**
@@ -436,6 +528,7 @@ public class ControladorPrincipal extends Controlador {
         }
 
         if (comprobarStock(envio)) {
+            restarStockEnvio(envio);
             this.almacen.getEnviosRealizados().add(envio);
             return true;
         }
@@ -509,7 +602,7 @@ public class ControladorPrincipal extends Controlador {
      */
     private void restarStockEnvio(Envio envio) {
         for (ProductoEnvio productoEnvio : envio.getProductos()) {
-            //restarStock(productoEnvio.getProducto(), productoEnvio.getCantidad());
+            restarStock(productoEnvio.getProducto(), productoEnvio.getCantidad());
         }
     }
 
@@ -686,10 +779,9 @@ public class ControladorPrincipal extends Controlador {
 
         Gson gson = new Gson();
 
-        gson.toJson(productos, new FileWriter(archivo));
-
-        String jsonInString = gson.toJson(productos);
-
+        try(FileWriter fw = new FileWriter(archivo)){
+            gson.toJson(productos, fw);    
+        }
     }
 
     public List<ProductoAlmacen> leerJsonProductos() throws IOException {
@@ -699,39 +791,47 @@ public class ControladorPrincipal extends Controlador {
             return new ArrayList<>();
         }
         Gson gson = new Gson();
-        List<ProductoAlmacen> listaProductosJson = gson.fromJson(new FileReader(archivo), new TypeToken<List<Producto>>() {
-        }.getType());
-
-        return listaProductosJson;
+        try(FileReader fr = new FileReader(archivo)){
+            List<ProductoAlmacen> listaProductosJson = gson.fromJson(fr, new TypeToken<List<ProductoAlmacen>>() {
+            }.getType());
+            
+            if(listaProductosJson == null){
+                return new ArrayList<>();
+            }
+            
+            return listaProductosJson;
+        }
     }
 
     public void generarXmlClientes(List<Cliente> clientes) throws IOException, JAXBException {
 
-        File archivo = crearArchivo("productos.json");
-        JAXBContext jaxbContext = JAXBContext.newInstance(Cliente.class);
+        File archivo = crearArchivo("clientes.xml");
+        JAXBContext jaxbContext = JAXBContext.newInstance(ListaClientes.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
         // output pretty printed
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-        jaxbMarshaller.marshal(clientes, archivo);
+        ListaClientes listaClientes = new ListaClientes(clientes);
+
+        jaxbMarshaller.marshal(listaClientes, archivo);
 
     }
 
     public List<Cliente> leerXmlClientes() throws IOException, JAXBException {
 
-        File archivo = crearArchivo("productos.json");
+        File archivo = crearArchivo("clientes.xml");
 
         if (!archivo.exists()) {
             return new ArrayList<>();
         }
 
-        JAXBContext jaxbContext = JAXBContext.newInstance();
+        JAXBContext jaxbContext = JAXBContext.newInstance(ListaClientes.class);
 
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        List<Cliente> listaClientes = (List<Cliente>) jaxbUnmarshaller.unmarshal(archivo);
-        
-        return listaClientes;
+        ListaClientes listaClientes = (ListaClientes) jaxbUnmarshaller.unmarshal(archivo);
+
+        return listaClientes.getClientes();
 
     }
 
@@ -770,11 +870,15 @@ public class ControladorPrincipal extends Controlador {
                 String line = sc.nextLine();
                 String[] trozos = line.split("\t");
 
-                Proveedor proveedor = new Proveedor(trozos[0], trozos[1], trozos[2], trozos[3], trozos[4], trozos[5]);
+                Proveedor proveedor = new Proveedor(obtenerElemento(trozos, 0), obtenerElemento(trozos, 1), obtenerElemento(trozos, 2), obtenerElemento(trozos, 3), obtenerElemento(trozos, 4), obtenerElemento(trozos, 5));
                 proveedores.add(proveedor);
             }
         }
         return proveedores;
+    }
+
+    private String obtenerElemento(String[] array, int indice) {
+        return indice < array.length ? array[indice] : null;
     }
 
     public void generarBinEnvios(List<Envio> envios) throws IOException {

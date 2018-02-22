@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -61,7 +62,7 @@ public class VistaCrearEnvio implements Vista {
         this.panel = new JPanel(new GridLayout(3, 2));
 
         listaProductos = crearListaProductos();
-        panel.add(listaProductos);
+        panel.add(new JScrollPane(listaProductos));
 
         this.txtFecha = new JTextField();
         this.panel.add(this.crearFila("Fecha", txtFecha));
@@ -184,6 +185,7 @@ public class VistaCrearEnvio implements Vista {
         List<ProductoEnvio> productosEnvio = new ArrayList<>(productosAlmacen.size());
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setLenient(false);
         Date fecha;
         try {
             fecha = df.parse(fechaTexto);

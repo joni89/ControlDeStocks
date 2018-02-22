@@ -11,12 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -49,7 +51,7 @@ public class VistaAnadirStock implements Vista{
         this.panel = new JPanel(new GridLayout(3, 1));
 
         listaProductos = crearListaProductos();
-        panel.add(listaProductos);
+        panel.add(new JScrollPane(listaProductos));
         
         this.txtCantidad = new JTextField();
         this.panel.add(this.crearFila("Cantidad", txtCantidad));
@@ -145,6 +147,7 @@ public class VistaAnadirStock implements Vista{
         }
 
         this.controlador.anadirStock(producto, cantidad);
+        txtCantidad.setText("");
     }
     
     /**
@@ -159,7 +162,18 @@ public class VistaAnadirStock implements Vista{
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaCrearProducto.refrescar()");
+
+        DefaultListModel<ProductoAlmacen> items = new DefaultListModel<>();
+
+        int i=0;
+        for(ProductoAlmacen producto : almacen.getProductos()) {
+            items.add(i, producto);
+            ++i;
+        }
+
+        listaProductos.setModel(items);
+
+        System.out.println("aplicacion.vista.VistaAnadirStock.refrescar()");
     }
 
     /**

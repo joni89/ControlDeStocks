@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -33,7 +34,7 @@ public class VistaCrearProducto implements Vista {
     private final JPanel panel;
     private final JTextField txtNombre;
     private final JTextField txtFabricante;
-    JComboBox<Proveedor> comboProveedores;
+    private final JComboBox<Proveedor> comboProveedores;
     private final JTextField txtPrecio;
     private final JTextField txtCantidad;
     private final JButton botonGuardar;
@@ -134,10 +135,33 @@ public class VistaCrearProducto implements Vista {
      */
     private void accionCrearProducto() {
         String nombre = txtNombre.getText();
+        if(nombre.isEmpty()){
+            JOptionPane.showMessageDialog(this.panel, "Introduzca nombre", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String fabricante = txtFabricante.getText();
         Proveedor proveedor = (Proveedor)comboProveedores.getSelectedItem();
-        double precio = Double.parseDouble(txtPrecio.getText());
-        int unidades = Integer.parseInt(txtCantidad.getText());
+        double precio;
+
+        try{
+            precio = Double.parseDouble(txtPrecio.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this.panel, "Formato de precio no válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int unidades;
+
+        try{
+            unidades = Integer.parseInt(txtCantidad.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this.panel, "Formato de cantidad no válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
     }
 

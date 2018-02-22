@@ -16,6 +16,7 @@ import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
@@ -51,7 +52,7 @@ public class VistaPrincipal implements Vista {
         this.panel = new JPanel(new GridLayout(3, 1));
 
         listaProductos = crearListaProductos();
-        panel.add(listaProductos);
+        panel.add(new JScrollPane(listaProductos));
 
         this.botonNuevoProducto = new JButton("Nuevo Producto");
         this.botonNuevoProducto.addActionListener(new ActionListener() {
