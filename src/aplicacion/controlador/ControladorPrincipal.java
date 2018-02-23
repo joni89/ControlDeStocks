@@ -10,13 +10,15 @@ import aplicacion.modelo.Envio;
 import aplicacion.modelo.ListaClientes;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
-import aplicacion.vista.VistaAnadirStock;
-import aplicacion.vista.VistaCrearClienteProveedor;
-import aplicacion.vista.VistaCrearEnvio;
-import aplicacion.vista.VistaCrearFactura;
-import aplicacion.vista.VistaCrearProducto;
+import aplicacion.vista.creacion.VistaAnadirStock;
+import aplicacion.vista.creacion.VistaCrearClienteProveedor;
+import aplicacion.vista.creacion.VistaCrearEnvio;
+import aplicacion.vista.creacion.VistaCrearFactura;
+import aplicacion.vista.creacion.VistaCrearProducto;
+import aplicacion.vista.eliminacion.VistaEliminar;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
+import aplicacion.vista.eliminacion.VistaEliminarProducto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.event.ActionEvent;
@@ -112,7 +114,7 @@ public class ControladorPrincipal extends Controlador {
         accionEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Se pulsó ELIMINAR");
+               mostrarEliminar();
             }
         });
         menuAcciones.add(accionEliminar);
@@ -764,7 +766,29 @@ public class ControladorPrincipal extends Controlador {
 
         this.setVistaActiva(vista);
         this.refrescarVistaActiva();
+    }
+    
+    /**
+     * Se muestra la pantalla de eliminar.
+     */
+    public void mostrarEliminar() {
 
+        VistaEliminar eliminar = new VistaEliminar(this, almacen);
+
+        this.setVistaActiva(eliminar);
+        this.refrescarVistaActiva();
+    }
+    
+    
+    /**
+     * Se muestra la pantalla de eliminar.
+     */
+    public void mostrarEliminarProducto(){
+
+        VistaEliminarProducto eliminarProducto = new VistaEliminarProducto(this, almacen);
+
+        this.setVistaActiva(eliminarProducto);
+        this.refrescarVistaActiva();
     }
 
     //Archivos

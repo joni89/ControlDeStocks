@@ -5,6 +5,7 @@
  */
 package aplicacion.vista;
 
+import aplicacion.vista.creacion.VistaCrearProducto;
 import javax.swing.JComponent;
 import org.junit.After;
 import org.junit.AfterClass;

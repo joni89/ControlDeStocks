@@ -1,10 +1,11 @@
-package aplicacion.vista;
+package aplicacion.vista.creacion;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Cliente;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
+import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

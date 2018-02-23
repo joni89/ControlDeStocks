@@ -1,8 +1,9 @@
-package aplicacion.vista;
+package aplicacion.vista.creacion;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
+import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;

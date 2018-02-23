@@ -17,7 +17,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 /**

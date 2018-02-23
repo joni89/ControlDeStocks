@@ -1,7 +1,8 @@
-package aplicacion.vista;
+package aplicacion.vista.creacion;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Proveedor;
+import aplicacion.vista.Vista;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

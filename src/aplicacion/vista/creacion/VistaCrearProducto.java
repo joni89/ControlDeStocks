@@ -1,4 +1,4 @@
-package aplicacion.vista;
+package aplicacion.vista.creacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Proveedor;
+import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
