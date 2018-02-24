@@ -11,14 +11,8 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.Vector;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -97,21 +91,21 @@ public class VistaEliminar implements Vista {
      * Nos lleva a la vista que crea un cliente.
      */
     private void accionEliminarCliente() {
-        this.controlador.mostrarCrearCliente();
+        this.controlador.mostrarEliminarCliente();
     }
 
     /**
      * Nos lleva a la vista que elimina un proveedor.
      */
     private void accionEliminarProveedor() {
-        this.controlador.mostrarCrearProveedor();
+        this.controlador.mostrarEliminarProveedor();
     }
     
     /**
      * Nos lleva a la vista que elimina un envío.
      */
     private void accionEliminarEnvio() {
-        this.controlador.mostrarCrearProveedor();
+        this.controlador.mostrarEliminarEnvio();
     }
 
     /**

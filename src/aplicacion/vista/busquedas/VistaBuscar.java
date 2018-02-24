@@ -1,6 +1,5 @@
 package aplicacion.vista.busquedas;
 
-import aplicacion.vista.eliminacion.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,14 +11,8 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.Vector;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -53,7 +46,7 @@ public class VistaBuscar implements Vista {
         this.botonProductos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarProducto();
+                accionBuscarProducto();
             }
         });
         this.panel.add(this.botonProductos, 0);
@@ -62,7 +55,7 @@ public class VistaBuscar implements Vista {
         this.botonClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarCliente();
+                accionBuscarCliente();
             }
         });
         this.panel.add(this.botonClientes);
@@ -71,7 +64,7 @@ public class VistaBuscar implements Vista {
         this.botonProveedores.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarProveedor();
+                accionBuscarProveedor();
             }
         });
         this.panel.add(this.botonProveedores);
@@ -80,7 +73,7 @@ public class VistaBuscar implements Vista {
         this.botonEnvio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarEnvio();
+                accionBuscarEnvio();
             }
         });
         this.panel.add(this.botonEnvio);
@@ -90,29 +83,29 @@ public class VistaBuscar implements Vista {
     /**
      * Nos lleva a la vista que crea un producto.
      */
-    private void accionEliminarProducto() {
-        this.controlador.mostrarCrearProducto();
+    private void accionBuscarProducto() {
+        this.controlador.mostrarEliminarProducto();
     }
 
     /**
      * Nos lleva a la vista que crea un cliente.
      */
-    private void accionEliminarCliente() {
-        this.controlador.mostrarCrearCliente();
+    private void accionBuscarCliente() {
+        this.controlador.mostrarEliminarCliente();
     }
 
     /**
      * Nos lleva a la vista que elimina un proveedor.
      */
-    private void accionEliminarProveedor() {
-        this.controlador.mostrarCrearProveedor();
+    private void accionBuscarProveedor() {
+        this.controlador.mostrarEliminarProveedor();
     }
     
     /**
      * Nos lleva a la vista que elimina un envío.
      */
-    private void accionEliminarEnvio() {
-        this.controlador.mostrarCrearProveedor();
+    private void accionBuscarEnvio() {
+        this.controlador.mostrarEliminarEnvio();
     }
 
     /**

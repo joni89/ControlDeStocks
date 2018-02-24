@@ -3,7 +3,6 @@ package aplicacion.vista.eliminacion;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
-import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -25,13 +24,13 @@ import javax.swing.ListSelectionModel;
  *
  * @author jonatan
  */
-public class VistaEliminarProducto implements Vista {
+public class VistaEliminarEnvio implements Vista {
 
     private final ControladorPrincipal controlador;
     private final Almacen almacen;
 
     private final JPanel panel;
-    private final JList<ProductoAlmacen> listaProductos;
+    private final JList<Envio> listaEnvios;
     private final JButton botonEliminar;
     private final JButton botonCancelar;
 
@@ -41,21 +40,21 @@ public class VistaEliminarProducto implements Vista {
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaEliminarProducto(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaEliminarEnvio(ControladorPrincipal controlador, Almacen almacen) {
 
         this.controlador = controlador;
         this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
 
-        listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        listaEnvios = crearListaEnvios();
+        panel.add(new JScrollPane(listaEnvios));
 
         this.botonEliminar = new JButton("Eliminar");
         this.botonEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarProducto();
+                accionEliminarEnvio();
             }
         });
         this.panel.add(this.botonEliminar);
@@ -72,24 +71,26 @@ public class VistaEliminarProducto implements Vista {
     }
 
     /**
-     * Crea una lista de productos y la devuelve.
+     * Crea una lista de envíos y la devuelve.
      * 
-     * @return lista de productos almacen.
+     * @return lista de envíos.
      */
-    private JList<ProductoAlmacen> crearListaProductos() {
+    private JList<Envio> crearListaEnvios() {
 
-        JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
+        JList<Envio> lista = new JList<>(new Vector<>(almacen.getEnviosRealizados()));
 
-        lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         lista.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-                ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
+                Envio envio = (Envio) value;
 
-                String texto = String.format("%s (%d uds.)", productoAlmacen.getProducto().getNombre(), productoAlmacen.getStock());
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+                String texto = String.format("#%d %s (%s)", envio.getId(), envio.getCliente().getNombre(), df.format(envio.getFecha()));
                 this.setText(texto);
 
                 return resultado;
@@ -100,13 +101,13 @@ public class VistaEliminarProducto implements Vista {
     }
 
     /**
-     * Gestiona la acción de eliminar un producto.
+     * Gestiona la acción de eliminar un envío.
      */
-    private void accionEliminarProducto() {
-        ProductoAlmacen productoAlmacen = listaProductos.getSelectedValue();
+    private void accionEliminarEnvio() {
+        Envio envio = listaEnvios.getSelectedValue();
 
-        if (productoAlmacen == null) {
-            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún producto", "Error", JOptionPane.ERROR_MESSAGE);
+        if (envio == null) {
+            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún envio", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }
@@ -123,7 +124,7 @@ public class VistaEliminarProducto implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaEliminarEnvio.refrescar()");
     }
 
     /**

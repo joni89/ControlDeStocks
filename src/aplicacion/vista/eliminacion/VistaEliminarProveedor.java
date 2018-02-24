@@ -4,6 +4,7 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
 import aplicacion.modelo.ProductoAlmacen;
+import aplicacion.modelo.Proveedor;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -25,13 +26,13 @@ import javax.swing.ListSelectionModel;
  *
  * @author jonatan
  */
-public class VistaEliminarProducto implements Vista {
+public class VistaEliminarProveedor implements Vista {
 
     private final ControladorPrincipal controlador;
     private final Almacen almacen;
 
     private final JPanel panel;
-    private final JList<ProductoAlmacen> listaProductos;
+    private final JList<Proveedor> listaProveedores;
     private final JButton botonEliminar;
     private final JButton botonCancelar;
 
@@ -41,21 +42,21 @@ public class VistaEliminarProducto implements Vista {
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaEliminarProducto(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaEliminarProveedor(ControladorPrincipal controlador, Almacen almacen) {
 
         this.controlador = controlador;
         this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
 
-        listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        listaProveedores = crearListaProveedores();
+        panel.add(new JScrollPane(listaProveedores));
 
         this.botonEliminar = new JButton("Eliminar");
         this.botonEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionEliminarProducto();
+                accionEliminarProveedor();
             }
         });
         this.panel.add(this.botonEliminar);
@@ -72,13 +73,13 @@ public class VistaEliminarProducto implements Vista {
     }
 
     /**
-     * Crea una lista de productos y la devuelve.
+     * Crea una lista de proveedores y la devuelve.
      * 
-     * @return lista de productos almacen.
+     * @return lista de proveedores.
      */
-    private JList<ProductoAlmacen> crearListaProductos() {
+    private JList<Proveedor> crearListaProveedores() {
 
-        JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
+        JList<Proveedor> lista = new JList<>(new Vector<>(almacen.getProveedores()));
 
         lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -87,10 +88,8 @@ public class VistaEliminarProducto implements Vista {
             public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component resultado = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-                ProductoAlmacen productoAlmacen = (ProductoAlmacen) value;
-
-                String texto = String.format("%s (%d uds.)", productoAlmacen.getProducto().getNombre(), productoAlmacen.getStock());
-                this.setText(texto);
+                Proveedor proveedor = (Proveedor) value;
+                this.setText(proveedor != null ? proveedor.getNombre() : "No existen proveedores");
 
                 return resultado;
             }
@@ -100,13 +99,13 @@ public class VistaEliminarProducto implements Vista {
     }
 
     /**
-     * Gestiona la acción de eliminar un producto.
+     * Gestiona la acción de eliminar un proveedor.
      */
-    private void accionEliminarProducto() {
-        ProductoAlmacen productoAlmacen = listaProductos.getSelectedValue();
+    private void accionEliminarProveedor() {
+        Proveedor proveedor = listaProveedores.getSelectedValue();
 
-        if (productoAlmacen == null) {
-            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún producto", "Error", JOptionPane.ERROR_MESSAGE);
+        if (proveedor == null) {
+            JOptionPane.showMessageDialog(panel, "Debe seleccionar algún proveedor", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }
@@ -123,7 +122,7 @@ public class VistaEliminarProducto implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaEliminarProveedor.refrescar()");
     }
 
     /**

@@ -18,7 +18,15 @@ import aplicacion.vista.creacion.VistaCrearProducto;
 import aplicacion.vista.eliminacion.VistaEliminar;
 import aplicacion.vista.VistaFactura;
 import aplicacion.vista.VistaPrincipal;
+import aplicacion.vista.busquedas.VistaBuscar;
+import aplicacion.vista.busquedas.VistaBuscarCliente;
+import aplicacion.vista.busquedas.VistaBuscarEnvio;
+import aplicacion.vista.busquedas.VistaBuscarProducto;
+import aplicacion.vista.busquedas.VistaBuscarProveedor;
+import aplicacion.vista.eliminacion.VistaEliminarCliente;
+import aplicacion.vista.eliminacion.VistaEliminarEnvio;
 import aplicacion.vista.eliminacion.VistaEliminarProducto;
+import aplicacion.vista.eliminacion.VistaEliminarProveedor;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.event.ActionEvent;
@@ -105,7 +113,7 @@ public class ControladorPrincipal extends Controlador {
         accionBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Se pulsó BUSCAR");
+                mostrarBuscar();
             }
         });
         menuAcciones.add(accionBuscar);
@@ -767,6 +775,52 @@ public class ControladorPrincipal extends Controlador {
         this.setVistaActiva(vista);
         this.refrescarVistaActiva();
     }
+    //Buscar
+    
+    /**
+     * Se muestra la pantalla de buscar.
+     */
+    public void mostrarBuscar() {
+
+        VistaBuscar buscar = new VistaBuscar(this, almacen);
+
+        this.setVistaActiva(buscar);
+        this.refrescarVistaActiva();
+    }
+    
+    /**
+     * Se muestra la pantalla de buscar producto.
+     */
+    public void mostrarBuscarProducto(){
+
+        VistaBuscarProducto buscarProducto = new VistaBuscarProducto(this, almacen);
+
+        this.setVistaActiva(buscarProducto);
+        this.refrescarVistaActiva();
+    }
+    
+    public void mostrarBuscarCliente() {
+        VistaBuscarCliente buscarCliente = new VistaBuscarCliente(this, almacen);
+
+        this.setVistaActiva(buscarCliente);
+        this.refrescarVistaActiva();
+    }
+
+    public void mostrarBuscarProveedor() {
+        VistaBuscarProveedor buscarProveedor = new VistaBuscarProveedor(this, almacen);
+
+        this.setVistaActiva(buscarProveedor);
+        this.refrescarVistaActiva();
+    }
+
+    public void mostrarBuscarEnvio() {
+        VistaBuscarEnvio buscarEnvio = new VistaBuscarEnvio(this, almacen);
+
+        this.setVistaActiva(buscarEnvio);
+        this.refrescarVistaActiva();
+    }
+    
+    //ELiminación
     
     /**
      * Se muestra la pantalla de eliminar.
@@ -779,7 +833,6 @@ public class ControladorPrincipal extends Controlador {
         this.refrescarVistaActiva();
     }
     
-    
     /**
      * Se muestra la pantalla de eliminar.
      */
@@ -790,8 +843,30 @@ public class ControladorPrincipal extends Controlador {
         this.setVistaActiva(eliminarProducto);
         this.refrescarVistaActiva();
     }
+    
+    public void mostrarEliminarCliente() {
+        VistaEliminarCliente eliminarCliente = new VistaEliminarCliente(this, almacen);
+
+        this.setVistaActiva(eliminarCliente);
+        this.refrescarVistaActiva();
+    }
+
+    public void mostrarEliminarProveedor() {
+        VistaEliminarProveedor eliminarProveedor = new VistaEliminarProveedor(this, almacen);
+
+        this.setVistaActiva(eliminarProveedor);
+        this.refrescarVistaActiva();
+    }
+
+    public void mostrarEliminarEnvio() {
+        VistaEliminarEnvio eliminarEnvio = new VistaEliminarEnvio(this, almacen);
+
+        this.setVistaActiva(eliminarEnvio);
+        this.refrescarVistaActiva();
+    }
 
     //Archivos
+    
     /**
      * Dado un objeto java se convierte a json.
      *
