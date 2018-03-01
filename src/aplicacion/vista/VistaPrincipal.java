@@ -10,14 +10,21 @@ import javax.swing.JPanel;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.ProductoAlmacen;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -27,9 +34,17 @@ public class VistaPrincipal implements Vista {
 
     private final ControladorPrincipal controlador;
     private final Almacen almacen;
+    private boolean ordenarProductosPorCantidad;
 
     private final JPanel panel;
+    private final JPanel panelProductos;
+    private final JPanel panelBotonesOrdenar;
+    private final JPanel panelBotones;
+
     private final JList<ProductoAlmacen> listaProductos;
+    private final JButton botonOrdenarPorNombre;
+    private final JButton botonOrdenarPorCantidad;
+
     private final JButton botonNuevoProducto;
     private final JButton botonNuevoCliente;
     private final JButton botonNuevoProveedor;
@@ -47,11 +62,40 @@ public class VistaPrincipal implements Vista {
 
         this.controlador = controlador;
         this.almacen = almacen;
+        this.ordenarProductosPorCantidad = false;
 
-        this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(2, 1, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        this.panelProductos = new JPanel(new BorderLayout());
+        panel.add(this.panelProductos);
 
         listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        panelProductos.add("Center", new JScrollPane(listaProductos));
+
+        this.panelBotonesOrdenar = new JPanel(new FlowLayout());
+        panelProductos.add("South", this.panelBotonesOrdenar);
+
+        botonOrdenarPorNombre = new JButton("Ordenar por nombre");
+        botonOrdenarPorNombre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accionOrdenarPorNombre();
+            }
+        });
+        panelBotonesOrdenar.add(botonOrdenarPorNombre);
+
+        botonOrdenarPorCantidad = new JButton("Ordenar por cantidad");
+        botonOrdenarPorCantidad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accionOrdenarPorCantidad();
+            }
+        });
+        panelBotonesOrdenar.add(botonOrdenarPorCantidad);
+
+        this.panelBotones = new JPanel(new GridLayout(2, 3, 5, 5));
+        panel.add(this.panelBotones);
 
         this.botonNuevoProducto = new JButton("Nuevo Producto");
         this.botonNuevoProducto.addActionListener(new ActionListener() {
@@ -60,7 +104,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearProducto();
             }
         });
-        this.panel.add(this.botonNuevoProducto, 0);
+        this.panelBotones.add(this.botonNuevoProducto, 0);
 
         this.botonNuevoCliente = new JButton("Nuevo Cliente");
         this.botonNuevoCliente.addActionListener(new ActionListener() {
@@ -69,7 +113,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearCliente();
             }
         });
-        this.panel.add(this.botonNuevoCliente);
+        this.panelBotones.add(this.botonNuevoCliente);
 
         this.botonNuevoProveedor = new JButton("Nuevo Proveedor");
         this.botonNuevoProveedor.addActionListener(new ActionListener() {
@@ -78,7 +122,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearProveedor();
             }
         });
-        this.panel.add(this.botonNuevoProveedor);
+        this.panelBotones.add(this.botonNuevoProveedor);
 
         this.botonStock = new JButton("Añadir stock");
         this.botonStock.addActionListener(new ActionListener() {
@@ -87,7 +131,7 @@ public class VistaPrincipal implements Vista {
                 accionAnadirStock();
             }
         });
-        this.panel.add(this.botonStock);
+        this.panelBotones.add(this.botonStock);
 
         this.botonEnvio = new JButton("Nuevo Envío");
         this.botonEnvio.addActionListener(new ActionListener() {
@@ -96,7 +140,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearEnvio();
             }
         });
-        this.panel.add(this.botonEnvio);
+        this.panelBotones.add(this.botonEnvio);
 
         this.botonFactura = new JButton("Nueva Factura");
         this.botonFactura.addActionListener(new ActionListener() {
@@ -105,7 +149,7 @@ public class VistaPrincipal implements Vista {
                 accionCrearFactura();
             }
         });
-        this.panel.add(this.botonFactura);
+        this.panelBotones.add(this.botonFactura);
     }
 
     /**
@@ -115,7 +159,7 @@ public class VistaPrincipal implements Vista {
      */
     private JList<ProductoAlmacen> crearListaProductos() {
 
-        JList<ProductoAlmacen> lista = new JList<>(new Vector<>(almacen.getProductos()));
+        JList<ProductoAlmacen> lista = new JList<>();
 
         lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -183,11 +227,38 @@ public class VistaPrincipal implements Vista {
      */
     @Override
     public void refrescar() {
+
+        List<ProductoAlmacen> productosOrdenados = new ArrayList<>(almacen.getProductos());
+
+        Collections.sort(productosOrdenados, new Comparator<ProductoAlmacen>() {
+            @Override
+            public int compare(ProductoAlmacen prod1, ProductoAlmacen prod2) {
+                if(ordenarProductosPorCantidad) {
+                    return Integer.compare(prod1.getStock(), prod2.getStock());
+                } else {
+                    return prod1.getProducto().getNombre().compareToIgnoreCase(prod2.getProducto().getNombre());
+                }
+            }
+        });
+
         DefaultListModel<ProductoAlmacen> items = new DefaultListModel<>();
-        for(ProductoAlmacen producto : almacen.getProductos()) {
+
+        for(ProductoAlmacen producto : productosOrdenados) {
             items.addElement(producto);
         }
+
         listaProductos.setModel(items);
+
+    }
+
+    private void accionOrdenarPorNombre() {
+        this.ordenarProductosPorCantidad = false;
+        this.refrescar();
+    }
+
+    private void accionOrdenarPorCantidad() {
+        this.ordenarProductosPorCantidad = true;
+        this.refrescar();
     }
 
     /**

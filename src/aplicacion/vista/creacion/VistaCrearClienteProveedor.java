@@ -32,7 +32,6 @@ public class VistaCrearClienteProveedor implements Vista{
     private final JTextField txtEmail;
     private final JTextField txtPersonaContacto;
     private final JButton botonGuardar;
-    private final JButton botonCancelar;
 
     /**
      *Crea todos los componentes de la vista.
@@ -75,14 +74,6 @@ public class VistaCrearClienteProveedor implements Vista{
         });
         this.panel.add(this.botonGuardar);
 
-        this.botonCancelar = new JButton("Cancelar");
-        this.botonCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accionCancelar();
-            }
-        });
-        this.panel.add(this.botonCancelar);
     }
 
     /**
@@ -135,16 +126,6 @@ public class VistaCrearClienteProveedor implements Vista{
             this.controlador.crearAnadirCliente(id, nombre, direccion, telefono, email, personaContacto);
         }
 
-        JOptionPane.showMessageDialog(panel, (proveedor ? "Proveedor" : "Cliente") + " creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
-        this.controlador.mostrarVistaPrincipal();
-
-    }
-
-    /**
-     * Vuelve a la vista principal.
-     */
-    private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

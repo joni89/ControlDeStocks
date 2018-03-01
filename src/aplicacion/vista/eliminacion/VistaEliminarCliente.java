@@ -3,6 +3,7 @@ package aplicacion.vista.eliminacion;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Cliente;
+import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -105,13 +107,15 @@ public class VistaEliminarCliente implements Vista {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún cliente", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        controlador.eliminarCliente(cliente);
     }
 
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarEliminar();
     }
 
     /**
@@ -119,7 +123,11 @@ public class VistaEliminarCliente implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarCliente.refrescar()");
+        DefaultListModel<Cliente> items = new DefaultListModel<>();
+        for(Cliente cliente : almacen.getClientes()) {
+            items.addElement(cliente);
+        }
+        listaClientes.setModel(items);
     }
 
     /**

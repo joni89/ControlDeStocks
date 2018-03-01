@@ -9,6 +9,9 @@ import java.util.List;
  * @author jonatan
  */
 public class Envio implements Serializable{
+
+    static final long serialVersionUID = 1L;
+
     private int id;
     private List<ProductoEnvio> productos;
     private Date fecha;
@@ -117,7 +120,7 @@ public class Envio implements Serializable{
      * 
      * @return true o false.
      */
-    public boolean isCobrado() {
+    public boolean getCobrado() {
         return cobrado;
     }
 

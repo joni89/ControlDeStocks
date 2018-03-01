@@ -1,5 +1,6 @@
 package aplicacion.vista.creacion;
 
+import aplicacion.controlador.ControladorPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,13 +9,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Proveedor;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.Vector;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -22,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -33,13 +35,13 @@ public class VistaCrearProducto implements Vista {
     private final Almacen almacen;
 
     private final JPanel panel;
+    private final JPanel panelBotones;
     private final JTextField txtNombre;
     private final JTextField txtFabricante;
     private final JComboBox<Proveedor> comboProveedores;
     private final JTextField txtPrecio;
     private final JTextField txtCantidad;
     private final JButton botonGuardar;
-    private final JButton botonCancelar;
 
     /**
      * Se crean los componentes de la vista.
@@ -62,13 +64,18 @@ public class VistaCrearProducto implements Vista {
         this.panel.add(this.crearFila("Fabricante", txtFabricante));
 
         comboProveedores = crearComboProveedores();
-        panel.add(comboProveedores);
+        this.panel.add(this.crearFila("Proveedor", comboProveedores));
 
         this.txtPrecio = new JTextField();
         this.panel.add(this.crearFila("Precio", txtPrecio));
 
         this.txtCantidad = new JTextField();
         this.panel.add(this.crearFila("Cantidad", txtCantidad));
+
+        this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.panel.add(panelBotones);
 
         this.botonGuardar = new JButton("Guardar");
         this.botonGuardar.addActionListener(new ActionListener() {
@@ -77,16 +84,8 @@ public class VistaCrearProducto implements Vista {
                 accionCrearProducto();
             }
         });
-        this.panel.add(this.botonGuardar);
+        this.panelBotones.add(this.botonGuardar);
 
-        this.botonCancelar = new JButton("Cancelar");
-        this.botonCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accionCancelar();
-            }
-        });
-        this.panel.add(this.botonCancelar);
     }
 
     /**
@@ -96,10 +95,12 @@ public class VistaCrearProducto implements Vista {
      * @param caja
      * @return panel
      */
-    private JPanel crearFila(String nombreLabel, JTextField caja) {
-        caja.setPreferredSize(new Dimension(200, 20));
+    private JPanel crearFila(String nombreLabel, JComponent caja) {
+        caja.setPreferredSize(new Dimension(300, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
-        JPanel panel = new JPanel(new FlowLayout());
+        etiqueta.setPreferredSize(new Dimension(100, 20));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         panel.add(etiqueta);
         panel.add(caja);
 
@@ -114,6 +115,7 @@ public class VistaCrearProducto implements Vista {
     private JComboBox<Proveedor> crearComboProveedores() {
 
         JComboBox<Proveedor> combo = new JComboBox<>(new Vector<>(almacen.getProveedores()));
+        combo.setMaximumSize(new Dimension(500, 40));
         
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -164,13 +166,6 @@ public class VistaCrearProducto implements Vista {
         }
 
         this.controlador.crearAnadirProducto(nombre, fabricante, proveedor, precio, unidades);
-    }
-
-    /**
-     * Muestra la vista principal.
-     */
-    private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

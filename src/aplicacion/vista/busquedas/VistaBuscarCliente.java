@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,7 +22,6 @@ import javax.swing.JTextField;
 public class VistaBuscarCliente implements Vista{
     
     private final ControladorPrincipal controlador;
-    private final Almacen almacen;
 
     private final JPanel panel;
     private final JTextField txtID;
@@ -34,10 +34,9 @@ public class VistaBuscarCliente implements Vista{
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaBuscarCliente(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaBuscarCliente(ControladorPrincipal controlador) {
 
         this.controlador = controlador;
-        this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
         
@@ -48,7 +47,7 @@ public class VistaBuscarCliente implements Vista{
         this.botonBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionBuscarProducto();
+                accionBuscarCliente();
             }
         });
         this.panel.add(this.botonBuscar);
@@ -82,17 +81,22 @@ public class VistaBuscarCliente implements Vista{
     }
     
     /**
-     * Añade stock a un producto del almacén.
+     * Acción de buscar un cliente.
      */
-    private void accionBuscarProducto() {
-        
+    private void accionBuscarCliente() {
+        String id = txtID.getText();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Debe introducir un ID", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.controlador.mostrarResultadoCliente(id);
     }
     
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarBuscar();
     }
 
     /**
@@ -100,7 +104,7 @@ public class VistaBuscarCliente implements Vista{
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaBuscarProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaBuscarCliente.refrescar()");
     }
 
     /**

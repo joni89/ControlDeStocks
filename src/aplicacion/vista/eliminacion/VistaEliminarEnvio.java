@@ -3,6 +3,7 @@ package aplicacion.vista.eliminacion;
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
+import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -12,6 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -110,13 +112,15 @@ public class VistaEliminarEnvio implements Vista {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún envio", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        controlador.eliminarEnvio(envio);
     }
 
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarEliminar();
     }
 
     /**
@@ -124,7 +128,11 @@ public class VistaEliminarEnvio implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarEnvio.refrescar()");
+        DefaultListModel<Envio> items = new DefaultListModel<>();
+        for(Envio envio : almacen.getEnviosRealizados()) {
+            items.addElement(envio);
+        }
+        listaEnvios.setModel(items);
     }
 
     /**

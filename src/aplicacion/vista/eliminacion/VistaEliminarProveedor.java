@@ -2,18 +2,15 @@ package aplicacion.vista.eliminacion;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.Envio;
-import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.Proveedor;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -79,7 +76,7 @@ public class VistaEliminarProveedor implements Vista {
      */
     private JList<Proveedor> crearListaProveedores() {
 
-        JList<Proveedor> lista = new JList<>(new Vector<>(almacen.getProveedores()));
+        JList<Proveedor> lista = new JList<>();
 
         lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -108,13 +105,15 @@ public class VistaEliminarProveedor implements Vista {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún proveedor", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        controlador.eliminarProveedor(proveedor);
     }
 
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarEliminar();
     }
 
     /**
@@ -122,7 +121,11 @@ public class VistaEliminarProveedor implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarProveedor.refrescar()");
+        DefaultListModel<Proveedor> items = new DefaultListModel<>();
+        for(Proveedor proveedor : almacen.getProveedores()) {
+            items.addElement(proveedor);
+        }
+        listaProveedores.setModel(items);
     }
 
     /**

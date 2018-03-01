@@ -75,18 +75,18 @@ public class ControladorPrincipalTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of eliminarProducto method, of class ControladorPrincipal.
-     */
-    @Test
-    public void testEliminarProducto() {
-        System.out.println("eliminarProducto");
-        Producto producto = null;
-        ControladorPrincipal instance = new ControladorPrincipal();
-        instance.eliminarProducto(producto);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    /**
+//     * Test of eliminarProducto method, of class ControladorPrincipal.
+//     */
+//    @Test
+//    public void testEliminarProductoAlmacen() {
+//        System.out.println("eliminarProductoAlmacen");
+//        ProductoAlmacen productoAlmacen = null;
+//        ControladorPrincipal instance = new ControladorPrincipal();
+//        instance.eliminarProductoAlmacen(productoAlmacen);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of anadirStock method, of class ControladorPrincipal.
@@ -190,8 +190,7 @@ public class ControladorPrincipalTest {
         boolean cobrado = false;
         ControladorPrincipal instance = new ControladorPrincipal();
         boolean expResult = false;
-        boolean result = instance.crearAnadirEnvio(productos, fecha, cliente, cobrado);
-        assertEquals(expResult, result);
+        instance.crearAnadirEnvio(productos, fecha, cliente, cobrado);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

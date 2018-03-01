@@ -21,7 +21,6 @@ import javax.swing.DefaultListModel;
 public class VistaBuscar implements Vista {
 
     private final ControladorPrincipal controlador;
-    private final Almacen almacen;
 
     private final JPanel panel;
     private final JButton botonProductos;
@@ -38,7 +37,6 @@ public class VistaBuscar implements Vista {
     public VistaBuscar(ControladorPrincipal controlador, Almacen almacen) {
 
         this.controlador = controlador;
-        this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
 
@@ -84,28 +82,28 @@ public class VistaBuscar implements Vista {
      * Nos lleva a la vista que crea un producto.
      */
     private void accionBuscarProducto() {
-        this.controlador.mostrarEliminarProducto();
+        this.controlador.mostrarBuscarProducto();
     }
 
     /**
      * Nos lleva a la vista que crea un cliente.
      */
     private void accionBuscarCliente() {
-        this.controlador.mostrarEliminarCliente();
+        this.controlador.mostrarBuscarCliente();
     }
 
     /**
      * Nos lleva a la vista que elimina un proveedor.
      */
     private void accionBuscarProveedor() {
-        this.controlador.mostrarEliminarProveedor();
+        this.controlador.mostrarBuscarProveedor();
     }
     
     /**
      * Nos lleva a la vista que elimina un envío.
      */
     private void accionBuscarEnvio() {
-        this.controlador.mostrarEliminarEnvio();
+        this.controlador.mostrarBuscarEnvio();
     }
 
     /**
@@ -113,10 +111,7 @@ public class VistaBuscar implements Vista {
      */
     @Override
     public void refrescar() {
-        DefaultListModel<ProductoAlmacen> items = new DefaultListModel<>();
-        for(ProductoAlmacen producto : almacen.getProductos()) {
-            items.addElement(producto);
-        }
+       
     }
 
     /**

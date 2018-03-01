@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,8 +22,7 @@ import javax.swing.JTextField;
 public class VistaBuscarEnvio implements Vista{
     
     private final ControladorPrincipal controlador;
-    private final Almacen almacen;
-
+    
     private final JPanel panel;
     private final JTextField txtID;
     private final JButton botonBuscar;
@@ -34,10 +34,9 @@ public class VistaBuscarEnvio implements Vista{
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaBuscarEnvio(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaBuscarEnvio(ControladorPrincipal controlador) {
 
         this.controlador = controlador;
-        this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
         
@@ -48,7 +47,7 @@ public class VistaBuscarEnvio implements Vista{
         this.botonBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionBuscarProducto();
+                accionBuscarEnvio();
             }
         });
         this.panel.add(this.botonBuscar);
@@ -84,15 +83,27 @@ public class VistaBuscarEnvio implements Vista{
     /**
      * Añade stock a un producto del almacén.
      */
-    private void accionBuscarProducto() {
-        
+    private void accionBuscarEnvio() {
+        String idTexto = txtID.getText();
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Debe introducir un ID", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            int id = Integer.parseInt(idTexto);
+            this.controlador.mostrarResultadoEnvio(id);
+
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(panel, "Debe introducir un número", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarBuscar();
     }
 
     /**
@@ -100,7 +111,7 @@ public class VistaBuscarEnvio implements Vista{
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaBuscarProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaBuscarEnvio.refrescar()");
     }
 
     /**

@@ -10,6 +10,7 @@ import aplicacion.modelo.Envio;
 import aplicacion.modelo.ListaClientes;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
+import aplicacion.vista.Vista;
 import aplicacion.vista.creacion.VistaAnadirStock;
 import aplicacion.vista.creacion.VistaCrearClienteProveedor;
 import aplicacion.vista.creacion.VistaCrearEnvio;
@@ -23,6 +24,10 @@ import aplicacion.vista.busquedas.VistaBuscarCliente;
 import aplicacion.vista.busquedas.VistaBuscarEnvio;
 import aplicacion.vista.busquedas.VistaBuscarProducto;
 import aplicacion.vista.busquedas.VistaBuscarProveedor;
+import aplicacion.vista.busquedas.VistaResultadoCliente;
+import aplicacion.vista.busquedas.VistaResultadoEnvio;
+import aplicacion.vista.busquedas.VistaResultadoProducto;
+import aplicacion.vista.busquedas.VistaResultadoProveedor;
 import aplicacion.vista.eliminacion.VistaEliminarCliente;
 import aplicacion.vista.eliminacion.VistaEliminarEnvio;
 import aplicacion.vista.eliminacion.VistaEliminarProducto;
@@ -50,6 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -66,6 +72,7 @@ import javax.xml.bind.Unmarshaller;
 public class ControladorPrincipal extends Controlador {
 
     private final Almacen almacen;
+    private final Envio envio;
     private final VistaPrincipal vistaPrincipal;
     private int idProducto;
     private int idEnvio;
@@ -75,6 +82,7 @@ public class ControladorPrincipal extends Controlador {
      */
     public ControladorPrincipal() {
         this.almacen = new Almacen();
+        this.envio = new Envio();
         this.vistaPrincipal = new VistaPrincipal(this, almacen);
         this.idProducto = 1;
         this.idEnvio = 1;
@@ -97,9 +105,17 @@ public class ControladorPrincipal extends Controlador {
             }
         });
         ventana.setSize(600, 400);
-        ventana.setVisible(true);
+        ventana.setResizable(false);
+        ventana.setLocationRelativeTo(null);
 
-        this.mostrarVistaPrincipal();
+        JDialog dialogo = this.getDialogo();
+        dialogo.setSize(600, 400);
+        dialogo.setResizable(false);
+
+        this.setVistaActiva(this.vistaPrincipal);
+        this.refrescarVistaActiva();
+
+        ventana.setVisible(true);
     }
 
     private JMenuBar crearMenus() {
@@ -122,20 +138,10 @@ public class ControladorPrincipal extends Controlador {
         accionEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               mostrarEliminar();
+                mostrarEliminar();
             }
         });
         menuAcciones.add(accionEliminar);
-
-        // BÓRRAME
-        JMenuItem accionCrearCliente = new JMenuItem("Crear cliente");
-        accionCrearCliente.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarCrearCliente();
-            }
-        });
-        menuAcciones.add(accionCrearCliente);
 
         return menuBar;
 
@@ -310,8 +316,7 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirProducto(String nombre, String fabricante, Proveedor proveedor, double precio, int stock) {
         Producto producto = crearProducto(nombre, fabricante, proveedor, precio);
         anadirProductoAlmacen(producto, stock);
-        this.setVistaActiva(vistaPrincipal);
-        this.refrescarVistaActiva();
+        cerrarDialogo();
     }
 
     /**
@@ -319,11 +324,25 @@ public class ControladorPrincipal extends Controlador {
      *
      * @param producto Producto a eliminar.
      */
-    public void eliminarProducto(Producto producto) {
-        Producto productoAlmacen = obtenerProducto(producto.getId());
+    private void eliminarProductoAlmacen(ProductoAlmacen producto) {
+        ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getProducto().getId());
         if (productoAlmacen != null) {
             this.almacen.getProductos().remove(productoAlmacen);
         }
+    }
+
+    /**
+     * Elimina varios productos del almacen.
+     *
+     * @param productos Productos a eliminar.
+     */
+    public void eliminarProductosAlmacen(List<ProductoAlmacen> productos) {
+        for(ProductoAlmacen producto : productos) {
+            eliminarProductoAlmacen(producto);
+        }
+        refrescarVistaActivaDialogo();
+        // Se refresca también la vista de la ventana porque se están mostrando en ella los productos
+        refrescarVistaActiva();
     }
 
     /**
@@ -336,6 +355,7 @@ public class ControladorPrincipal extends Controlador {
         ProductoAlmacen productoAlmacen = obtenerProductoAlmacen(producto.getProducto().getId());
         productoAlmacen.setStock(productoAlmacen.getStock() + cantidad);
         this.refrescarVistaActiva();
+        this.refrescarVistaActivaDialogo();
     }
 
     /**
@@ -397,7 +417,7 @@ public class ControladorPrincipal extends Controlador {
      */
     private Cliente obtenerCliente(String id) {
         for (Cliente cliente : almacen.getClientes()) {
-            if (cliente.getId().equals(id)) {
+            if (cliente.getId().equalsIgnoreCase(id)) {
                 return cliente;
             }
         }
@@ -417,6 +437,8 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirCliente(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Cliente cliente = crearCliente(id, nombre, direccion, telefono, email, personaContacto);
         anadirCliente(cliente);
+        JOptionPane.showMessageDialog(this.getVentana(), "Cliente creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        cerrarDialogo();
     }
 
     /**
@@ -429,6 +451,7 @@ public class ControladorPrincipal extends Controlador {
         if (clienteAlmacen != null) {
             this.almacen.getClientes().remove(clienteAlmacen);
         }
+        refrescarVistaActivaDialogo();
 
     }
 
@@ -470,7 +493,7 @@ public class ControladorPrincipal extends Controlador {
      */
     private Proveedor obtenerProveedor(String id) {
         for (Proveedor proveedor : almacen.getProveedores()) {
-            if (proveedor.getId().equals(id)) {
+            if (proveedor.getId().equalsIgnoreCase(id)) {
                 return proveedor;
             }
         }
@@ -490,6 +513,8 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirProveedor(String id, String nombre, String direccion, String telefono, String email, String personaContacto) {
         Proveedor proveedor = crearProveedor(id, nombre, direccion, telefono, email, personaContacto);
         anadirProveedor(proveedor);
+        JOptionPane.showMessageDialog(this.getVentana(), "Proveedor creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        cerrarDialogo();
     }
 
     /**
@@ -502,6 +527,7 @@ public class ControladorPrincipal extends Controlador {
         if (proveedorAlmacen != null) {
             this.almacen.getProveedores().remove(proveedorAlmacen);
         }
+        refrescarVistaActivaDialogo();
     }
 
     //Envio
@@ -570,10 +596,15 @@ public class ControladorPrincipal extends Controlador {
      * @param cobrado Si esta o no cobrado.
      * @return true si el envío fue creado, false si no.
      */
-    public boolean crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
+    public void crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado);
-        boolean creado = anadirEnvio(envio);
-        return creado;
+
+        if (anadirEnvio(envio)) {
+            JOptionPane.showMessageDialog(this.getVentana(), "Envío creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+            cerrarDialogo();
+        } else {
+            JOptionPane.showMessageDialog(this.getVentana(), "No hay suficiente stock en el almacén", "Stock insuficiente", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -581,11 +612,12 @@ public class ControladorPrincipal extends Controlador {
      *
      * @param envio Envío a eliminar.
      */
-    private void eliminarEnvio(Envio envio) {
+    public void eliminarEnvio(Envio envio) {
         Envio envioAlmacen = obtenerEnvio(envio.getId());
         if (envioAlmacen != null) {
             almacen.getEnviosRealizados().remove(envioAlmacen);
         }
+        refrescarVistaActivaDialogo();
     }
 
     /**
@@ -682,16 +714,19 @@ public class ControladorPrincipal extends Controlador {
         }
     }
 
-    //Vistas
-    
-    /**
-     * Muestra la lista de productos y refresca la vista.
-     */
-    public void mostrarVistaPrincipal() {
-        this.setVistaActiva(this.vistaPrincipal);
+    public void abrirDialogo(Vista vista, String titulo) {
+        this.setVistaActivaDialogo(vista);
+        this.refrescarVistaActivaDialogo();
+
+        this.getDialogo().setTitle(titulo);
+        this.getDialogo().setVisible(true);
+    }
+
+    public void cerrarDialogo() {
+        this.getDialogo().setVisible(false);
         this.refrescarVistaActiva();
     }
-    
+
     /**
      * Se muestra la ventana de creacción del producto.
      */
@@ -699,9 +734,7 @@ public class ControladorPrincipal extends Controlador {
 
         VistaCrearProducto vistaCrearProducto = new VistaCrearProducto(this, almacen);
 
-        this.setVistaActiva(vistaCrearProducto);
-        this.refrescarVistaActiva();
-
+        abrirDialogo(vistaCrearProducto, "Crear producto");
     }
 
     /**
@@ -711,8 +744,7 @@ public class ControladorPrincipal extends Controlador {
 
         VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this, false);
 
-        this.setVistaActiva(vistaCrearClienteProveedor);
-        this.refrescarVistaActiva();
+        abrirDialogo(vistaCrearClienteProveedor, "Crear cliente");
 
     }
 
@@ -723,8 +755,7 @@ public class ControladorPrincipal extends Controlador {
 
         VistaCrearClienteProveedor vistaCrearClienteProveedor = new VistaCrearClienteProveedor(this, true);
 
-        this.setVistaActiva(vistaCrearClienteProveedor);
-        this.refrescarVistaActiva();
+        abrirDialogo(vistaCrearClienteProveedor, "Crear proveedor");
 
     }
 
@@ -735,8 +766,7 @@ public class ControladorPrincipal extends Controlador {
 
         VistaAnadirStock vistaAnadirStock = new VistaAnadirStock(this, almacen);
 
-        this.setVistaActiva(vistaAnadirStock);
-        this.refrescarVistaActiva();
+        abrirDialogo(vistaAnadirStock, "Añadir stock");
     }
 
     /**
@@ -746,12 +776,12 @@ public class ControladorPrincipal extends Controlador {
 
         VistaCrearEnvio vistaCrearEnvio = new VistaCrearEnvio(this, almacen);
 
-        this.setVistaActiva(vistaCrearEnvio);
-        this.refrescarVistaActiva();
+        abrirDialogo(vistaCrearEnvio, "Crear envío");
     }
 
     /**
      * Se muestra la emisión de la factura.
+     *
      * @param envio envío.
      */
     public void mostrarFactura(Envio envio) {
@@ -760,8 +790,8 @@ public class ControladorPrincipal extends Controlador {
 
         VistaFactura vista = new VistaFactura(this, factura);
 
-        this.setVistaActiva(vista);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(vista);
+        this.refrescarVistaActivaDialogo();
 
     }
 
@@ -772,11 +802,10 @@ public class ControladorPrincipal extends Controlador {
 
         VistaCrearFactura vista = new VistaCrearFactura(this, almacen);
 
-        this.setVistaActiva(vista);
-        this.refrescarVistaActiva();
+        abrirDialogo(vista, "Crear factura");
     }
+
     //Buscar
-    
     /**
      * Se muestra la pantalla de buscar.
      */
@@ -784,44 +813,91 @@ public class ControladorPrincipal extends Controlador {
 
         VistaBuscar buscar = new VistaBuscar(this, almacen);
 
-        this.setVistaActiva(buscar);
-        this.refrescarVistaActiva();
+        abrirDialogo(buscar, "Búsqueda");
     }
-    
+
     /**
      * Se muestra la pantalla de buscar producto.
      */
-    public void mostrarBuscarProducto(){
+    public void mostrarBuscarProducto() {
 
-        VistaBuscarProducto buscarProducto = new VistaBuscarProducto(this, almacen);
+        VistaBuscarProducto buscarProducto = new VistaBuscarProducto(this);
 
-        this.setVistaActiva(buscarProducto);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(buscarProducto);
+        this.refrescarVistaActivaDialogo();
     }
-    
-    public void mostrarBuscarCliente() {
-        VistaBuscarCliente buscarCliente = new VistaBuscarCliente(this, almacen);
 
-        this.setVistaActiva(buscarCliente);
-        this.refrescarVistaActiva();
+    public void mostrarBuscarCliente() {
+        VistaBuscarCliente buscarCliente = new VistaBuscarCliente(this);
+
+        this.setVistaActivaDialogo(buscarCliente);
+        this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarBuscarProveedor() {
-        VistaBuscarProveedor buscarProveedor = new VistaBuscarProveedor(this, almacen);
+        VistaBuscarProveedor buscarProveedor = new VistaBuscarProveedor(this);
 
-        this.setVistaActiva(buscarProveedor);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(buscarProveedor);
+        this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarBuscarEnvio() {
-        VistaBuscarEnvio buscarEnvio = new VistaBuscarEnvio(this, almacen);
+        VistaBuscarEnvio buscarEnvio = new VistaBuscarEnvio(this);
 
-        this.setVistaActiva(buscarEnvio);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(buscarEnvio);
+        this.refrescarVistaActivaDialogo();
     }
-    
+
+    // Resultados
+    /**
+     * Se muestra la pantalla de buscar producto.
+     */
+    public void mostrarResultadoProducto(int id) {
+        ProductoAlmacen producto = obtenerProductoAlmacen(id);
+        if (producto == null) {
+            JOptionPane.showMessageDialog(this.getVentana(), "Producto no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            VistaResultadoProducto resultadoProducto = new VistaResultadoProducto(this, producto);
+            this.setVistaActivaDialogo(resultadoProducto);
+            this.refrescarVistaActivaDialogo();
+        }
+    }
+
+    public void mostrarResultadoCliente(String id) {
+        Cliente cliente = obtenerCliente(id);
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(this.getVentana(), "Cliente no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            VistaResultadoCliente resultadoCliente = new VistaResultadoCliente(this, cliente);
+            this.setVistaActivaDialogo(resultadoCliente);
+            this.refrescarVistaActivaDialogo();
+        }
+        
+    }
+
+    public void mostrarResultadoProveedor(String id) {
+        Proveedor proveedor = obtenerProveedor(id);
+        if (proveedor == null) {
+            JOptionPane.showMessageDialog(this.getVentana(), "Proveedor no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            VistaResultadoProveedor resultadoProveedor = new VistaResultadoProveedor(this, proveedor);
+            this.setVistaActivaDialogo(resultadoProveedor);
+            this.refrescarVistaActivaDialogo();
+        }
+    }
+
+    public void mostrarResultadoEnvio(int id) {
+        Envio envio = obtenerEnvio(id);
+        if (envio == null) {
+            JOptionPane.showMessageDialog(this.getVentana(), "Envío no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            VistaResultadoEnvio resultadoEnvio = new VistaResultadoEnvio(this, envio);
+            this.setVistaActivaDialogo(resultadoEnvio);
+            this.refrescarVistaActivaDialogo();
+        }
+    }
+
     //ELiminación
-    
     /**
      * Se muestra la pantalla de eliminar.
      */
@@ -829,44 +905,42 @@ public class ControladorPrincipal extends Controlador {
 
         VistaEliminar eliminar = new VistaEliminar(this, almacen);
 
-        this.setVistaActiva(eliminar);
-        this.refrescarVistaActiva();
+        abrirDialogo(eliminar, "Eliminar");
     }
-    
+
     /**
      * Se muestra la pantalla de eliminar.
      */
-    public void mostrarEliminarProducto(){
+    public void mostrarEliminarProducto() {
 
         VistaEliminarProducto eliminarProducto = new VistaEliminarProducto(this, almacen);
 
-        this.setVistaActiva(eliminarProducto);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(eliminarProducto);
+        this.refrescarVistaActivaDialogo();
     }
-    
+
     public void mostrarEliminarCliente() {
         VistaEliminarCliente eliminarCliente = new VistaEliminarCliente(this, almacen);
 
-        this.setVistaActiva(eliminarCliente);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(eliminarCliente);
+        this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarEliminarProveedor() {
         VistaEliminarProveedor eliminarProveedor = new VistaEliminarProveedor(this, almacen);
 
-        this.setVistaActiva(eliminarProveedor);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(eliminarProveedor);
+        this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarEliminarEnvio() {
         VistaEliminarEnvio eliminarEnvio = new VistaEliminarEnvio(this, almacen);
 
-        this.setVistaActiva(eliminarEnvio);
-        this.refrescarVistaActiva();
+        this.setVistaActivaDialogo(eliminarEnvio);
+        this.refrescarVistaActivaDialogo();
     }
 
     //Archivos
-    
     /**
      * Dado un objeto java se convierte a json.
      *
@@ -878,8 +952,8 @@ public class ControladorPrincipal extends Controlador {
 
         Gson gson = new Gson();
 
-        try(FileWriter fw = new FileWriter(archivo)){
-            gson.toJson(productos, fw);    
+        try (FileWriter fw = new FileWriter(archivo)) {
+            gson.toJson(productos, fw);
         }
     }
 
@@ -890,14 +964,14 @@ public class ControladorPrincipal extends Controlador {
             return new ArrayList<>();
         }
         Gson gson = new Gson();
-        try(FileReader fr = new FileReader(archivo)){
+        try (FileReader fr = new FileReader(archivo)) {
             List<ProductoAlmacen> listaProductosJson = gson.fromJson(fr, new TypeToken<List<ProductoAlmacen>>() {
             }.getType());
-            
-            if(listaProductosJson == null){
+
+            if (listaProductosJson == null) {
                 return new ArrayList<>();
             }
-            
+
             return listaProductosJson;
         }
     }

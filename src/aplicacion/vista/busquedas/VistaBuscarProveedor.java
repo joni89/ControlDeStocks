@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,10 +19,9 @@ import javax.swing.JTextField;
  *
  * @author jonatan
  */
-public class VistaBuscarProveedor implements Vista{
-    
+public class VistaBuscarProveedor implements Vista {
+
     private final ControladorPrincipal controlador;
-    private final Almacen almacen;
 
     private final JPanel panel;
     private final JTextField txtID;
@@ -30,17 +30,16 @@ public class VistaBuscarProveedor implements Vista{
 
     /**
      * Constructor con parámetros.
-     * 
+     *
      * @param controlador Controlador principal
      * @param almacen Almacen
      */
-    public VistaBuscarProveedor(ControladorPrincipal controlador, Almacen almacen) {
+    public VistaBuscarProveedor(ControladorPrincipal controlador) {
 
         this.controlador = controlador;
-        this.almacen = almacen;
 
         this.panel = new JPanel(new GridLayout(3, 1));
-        
+
         this.txtID = new JTextField();
         this.panel.add(this.crearFila("ID", txtID));
 
@@ -48,11 +47,11 @@ public class VistaBuscarProveedor implements Vista{
         this.botonBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                accionBuscarProducto();
+                accionBuscarProveedor();
             }
         });
         this.panel.add(this.botonBuscar);
-        
+
         this.botonCancelar = new JButton("Cancelar");
         this.botonCancelar.addActionListener(new ActionListener() {
             @Override
@@ -65,8 +64,9 @@ public class VistaBuscarProveedor implements Vista{
     }
 
     /**
-     * Devuelve el panel. Dado un nombre, crea una label y la añade al panel junto al JTextField.
-     * 
+     * Devuelve el panel. Dado un nombre, crea una label y la añade al panel
+     * junto al JTextField.
+     *
      * @param nombreLabel Nombre de la etiqueta a añadir.
      * @param caja JTextField a añadir.
      * @return panel
@@ -80,19 +80,25 @@ public class VistaBuscarProveedor implements Vista{
 
         return panel;
     }
-    
+
     /**
      * Añade stock a un producto del almacén.
      */
-    private void accionBuscarProducto() {
-        
+    private void accionBuscarProveedor() {
+        String id = txtID.getText();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Debe introducir un ID", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.controlador.mostrarResultadoProveedor(id);
+
     }
-    
+
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarBuscar();
     }
 
     /**
@@ -100,11 +106,12 @@ public class VistaBuscarProveedor implements Vista{
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaBuscarProducto.refrescar()");
+        System.out.println("aplicacion.vista.VistaBuscarProveedor.refrescar()");
     }
 
     /**
      * Devuelve el panel.
+     *
      * @return el panel.
      */
     @Override

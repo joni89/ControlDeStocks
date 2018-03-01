@@ -35,7 +35,6 @@ public class VistaAnadirStock implements Vista{
     private final JPanel panel;
     private final JTextField txtCantidad;
     private final JButton botonAnadir;
-    private final JButton botonCancelar;
     private final JList<ProductoAlmacen> listaProductos;
 
     /**
@@ -65,15 +64,6 @@ public class VistaAnadirStock implements Vista{
             }
         });
         this.panel.add(this.botonAnadir);
-        
-        this.botonCancelar = new JButton("Cancelar");
-        this.botonCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accionCancelar();
-            }
-        });
-        this.panel.add(this.botonCancelar);
 
     }
 
@@ -149,13 +139,6 @@ public class VistaAnadirStock implements Vista{
 
         this.controlador.anadirStock(producto, cantidad);
         txtCantidad.setText("");
-    }
-    
-    /**
-     * Muestra la vista principal.
-     */
-    private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

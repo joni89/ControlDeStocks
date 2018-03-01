@@ -47,7 +47,6 @@ public class VistaCrearEnvio implements Vista {
     private final JTextField txtFecha;
     private final JCheckBox cobrado;
     private final JButton botonAnadir;
-    private final JButton botonCancelar;
 
     /**
      * Constructor
@@ -82,15 +81,6 @@ public class VistaCrearEnvio implements Vista {
             }
         });
         this.panel.add(this.botonAnadir);
-
-        this.botonCancelar = new JButton("Cancelar");
-        this.botonCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accionCancelar();
-            }
-        });
-        this.panel.add(this.botonCancelar);
 
     }
 
@@ -200,20 +190,7 @@ public class VistaCrearEnvio implements Vista {
             productosEnvio.add(productoEnvio);
         }
 
-        boolean creado = this.controlador.crearAnadirEnvio(productosEnvio, fecha, cliente, cobrado);
-        if (creado) {
-            JOptionPane.showMessageDialog(panel, "Envío creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
-            this.controlador.mostrarVistaPrincipal();
-        } else {
-            JOptionPane.showMessageDialog(panel, "No hay suficiente stock en el almacén", "Stock insuficiente", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /**
-     * Muestra la vista principal.
-     */
-    private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.crearAnadirEnvio(productosEnvio, fecha, cliente, cobrado);
     }
 
     /**

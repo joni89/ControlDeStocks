@@ -3,23 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/creacion/VistaCrearClienteProveedor.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/ListaClientes.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/creacion/VistaAnadirStock.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/eliminacion/VistaEliminarEnvio.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaResultadoProducto.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaResultadoCliente.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaBuscarProducto.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/controlador/ControladorPrincipal.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/ProductoEnvio.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/creacion/VistaCrearEnvio.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/eliminacion/VistaEliminarProducto.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/Main.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/creacion/VistaCrearProducto.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/eliminacion/VistaEliminar.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/Producto.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/VistaPrincipal.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaBuscarProveedor.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/creacion/VistaCrearFactura.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaResultadoProveedor.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/Almacen.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaBuscarEnvio.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/ProductoAlmacen.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/Envio.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaBuscar.java</file>
-            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/Vista.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaBuscarCliente.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/modelo/Envio.java</file>
+            <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/busquedas/VistaResultadoEnvio.java</file>
             <file>file:/home/jonatan/Dropbox/DAM2017-2018/GIT/ControlDeStocks/src/aplicacion/vista/VistaFactura.java</file>
         </group>
     </open-files>

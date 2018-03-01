@@ -32,7 +32,6 @@ public class VistaCrearFactura implements Vista {
     private final JPanel panel;
     private final JList<Envio> listaEnvios;
     private final JButton botonCrear;
-    private final JButton botonCancelar;
 
     /**
      * Constructor
@@ -58,15 +57,6 @@ public class VistaCrearFactura implements Vista {
             }
         });
         this.panel.add(this.botonCrear);
-
-        this.botonCancelar = new JButton("Cancelar");
-        this.botonCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accionCancelar();
-            }
-        });
-        this.panel.add(this.botonCancelar);
 
     }
 
@@ -112,13 +102,6 @@ public class VistaCrearFactura implements Vista {
         }
 
         controlador.mostrarFactura(envio);
-    }
-
-    /**
-     * Muestra la vista principal.
-     */
-    private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
     }
 
     /**

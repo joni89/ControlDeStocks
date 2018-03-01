@@ -11,8 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -103,19 +105,21 @@ public class VistaEliminarProducto implements Vista {
      * Gestiona la acción de eliminar un producto.
      */
     private void accionEliminarProducto() {
-        ProductoAlmacen productoAlmacen = listaProductos.getSelectedValue();
+        List<ProductoAlmacen> productosAlmacen = listaProductos.getSelectedValuesList();
 
-        if (productoAlmacen == null) {
+        if (productosAlmacen.isEmpty()) {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún producto", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        controlador.eliminarProductosAlmacen(productosAlmacen);
     }
 
     /**
      * Muestra la vista principal.
      */
     private void accionCancelar() {
-        this.controlador.mostrarVistaPrincipal();
+        this.controlador.mostrarEliminar();
     }
 
     /**
@@ -123,7 +127,11 @@ public class VistaEliminarProducto implements Vista {
      */
     @Override
     public void refrescar() {
-        System.out.println("aplicacion.vista.VistaEliminarProducto.refrescar()");
+        DefaultListModel<ProductoAlmacen> items = new DefaultListModel<>();
+        for(ProductoAlmacen producto : almacen.getProductos()) {
+            items.addElement(producto);
+        }
+        listaProductos.setModel(items);
     }
 
     /**
