@@ -5,6 +5,7 @@ import aplicacion.modelo.Proveedor;
 import aplicacion.vista.Vista;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -25,6 +27,7 @@ public class VistaCrearClienteProveedor implements Vista{
     private final boolean proveedor;
 
     private final JPanel panel;
+    private final JPanel panelBotones;
     private final JTextField txtNombre;
     private final JTextField txtId;
     private final JTextField txtDireccion;
@@ -64,6 +67,11 @@ public class VistaCrearClienteProveedor implements Vista{
         
         this.txtPersonaContacto = new JTextField();
         this.panel.add(this.crearFila("Persona de Contacto", txtPersonaContacto));
+        
+        this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.panel.add(panelBotones);
 
         this.botonGuardar = new JButton("Guardar");
         this.botonGuardar.addActionListener(new ActionListener() {
@@ -72,7 +80,7 @@ public class VistaCrearClienteProveedor implements Vista{
                 accionCrearClienteProveedor();
             }
         });
-        this.panel.add(this.botonGuardar);
+        this.panelBotones.add(this.botonGuardar);
 
     }
 
@@ -86,9 +94,12 @@ public class VistaCrearClienteProveedor implements Vista{
     private JPanel crearFila(String nombreLabel, JTextField caja){
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
-        JPanel panel = new JPanel(new FlowLayout());
+        etiqueta.setPreferredSize(new Dimension(150, 20));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         panel.add(etiqueta);
         panel.add(caja);
+
         
         return panel;
     }

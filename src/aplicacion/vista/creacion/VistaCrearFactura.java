@@ -4,7 +4,9 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
 import aplicacion.vista.Vista;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -30,6 +33,8 @@ public class VistaCrearFactura implements Vista {
     private final Almacen almacen;
 
     private final JPanel panel;
+    private final JPanel panelListaEnvios;
+    private final JPanel panelBotones;
     private final JList<Envio> listaEnvios;
     private final JButton botonCrear;
 
@@ -44,11 +49,20 @@ public class VistaCrearFactura implements Vista {
         this.controlador = controlador;
         this.almacen = almacen;
 
-        this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(2, 1, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
+        this.panelListaEnvios = new JPanel(new BorderLayout());
+        panel.add(this.panelListaEnvios);
 
         listaEnvios = crearListaEnvios();
-        panel.add(new JScrollPane(listaEnvios));
+        panelListaEnvios.add(new JScrollPane(listaEnvios));
 
+        this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(40, 50, 80, 50));
+        this.panel.add(panelBotones);
+        
         this.botonCrear = new JButton("Crear factura");
         this.botonCrear.addActionListener(new ActionListener() {
             @Override
@@ -56,7 +70,7 @@ public class VistaCrearFactura implements Vista {
                 accionCrearFactura();
             }
         });
-        this.panel.add(this.botonCrear);
+        this.panelBotones.add(this.botonCrear);
 
     }
 

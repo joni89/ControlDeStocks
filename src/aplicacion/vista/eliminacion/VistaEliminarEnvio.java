@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -106,14 +107,14 @@ public class VistaEliminarEnvio implements Vista {
      * Gestiona la acción de eliminar un envío.
      */
     private void accionEliminarEnvio() {
-        Envio envio = listaEnvios.getSelectedValue();
+        List<Envio> envios = listaEnvios.getSelectedValuesList();
 
-        if (envio == null) {
+        if (envios.isEmpty()) {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún envio", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        controlador.eliminarEnvio(envio);
+        controlador.eliminarEnvios(envios);
     }
 
     /**

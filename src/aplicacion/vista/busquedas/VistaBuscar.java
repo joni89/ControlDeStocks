@@ -9,10 +9,9 @@ import javax.swing.JPanel;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
-import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
 import java.awt.GridLayout;
-import javax.swing.DefaultListModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -38,7 +37,8 @@ public class VistaBuscar implements Vista {
 
         this.controlador = controlador;
 
-        this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(2, 3, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         this.botonProductos = new JButton("Productos");
         this.botonProductos.addActionListener(new ActionListener() {

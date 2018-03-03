@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -101,14 +102,14 @@ public class VistaEliminarCliente implements Vista {
      * Gestiona la acción de eliminar un cliente.
      */
     private void accionEliminarCliente() {
-        Cliente cliente = listaClientes.getSelectedValue();
+        List<Cliente> clientes = listaClientes.getSelectedValuesList();
 
-        if (cliente == null) {
+        if (clientes.isEmpty()) {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún cliente", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        controlador.eliminarCliente(cliente);
+        controlador.eliminarClientesAlmacen(clientes);
     }
 
     /**

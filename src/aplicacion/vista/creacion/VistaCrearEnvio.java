@@ -6,6 +6,7 @@ import aplicacion.modelo.Cliente;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
 import aplicacion.vista.Vista;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -31,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -42,6 +44,9 @@ public class VistaCrearEnvio implements Vista {
     private final Almacen almacen;
 
     private final JPanel panel;
+    private final JPanel panelListaProductos;
+    private final JPanel panelCosas;
+    private final JPanel panelBotones;
     private final JList<ProductoAlmacen> listaProductos;
     private final JComboBox<Cliente> comboClientes;
     private final JTextField txtFecha;
@@ -59,20 +64,32 @@ public class VistaCrearEnvio implements Vista {
         this.controlador = controlador;
         this.almacen = almacen;
 
-        this.panel = new JPanel(new GridLayout(3, 2));
+        this.panel = new JPanel(new GridLayout(2, 1, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
+        this.panelListaProductos = new JPanel(new BorderLayout());
+        panel.add(this.panelListaProductos);
 
         listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        panelListaProductos.add("Center", new JScrollPane(listaProductos));
+        
+        this.panelCosas = new JPanel(new GridLayout(3, 2));
+        panelListaProductos.add("East", this.panelCosas);
+        
+        comboClientes = crearComboClientes();
+        this.panelCosas.add(this.crearFila("Cliente", comboClientes));
 
         this.txtFecha = new JTextField();
-        this.panel.add(this.crearFila("Fecha", txtFecha));
-
-        comboClientes = crearComboClientes();
-        panel.add(comboClientes);
+        this.panelCosas.add(this.crearFila("Fecha", txtFecha));
 
         this.cobrado = new JCheckBox("Cobrado");
-        panel.add(cobrado);
+        panelCosas.add(cobrado);
 
+        this.panelBotones = new JPanel(new GridLayout(2, 3, 5, 5));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(this.panelBotones);
+        
         this.botonAnadir = new JButton("Añadir");
         this.botonAnadir.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +97,7 @@ public class VistaCrearEnvio implements Vista {
                 accionAnadirEnvio();
             }
         });
-        this.panel.add(this.botonAnadir);
+        this.panelBotones.add(this.botonAnadir);
 
     }
 
@@ -120,6 +137,7 @@ public class VistaCrearEnvio implements Vista {
     private JComboBox<Cliente> crearComboClientes() {
 
         JComboBox<Cliente> combo = new JComboBox<>(new Vector<>(almacen.getClientes()));
+        combo.setMaximumSize(new Dimension(500, 40));
 
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -144,7 +162,7 @@ public class VistaCrearEnvio implements Vista {
      * @param caja
      * @return panel
      */
-    private JPanel crearFila(String nombreLabel, JTextField caja) {
+    private JPanel crearFila(String nombreLabel, JComponent caja) {
         caja.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
         JPanel panel = new JPanel(new FlowLayout());

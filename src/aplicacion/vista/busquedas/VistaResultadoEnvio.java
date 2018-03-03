@@ -9,14 +9,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import aplicacion.controlador.ControladorPrincipal;
-import aplicacion.modelo.Almacen;
 import aplicacion.modelo.Envio;
-import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.ProductoEnvio;
 import aplicacion.vista.Vista;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
@@ -25,6 +25,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -36,6 +37,9 @@ public class VistaResultadoEnvio implements Vista {
     private final Envio envio;
 
     private final JPanel panel;
+    private final JPanel panelListaProductosEnvio;
+    private final JPanel panelCosas;
+    private final JPanel panelBotones;
     private final JList<ProductoEnvio> listaProductos;
     private final JLabel clientes;
     private final JLabel txtFecha;
@@ -56,18 +60,29 @@ public class VistaResultadoEnvio implements Vista {
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
 
+        this.panelListaProductosEnvio = new JPanel(new BorderLayout());
+        panel.add(this.panelListaProductosEnvio);
+        
         this.listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        panelListaProductosEnvio.add("Center", new JScrollPane(listaProductos));
+        
+        this.panelCosas = new JPanel(new GridLayout(3, 2));
+        panelListaProductosEnvio.add("East", this.panelCosas);
         
         this.clientes = new JLabel(envio.getCliente().getNombre());
-        this.panel.add(this.crearFila("Cliente", clientes));
+        this.panelCosas.add(this.crearFila("Cliente", clientes));
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         this.txtFecha = new JLabel(df.format(envio.getFecha()));
-        this.panel.add(this.crearFila("Fecha", txtFecha));
+        this.panelCosas.add(this.crearFila("Fecha", txtFecha));
 
         this.cobrado = new JLabel(envio.getCobrado() ? "Cobrado" : "No cobrado");
-        this.panel.add(this.crearFila("Cobrado", cobrado));
+        this.panelCosas.add(this.crearFila("Estado", cobrado));
+        
+        this.panelBotones = new JPanel(new GridLayout(2, 3, 5, 5));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 90));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(this.panelBotones);
 
         this.botonAceptar = new JButton("Aceptar");
         this.botonAceptar.addActionListener(new ActionListener() {
@@ -76,7 +91,7 @@ public class VistaResultadoEnvio implements Vista {
                 accionAceptar();
             }
         });
-        this.panel.add(this.botonAceptar);
+        this.panelBotones.add(this.botonAceptar);
 
     }
 
@@ -84,15 +99,15 @@ public class VistaResultadoEnvio implements Vista {
      * Crea una etiqueta con otra etiqueta y las añade al panel
      * 
      * @param nombreLabel Descripción del resultado.
-     * @param resultado Resultado a mostrar.
+     * @param componente componente a mostrar.
      * @return panel
      */
-    private JPanel crearFila(String nombreLabel, JLabel resultado) {
-        resultado.setPreferredSize(new Dimension(200, 20));
+    private JPanel crearFila(String nombreLabel, JLabel componente) {
+        componente.setPreferredSize(new Dimension(200, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(etiqueta);
-        panel.add(resultado);
+        panel.add(componente);
 
         return panel;
     }

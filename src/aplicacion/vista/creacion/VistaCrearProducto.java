@@ -100,7 +100,7 @@ public class VistaCrearProducto implements Vista {
         JLabel etiqueta = new JLabel(nombreLabel + ":");
         etiqueta.setPreferredSize(new Dimension(100, 20));
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         panel.add(etiqueta);
         panel.add(caja);
 

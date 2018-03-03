@@ -1,14 +1,18 @@
 package aplicacion.vista;
 
 import aplicacion.controlador.ControladorPrincipal;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -20,6 +24,8 @@ public class VistaFactura implements Vista {
     private final String factura;
 
     private final JPanel panel;
+    private final JPanel panelFactura;
+    private final JPanel panelBotones;
     private final JTextArea textArea;
     private final JButton botonVolver;
 
@@ -34,14 +40,22 @@ public class VistaFactura implements Vista {
         this.controlador = controlador;
         this.factura = factura;
 
-        this.panel = new JPanel();
+        this.panel = new JPanel(new GridLayout(2, 1, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
+        this.panelFactura = new JPanel(new BorderLayout());
+        panel.add(this.panelFactura);
 
         this.textArea = new JTextArea(factura);
         this.textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         this.textArea.setEnabled(false);
         this.textArea.setDisabledTextColor(Color.BLACK);
-        this.panel.add(this.textArea);
+        this.panelFactura.add(this.textArea);
 
+        this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(40, 50, 80, 50));
+        this.panel.add(panelBotones);
 
         this.botonVolver = new JButton("Volver");
         this.botonVolver.addActionListener(new ActionListener() {
@@ -51,7 +65,7 @@ public class VistaFactura implements Vista {
             }
 
         });
-        this.panel.add(this.botonVolver);
+        this.panelBotones.add(this.botonVolver);
     }
 
     /**

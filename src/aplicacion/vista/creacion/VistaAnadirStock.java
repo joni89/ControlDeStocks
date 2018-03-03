@@ -4,6 +4,7 @@ import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -33,6 +35,10 @@ public class VistaAnadirStock implements Vista{
     private final Almacen almacen;
 
     private final JPanel panel;
+    private final JPanel panelListaProductos;
+    private final JPanel panelCantidad;
+    private final JPanel panelBotones;
+    private final JLabel cantidad;
     private final JTextField txtCantidad;
     private final JButton botonAnadir;
     private final JList<ProductoAlmacen> listaProductos;
@@ -48,13 +54,30 @@ public class VistaAnadirStock implements Vista{
         this.controlador = controlador;
         this.almacen = almacen;
 
-        this.panel = new JPanel(new GridLayout(3, 1));
+        this.panel = new JPanel(new GridLayout(2, 1, 5, 5));
+        this.panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
+        this.panelListaProductos = new JPanel(new BorderLayout());
+        panel.add(this.panelListaProductos);
 
         listaProductos = crearListaProductos();
-        panel.add(new JScrollPane(listaProductos));
+        panelListaProductos.add("Center", new JScrollPane(listaProductos));
+        
+        this.panelCantidad = new JPanel(new FlowLayout());
+        panelListaProductos.add("South", this.panelCantidad);
+        
+        this.cantidad = new JLabel("Cantidad: ");
+        this.cantidad.setPreferredSize(new Dimension(100, 20));
+        this.panelCantidad.add(cantidad);
         
         this.txtCantidad = new JTextField();
-        this.panel.add(this.crearFila("Cantidad", txtCantidad));
+        this.txtCantidad.setPreferredSize(new Dimension(100, 20));
+        this.panelCantidad.add(txtCantidad);
+        
+        this.panelBotones = new JPanel(new GridLayout(2, 3, 5, 5));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(this.panelBotones);
 
         this.botonAnadir = new JButton("Añadir");
         this.botonAnadir.addActionListener(new ActionListener() {
@@ -63,7 +86,7 @@ public class VistaAnadirStock implements Vista{
                 accionAnadirStock();
             }
         });
-        this.panel.add(this.botonAnadir);
+        this.panelBotones.add(this.botonAnadir);
 
     }
 

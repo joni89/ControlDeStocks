@@ -316,6 +316,7 @@ public class ControladorPrincipal extends Controlador {
     public void crearAnadirProducto(String nombre, String fabricante, Proveedor proveedor, double precio, int stock) {
         Producto producto = crearProducto(nombre, fabricante, proveedor, precio);
         anadirProductoAlmacen(producto, stock);
+        JOptionPane.showMessageDialog(this.getVentana(), "Producto creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
         cerrarDialogo();
     }
 
@@ -446,13 +447,26 @@ public class ControladorPrincipal extends Controlador {
      *
      * @param cliente Cliente a eliminar.
      */
-    public void eliminarCliente(Cliente cliente) {
+    private void eliminarCliente(Cliente cliente) {
         Cliente clienteAlmacen = obtenerCliente(cliente.getId());
         if (clienteAlmacen != null) {
             this.almacen.getClientes().remove(clienteAlmacen);
         }
         refrescarVistaActivaDialogo();
 
+    }
+    
+    /**
+     * Elimina varios clientes del almacen.
+     *
+     * @param clientes clientes a eliminar.
+     */
+    public void eliminarClientesAlmacen(List<Cliente> clientes) {
+        for(Cliente cliente : clientes) {
+            eliminarCliente(cliente);
+        }
+        refrescarVistaActivaDialogo();
+        refrescarVistaActiva();
     }
 
     //Proveedores
@@ -522,12 +536,25 @@ public class ControladorPrincipal extends Controlador {
      *
      * @param proveedor Proveedor a eliminar.
      */
-    public void eliminarProveedor(Proveedor proveedor) {
+    private void eliminarProveedor(Proveedor proveedor) {
         Proveedor proveedorAlmacen = obtenerProveedor(proveedor.getId());
         if (proveedorAlmacen != null) {
             this.almacen.getProveedores().remove(proveedorAlmacen);
         }
         refrescarVistaActivaDialogo();
+    }
+    
+    /**
+     * Elimina varios proveedores del almacen.
+     *
+     * @param proveedores Proveedores a eliminar.
+     */
+    public void eliminarProveedoresAlmacen(List<Proveedor> proveedores) {
+        for(Proveedor proveedor : proveedores) {
+            eliminarProveedor(proveedor);
+        }
+        refrescarVistaActivaDialogo();
+        refrescarVistaActiva();
     }
 
     //Envio
@@ -612,12 +639,25 @@ public class ControladorPrincipal extends Controlador {
      *
      * @param envio Envío a eliminar.
      */
-    public void eliminarEnvio(Envio envio) {
+    private void eliminarEnvio(Envio envio) {
         Envio envioAlmacen = obtenerEnvio(envio.getId());
         if (envioAlmacen != null) {
             almacen.getEnviosRealizados().remove(envioAlmacen);
         }
         refrescarVistaActivaDialogo();
+    }
+    
+    /**
+     * Elimina varios envios del almacen.
+     *
+     * @param envios Envíos a eliminar.
+     */
+    public void eliminarEnvios(List<Envio> envios) {
+        for(Envio envio : envios) {
+            eliminarEnvio(envio);
+        }
+        refrescarVistaActivaDialogo();
+        refrescarVistaActiva();
     }
 
     /**
@@ -686,6 +726,7 @@ public class ControladorPrincipal extends Controlador {
         sb.append(String.format("Envío #%d\n", envio.getId()));
         sb.append(String.format("Fecha: %s\n", df.format(envio.getFecha())));
         sb.append(String.format("Cliente: %s\n", envio.getCliente().getNombre()));
+        sb.append(String.format("CIF/NIF: %s\n", envio.getCliente().getId()));
 
         sb.append(String.format("\n%-30s %16s %5s %16s\n", "Producto", "Precio Unid. (€)", "Cant.", "Precio (€)"));
 
@@ -718,6 +759,7 @@ public class ControladorPrincipal extends Controlador {
         this.setVistaActivaDialogo(vista);
         this.refrescarVistaActivaDialogo();
 
+        this.getDialogo().setLocation(getVentana().getLocation());
         this.getDialogo().setTitle(titulo);
         this.getDialogo().setVisible(true);
     }
@@ -821,28 +863,28 @@ public class ControladorPrincipal extends Controlador {
      */
     public void mostrarBuscarProducto() {
 
-        VistaBuscarProducto buscarProducto = new VistaBuscarProducto(this);
+        VistaBuscarProducto buscarProducto = new VistaBuscarProducto(this, almacen);
 
         this.setVistaActivaDialogo(buscarProducto);
         this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarBuscarCliente() {
-        VistaBuscarCliente buscarCliente = new VistaBuscarCliente(this);
+        VistaBuscarCliente buscarCliente = new VistaBuscarCliente(this, almacen);
 
         this.setVistaActivaDialogo(buscarCliente);
         this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarBuscarProveedor() {
-        VistaBuscarProveedor buscarProveedor = new VistaBuscarProveedor(this);
+        VistaBuscarProveedor buscarProveedor = new VistaBuscarProveedor(this, almacen);
 
         this.setVistaActivaDialogo(buscarProveedor);
         this.refrescarVistaActivaDialogo();
     }
 
     public void mostrarBuscarEnvio() {
-        VistaBuscarEnvio buscarEnvio = new VistaBuscarEnvio(this);
+        VistaBuscarEnvio buscarEnvio = new VistaBuscarEnvio(this, almacen);
 
         this.setVistaActivaDialogo(buscarEnvio);
         this.refrescarVistaActivaDialogo();

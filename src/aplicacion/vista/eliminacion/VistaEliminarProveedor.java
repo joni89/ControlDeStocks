@@ -2,12 +2,14 @@ package aplicacion.vista.eliminacion;
 
 import aplicacion.controlador.ControladorPrincipal;
 import aplicacion.modelo.Almacen;
+import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.modelo.Proveedor;
 import aplicacion.vista.Vista;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -99,14 +101,14 @@ public class VistaEliminarProveedor implements Vista {
      * Gestiona la acción de eliminar un proveedor.
      */
     private void accionEliminarProveedor() {
-        Proveedor proveedor = listaProveedores.getSelectedValue();
+        List<Proveedor> proveedores = listaProveedores.getSelectedValuesList();
 
-        if (proveedor == null) {
+        if (proveedores.isEmpty()) {
             JOptionPane.showMessageDialog(panel, "Debe seleccionar algún proveedor", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        controlador.eliminarProveedor(proveedor);
+        controlador.eliminarProveedoresAlmacen(proveedores);
     }
 
     /**

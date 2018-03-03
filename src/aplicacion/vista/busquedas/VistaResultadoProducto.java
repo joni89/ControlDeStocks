@@ -9,12 +9,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import aplicacion.controlador.ControladorPrincipal;
-import aplicacion.modelo.Almacen;
 import aplicacion.modelo.ProductoAlmacen;
 import aplicacion.vista.Vista;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import javax.swing.BoxLayout;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -26,6 +27,7 @@ public class VistaResultadoProducto implements Vista {
     private final ProductoAlmacen producto;
 
     private final JPanel panel;
+    private final JPanel panelBotones;
     private final JLabel nombre;
     private final JLabel fabricante;
     private final JLabel proveedor;
@@ -68,6 +70,11 @@ public class VistaResultadoProducto implements Vista {
 
         this.stock = new JLabel(Integer.toString(producto.getStock()));
         this.panel.add(this.crearFila("Cantidad", stock));
+        
+        this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        this.panelBotones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        this.panelBotones.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.panel.add(panelBotones);
 
         this.botonAceptar = new JButton("Aceptar");
         this.botonAceptar.addActionListener(new ActionListener() {
@@ -76,7 +83,7 @@ public class VistaResultadoProducto implements Vista {
                 accionAceptar();
             }
         });
-        this.panel.add(this.botonAceptar);
+        this.panelBotones.add(this.botonAceptar);
 
     }
 
@@ -87,10 +94,12 @@ public class VistaResultadoProducto implements Vista {
      * @param resultado Resultado a mostrar.
      * @return panel
      */
-    private JPanel crearFila(String nombreLabel, JLabel resultado) {
-        resultado.setPreferredSize(new Dimension(200, 20));
+    private JPanel crearFila(String nombreLabel, JComponent resultado) {
+        resultado.setPreferredSize(new Dimension(300, 20));
         JLabel etiqueta = new JLabel(nombreLabel + ":");
-        JPanel panel = new JPanel(new FlowLayout());
+        etiqueta.setPreferredSize(new Dimension(100, 20));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         panel.add(etiqueta);
         panel.add(resultado);
 
