@@ -65,7 +65,7 @@ public class VistaResultadoProveedor implements Vista {
         this.email = new JLabel(proveedor.getEmail());
         this.panel.add(this.crearFila("Email", email));
 
-        this.personaContacto = new JLabel(proveedor.getPersonaContacto() == null ? "" : proveedor.getPersonaContacto());
+        this.personaContacto = new JLabel(proveedor.getPersonaContacto());
         this.panel.add(this.crearFila("Persona de contacto", personaContacto));
 
         this.panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));

@@ -140,9 +140,9 @@ public class ControladorPrincipalTest {
     @Test
     public void testEliminarCliente() {
         System.out.println("eliminarCliente");
-        Cliente cliente = null;
+        List<Cliente> cliente = null;
         ControladorPrincipal instance = new ControladorPrincipal();
-        instance.eliminarCliente(cliente);
+        instance.eliminarClientesAlmacen(cliente);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -171,9 +171,9 @@ public class ControladorPrincipalTest {
     @Test
     public void testEliminarProveedor() {
         System.out.println("eliminarProveedor");
-        Proveedor proveedor = null;
+        List<Proveedor> proveedor = null;
         ControladorPrincipal instance = new ControladorPrincipal();
-        instance.eliminarProveedor(proveedor);
+        instance.eliminarProveedoresAlmacen(proveedor);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

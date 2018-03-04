@@ -1067,7 +1067,7 @@ public class ControladorPrincipal extends Controlador {
                         proveedor.getDireccion(),
                         proveedor.getTelefono(),
                         proveedor.getEmail(),
-                        proveedor.getPersonaContacto());
+                        proveedor.getPersonaContacto() == null ? "" : proveedor.getPersonaContacto());
             }
         }
     }
