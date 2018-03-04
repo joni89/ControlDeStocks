@@ -39,8 +39,8 @@ public class VistaResultadoCliente implements Vista {
     /**
      * Se crean los componentes de la vista.
      * 
-     * @param controlador controlador
-     * @param cliente
+     * @param controlador un controlador
+     * @param cliente un cliente
      */
     public VistaResultadoCliente(ControladorPrincipal controlador, Cliente cliente) {
 

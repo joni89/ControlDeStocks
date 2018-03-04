@@ -38,8 +38,8 @@ public class VistaResultadoProducto implements Vista {
     /**
      * Se crean los componentes de la vista.
      * 
-     * @param controlador controlador
-     * @param producto
+     * @param controlador el controlador
+     * @param producto un producto
      */
     public VistaResultadoProducto(ControladorPrincipal controlador, ProductoAlmacen producto) {
 

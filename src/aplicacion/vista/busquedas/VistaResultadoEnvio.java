@@ -49,8 +49,8 @@ public class VistaResultadoEnvio implements Vista {
     /**
      * Se crean los componentes de la vista.
      * 
-     * @param controlador controlador
-     * @param envio
+     * @param controlador un controlador
+     * @param envio un envío
      */
     public VistaResultadoEnvio(ControladorPrincipal controlador, Envio envio) {
 

@@ -621,7 +621,6 @@ public class ControladorPrincipal extends Controlador {
      * @param fecha Fecha del envío.
      * @param cliente Cliente al que va el envío.
      * @param cobrado Si esta o no cobrado.
-     * @return true si el envío fue creado, false si no.
      */
     public void crearAnadirEnvio(List<ProductoEnvio> productos, Date fecha, Cliente cliente, boolean cobrado) {
         Envio envio = crearEnvio(productos, fecha, cliente, cobrado);
@@ -893,6 +892,7 @@ public class ControladorPrincipal extends Controlador {
     // Resultados
     /**
      * Se muestra la pantalla de buscar producto.
+     * @param id id del producto a buscar
      */
     public void mostrarResultadoProducto(int id) {
         ProductoAlmacen producto = obtenerProductoAlmacen(id);
